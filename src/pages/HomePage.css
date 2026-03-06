@@ -1,0 +1,424 @@
+/* ===== Hero Section ===== */
+.hero {
+    position: relative;
+    height: 100vh;
+    color: var(--primary-white);
+    padding: 160px 0 80px;
+    /* Denser padding */
+    text-align: center;
+    overflow: hidden;
+    background: linear-gradient(rgba(10, 26, 1, 0.75), rgba(12, 31, 1, 0.75));
+    /* Darkened for more professional text contrast */
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    z-index: -1;
+    animation: slideShow 18s infinite;
+    filter: brightness(0.6);
+}
+
+@keyframes slideShow {
+    0% {
+        background-image: url('/images/resorts/limuru/limuru-front.jpeg');
+    }
+
+    33% {
+        background-image: url('/images/resorts/kanamai/front kanamai.jpg');
+    }
+
+    66% {
+        background-image: url('/images/resorts/kisumu/resort1.jpg');
+    }
+
+    100% {
+        background-image: url('/images/resorts/limuru/limuru-front.jpeg');
+    }
+}
+
+.hero h1 {
+    font-size: 4rem;
+    /* Larger, more striking */
+    font-family: 'Playfair Display', serif;
+    /* Professional serif */
+    margin-bottom: 20px;
+    color: var(--primary-white);
+    letter-spacing: 1px;
+}
+
+.hero p.tagline {
+    font-size: 1.4rem;
+    font-family: 'Playfair Display', serif;
+    color: var(--primary-orange);
+    margin-bottom: 25px;
+    font-style: italic;
+}
+
+.hero p.description {
+    font-size: 1.15rem;
+    max-width: 800px;
+    margin: 0 auto 40px;
+    opacity: 0.9;
+    line-height: 1.6;
+}
+
+/* ===== Vision & Mission ===== */
+.vision-mission {
+    background-color: var(--gray-bg);
+    padding: 60px 0;
+    /* Dense padding */
+}
+
+.vm-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    /* Denser gap */
+    margin-bottom: 30px;
+}
+
+.vision-card,
+.mission-card {
+    background: var(--primary-white);
+    padding: 35px;
+    border: 1px solid var(--gray-border);
+    /* Subtle border instead of heavy shadow */
+    border-radius: 0;
+    /* SHARP CORNERS */
+    transition: border-color 0.3s;
+}
+
+.vision-card:hover,
+.mission-card:hover {
+    border-color: var(--primary-green);
+    /* No translate lift */
+}
+
+.vm-icon {
+    font-size: 2.5rem;
+    color: var(--primary-green);
+    margin-bottom: 20px;
+    /* Removed the circular background */
+}
+
+.mission-card .vm-icon {
+    color: var(--primary-orange);
+}
+
+.vision-card h3,
+.mission-card h3 {
+    font-size: 1.5rem;
+    font-family: 'Playfair Display', serif;
+    margin-bottom: 12px;
+    color: var(--primary-green);
+}
+
+.vision-card p,
+.mission-card p {
+    color: var(--text-light);
+    line-height: 1.7;
+    margin: 0;
+}
+
+/* Core Values inside VM */
+.core-values-card {
+    background: var(--primary-white);
+    padding: 40px;
+    border: 1px solid var(--gray-border);
+    border-radius: 0;
+    /* SHARP CORNERS */
+    margin-bottom: 0;
+}
+
+.core-values-card h3 {
+    font-size: 1.8rem;
+    font-family: 'Playfair Display', serif;
+    margin-bottom: 25px;
+    color: var(--primary-green);
+}
+
+.values-tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    /* Denser */
+    margin-bottom: 30px;
+}
+
+.value-tag {
+    background-color: var(--light-green);
+    color: var(--primary-green);
+    padding: 8px 18px;
+    border-radius: 0;
+    /* SHARP CORNERS */
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: 1px solid rgba(34, 68, 15, 0.1);
+}
+
+.motto-banner {
+    padding: 20px;
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+    border-radius: 0;
+    /* SHARP CORNERS */
+}
+
+.motto-banner p {
+    font-size: 1.4rem;
+    color: var(--primary-white);
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    margin: 0;
+}
+
+/* ===== Resorts Grid ===== */
+.resorts-section-pad {
+    padding: 60px 0;
+    /* Cut down from 100px */
+}
+
+.resorts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 25px;
+    /* Denser gap */
+    margin-top: 40px;
+}
+
+.resort-card {
+    background-color: var(--primary-white);
+    border: 1px solid var(--gray-border);
+    border-radius: 0;
+    /* SHARP CORNERS */
+    overflow: hidden;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.resort-card:hover {
+    border-color: var(--primary-green);
+    /* No translateY. Image zoom handles the interaction feedback */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    /* Very subtle grounded shadow on hover */
+}
+
+.resort-img {
+    height: 250px;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.5s ease;
+    /* Smooth zoom */
+}
+
+.resort-card:hover .resort-img {
+    transform: scale(1.05);
+    /* Pro interaction */
+}
+
+.resort-img-wrapper {
+    overflow: hidden;
+    /* Contains the zoom */
+}
+
+.resort-content {
+    padding: 30px 25px;
+}
+
+.resort-content h3 {
+    font-size: 1.5rem;
+    font-family: 'Playfair Display', serif;
+    margin-bottom: 10px;
+    color: var(--primary-green);
+}
+
+.resort-location {
+    color: var(--primary-orange);
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.resort-content p {
+    color: var(--text-light);
+    margin-bottom: 25px;
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+.resort-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    /* Tighter */
+    margin-bottom: 25px;
+}
+
+.feature-tag {
+    background-color: var(--light-green);
+    color: var(--primary-green);
+    padding: 6px 12px;
+    border-radius: 0;
+    /* SHARP CORNERS */
+    font-size: 0.85rem;
+    font-weight: 600;
+    border: 1px solid rgba(34, 68, 15, 0.1);
+}
+
+/* ===== Services Section ===== */
+.services-section {
+    padding: 60px 0;
+    /* Denser */
+    background-color: var(--primary-white);
+    border-top: 1px solid var(--gray-border);
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    /* Denser */
+    margin-top: 30px;
+}
+
+.service-card {
+    background-color: var(--gray-bg);
+    border: 1px solid var(--gray-border);
+    border-radius: 0;
+    /* SHARP CORNERS */
+    padding: 30px 25px;
+    transition: border-color 0.3s;
+    text-align: left;
+    /* Shift from center-aligned AI look */
+    display: flex;
+    flex-direction: column;
+}
+
+.service-card:hover {
+    border-color: var(--primary-orange);
+    /* No translateY */
+}
+
+.service-icon {
+    font-size: 2.2rem;
+    color: var(--primary-orange);
+    margin-bottom: 15px;
+    /* Removed circular background */
+}
+
+.service-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    color: var(--text-dark);
+}
+
+.service-card p {
+    color: var(--text-light);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* ===== Booking Section ===== */
+.booking-section {
+    padding: 60px 0;
+    background-color: var(--gray-bg);
+    border-top: 1px solid var(--gray-border);
+}
+
+/* ===== Responsive ===== */
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+    .section-title h2 {
+        font-size: 2rem;
+    }
+
+    .hero {
+        height: auto;
+        min-height: 260px;
+        /* Aggressively reduced further */
+        padding: 65px 0 20px;
+        /* Tighter vertical padding */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .hero-content {
+        width: 100%;
+        padding: 0 15px;
+    }
+
+    .hero h1 {
+        font-size: 1.6rem;
+        /* Scaled down even more */
+        margin-bottom: 8px;
+        line-height: 1.2;
+    }
+
+    .hero p.tagline {
+        font-size: 1rem;
+        margin-bottom: 15px;
+    }
+
+    .hero p.description {
+        display: none;
+        /* Hide for all mobile screens to save space */
+    }
+
+    .hero .btn {
+        padding: 12px 30px !important;
+        /* Scale down the large inline padding */
+        font-size: 1rem !important;
+    }
+
+    .vm-grid,
+    .services-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .resorts-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .vm-section,
+    .services-section,
+    .booking-section {
+        padding: 40px 0;
+    }
+
+    .vm-card,
+    .service-card {
+        padding: 25px 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero {
+        padding: 60px 0 15px;
+        min-height: 220px;
+    }
+
+    .hero h1 {
+        font-size: 1.4rem;
+    }
+
+    .hero p.tagline {
+        font-size: 0.85rem;
+        margin-bottom: 12px;
+    }
+
+    .section-title h2 {
+        font-size: 1.6rem;
+    }
+}

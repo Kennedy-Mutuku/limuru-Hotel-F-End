@@ -1,0 +1,684 @@
+/* ===== Page Hero ===== */
+.page-hero {
+    position: relative;
+    height: 45vh;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-size: cover;
+    background-position: center;
+    color: white;
+}
+
+.page-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(rgba(10, 26, 1, 0.6), rgba(12, 31, 1, 0.6));
+}
+
+.page-hero .container {
+    position: relative;
+    z-index: 1;
+}
+
+.page-hero h1 {
+    font-size: 3rem;
+    color: white;
+    margin-bottom: 15px;
+}
+
+.page-hero p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* ===== Contact Form ===== */
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-top: 50px;
+}
+
+.contact-form-wrapper {
+    background: white;
+    padding: 30px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.contact-info-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.info-card {
+    background: white;
+    padding: 25px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.info-card i {
+    font-size: 1.5rem;
+    color: var(--primary-orange);
+    width: 30px;
+    text-align: center;
+}
+
+/* ===== Feedback Page ===== */
+.feedback-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.feedback-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 25px;
+    box-shadow: var(--shadow);
+}
+
+.feedback-card .stars {
+    color: var(--primary-orange);
+    margin-bottom: 10px;
+}
+
+/* ===== Offers Page ===== */
+.offers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.offer-card {
+    background: white;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s;
+}
+
+.offer-card:hover {
+    transform: translateY(-5px);
+}
+
+.offer-image {
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.offer-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: var(--primary-orange);
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+.offer-content {
+    padding: 25px;
+}
+
+.offer-content h3 {
+    margin-bottom: 10px;
+}
+
+.offer-content p {
+    color: var(--text-light);
+    margin-bottom: 15px;
+}
+
+.offer-price {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--primary-green);
+}
+
+/* ===== Resort Sub-Website Navigation (Stacked) ===== */
+.resort-sticky-container {
+    position: sticky;
+    top: 96px;
+    /* Below global header */
+    z-index: 999;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    background-color: white;
+    padding-top: 15px;
+    /* Ensure permanent solid white space above the green bar */
+}
+
+.resort-header {
+    background: white;
+    padding: 15px 0 0;
+}
+
+.resort-header .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.resort-branding-row {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.resort-branding-row img {
+    height: 50px;
+}
+
+.resort-identity-centered {
+    text-align: center;
+    flex: 1;
+}
+
+.resort-identity-centered h2 {
+    margin: 0;
+    font-size: 1.6rem;
+    color: var(--primary-green);
+    font-weight: 800;
+    font-family: 'Playfair Display', serif;
+}
+
+.resort-identity-centered .location-tag {
+    font-size: 0.85rem;
+    color: var(--primary-orange);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-top: 2px;
+    display: block;
+}
+
+.resort-nav {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    border-top: 1px solid #f0f0f0;
+}
+
+.resort-nav-link {
+    text-decoration: none;
+    color: var(--text-dark);
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 15px 15px;
+    position: relative;
+    transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.resort-nav-link:hover {
+    color: var(--primary-orange);
+}
+
+.resort-nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 15px;
+    right: 15px;
+    height: 3px;
+    background: var(--primary-orange);
+    transform: scaleX(0);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: center;
+    border-radius: 2px 2px 0 0;
+}
+
+.resort-nav-link:hover::after {
+    transform: scaleX(1);
+}
+
+.resort-nav-link.active {
+    color: var(--primary-orange);
+}
+
+.resort-nav-link.active::after {
+    transform: scaleX(1);
+    height: 4px;
+}
+
+/* ===== Responsive ===== */
+/* ===== Responsive ===== */
+@media (max-width: 992px) {
+    .resort-nav-link {
+        font-size: 0.8rem;
+        gap: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .page-hero h1 {
+        font-size: 2.2rem;
+    }
+
+    .contact-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .resort-nav {
+        justify-content: flex-start;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 2px;
+        -ms-overflow-style: none;
+        /* IE/Edge */
+        scrollbar-width: none;
+        /* Firefox */
+    }
+
+    .resort-nav::-webkit-scrollbar {
+        display: none;
+        /* Chrome/Safari */
+    }
+
+    .resort-nav-link {
+        white-space: nowrap;
+        padding: 10px 12px;
+        /* Condensed padding */
+        font-size: 0.85rem;
+    }
+
+    .resort-branding-row {
+        gap: 8px;
+        /* Tighter gap */
+        padding: 0 10px;
+    }
+
+    .resort-branding-row img {
+        height: 35px;
+        /* Shorter logo */
+    }
+
+    .resort-identity-centered h2 {
+        font-size: 1.15rem;
+        /* Smaller heading */
+    }
+
+    .resort-identity-centered .location-tag {
+        font-size: 0.75rem;
+        letter-spacing: 1px;
+    }
+
+    .resort-sticky-container {
+        top: 60px;
+        /* Adjust to header height */
+    }
+
+    .compact-hide {
+        display: none !important;
+    }
+
+    .compact-text {
+        font-size: 0.75rem !important;
+    }
+
+    /* Phase 17: Resort Overview Image-on-Top */
+    .resort-overview-grid {
+        display: flex !important;
+        flex-direction: column-reverse !important;
+        gap: 20px !important;
+    }
+
+    .resort-overview-grid h2 {
+        font-size: 1.8rem !important;
+        margin-bottom: 15px !important;
+    }
+
+    /* Phase 18: Resort Listing Mobile Fit */
+    .resort-listing-item {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 15px !important;
+        margin-bottom: 40px !important;
+        padding: 0 10px !important;
+    }
+
+    .resort-listing-item img {
+        height: 220px !important;
+        border-radius: 0 !important;
+    }
+
+    .resort-listing-item h2 {
+        font-size: 1.5rem !important;
+        margin-bottom: 8px !important;
+    }
+
+    .resort-listing-item p {
+        font-size: 0.9rem !important;
+        line-height: 1.6 !important;
+        margin-bottom: 15px !important;
+    }
+
+    .resorts-listing-section {
+        padding: 40px 0 !important;
+    }
+}
+
+/* ===== Feedback Page Refinement (Phase 19) ===== */
+.feedback-form-card {
+    background: white;
+    padding: 40px;
+    border-radius: 0;
+    /* SHARP CORNERS */
+    border: 1px solid var(--gray-border);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    /* Very subtle grounded shadow */
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.feedback-form-card .form-control {
+    border-radius: 0;
+    padding: 12px 15px;
+    border: 1px solid var(--gray-border);
+    font-size: 0.95rem;
+    background-color: #fafafa;
+}
+
+.feedback-form-card .form-control:focus {
+    background-color: white;
+    border-color: var(--primary-green);
+    box-shadow: none;
+}
+
+.star-rating-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.star-icon {
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: #ddd;
+    transition: color 0.2s ease, transform 0.1s ease;
+}
+
+.star-icon:hover {
+    transform: scale(1.1);
+}
+
+.star-icon.active {
+    color: var(--primary-orange);
+}
+
+.rating-error-text {
+    color: #dc3545;
+    font-size: 0.85rem;
+    margin-top: 5px;
+    font-weight: 500;
+}
+
+.form-field-wrapper {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.form-field-wrapper i.field-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-light);
+    opacity: 0.5;
+}
+
+.feedback-submit-btn {
+    width: 100%;
+    padding: 15px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 0;
+    margin-top: 10px;
+}
+
+@media (max-width: 576px) {
+    .feedback-form-card {
+        padding: 25px 20px;
+    }
+}
+
+/* ===== Resorts Listing Page (Desktop) ===== */
+@media (min-width: 769px) {
+    .resorts-listing-section {
+        padding: 80px 0 !important;
+        display: flex;
+        flex-direction: column;
+        gap: 120px;
+    }
+
+    .resort-listing-item {
+        display: flex;
+        align-items: center;
+        gap: 80px;
+        animation: fadeInUp 0.8s ease forwards;
+    }
+
+    .resort-listing-item.alternate {
+        flex-direction: row-reverse;
+    }
+
+    .resort-image-wrapper {
+        flex: 0 0 45%;
+        overflow: hidden;
+    }
+
+    .resort-image-wrapper img {
+        width: 100%;
+        height: 380px !important;
+        object-fit: cover;
+        border-radius: 0 !important;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        transition: transform 0.6s ease;
+    }
+
+    .resort-listing-item:hover .resort-image-wrapper img {
+        transform: scale(1.03);
+    }
+
+    .resort-text-wrapper {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        padding: 0;
+        background: transparent;
+    }
+
+    .resort-text-content {
+        max-width: 100%;
+    }
+
+    .resort-listing-item h2 {
+        font-size: 2.2rem;
+        margin-bottom: 20px;
+        color: var(--primary-green);
+        line-height: 1.2;
+    }
+
+    .resort-location {
+        color: var(--primary-orange);
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 0.9rem;
+    }
+
+    .resort-description {
+        color: var(--text-light);
+        line-height: 1.8;
+        font-size: 1.1rem;
+        margin-bottom: 30px;
+    }
+
+    .resort-features {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 35px;
+    }
+
+    .resort-actions {
+        display: flex;
+        gap: 20px;
+    }
+}
+
+.feature-tag {
+    background: #f0f4ee;
+    color: var(--primary-green);
+    padding: 6px 14px;
+    border-radius: 30px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border: 1px solid #e2ebd9;
+    transition: all 0.3s ease;
+}
+
+.feature-tag:hover {
+    background: var(--primary-green);
+    color: white;
+    transform: translateY(-2px);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== Excursion Buttons ===== */
+.btn-excursion {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    background: linear-gradient(135deg, var(--primary-green), #2d5a15);
+    color: white !important;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: none;
+    box-shadow: 0 4px 15px rgba(34, 68, 15, 0.2);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn-excursion:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(34, 68, 15, 0.3);
+    background: linear-gradient(135deg, #2d5a15, var(--primary-green));
+}
+
+.btn-excursion i {
+    font-size: 1rem;
+    transition: transform 0.3s ease;
+}
+
+/* ===== Admin Reports Professional Styling ===== */
+.admin-reports-container {
+    padding: 20px;
+}
+
+.admin-reports-container .admin-page-header {
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.report-export-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #ef4444;
+    /* PDF Red */
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+.report-export-btn:hover {
+    background: #dc2626;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(239, 68, 68, 0.3);
+}
+
+.report-section-title {
+    font-family: 'Playfair Display', serif;
+    color: var(--primary-green);
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    border-left: 5px solid var(--primary-orange);
+    padding-left: 15px;
+}
+
+.report-chart-card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f1f5f9;
+}
+
+.report-print-branding {
+    display: none;
+    /* Only show in PDF/Print */
+}
+
+@media print {
+    .report-print-branding {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 40px;
+    }
+}
