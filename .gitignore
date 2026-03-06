@@ -27,3 +27,8 @@ dist-ssr
 *.mp4
 *.MOV
 *.avi
+
+# Exception for essential virtual tours
+!public/images/resorts/limuru/VID-20240219-WA0003.mp4
+!public/images/resorts/kanamai/KANAMAI TOUR.mp4
+!public/images/resorts/kisumu/KISUMU TOUR.mp4
