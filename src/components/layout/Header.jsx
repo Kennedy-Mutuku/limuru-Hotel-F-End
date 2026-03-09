@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import Logo from '../common/Logo';
 import './Header.css';
@@ -8,6 +8,15 @@ export default function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
     const { user, logout } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
+
+    const handleHomeClick = (e) => {
+        setMenuOpen(false);
+        if (location.pathname === '/') {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    };
 
     const handleLogout = () => {
         logout();
@@ -46,7 +55,7 @@ export default function Header() {
                 </button>
 
                 <nav className={`main-nav ${menuOpen ? 'active' : ''}`}>
-                    <NavLink to="/" end onClick={() => setMenuOpen(false)}>Home</NavLink>
+                    <NavLink to="/" end onClick={handleHomeClick}>Home</NavLink>
                     {/* About Us Dropdown */}
                     <div className="nav-dropdown">
                         <NavLink to="/about" className="dropdown-trigger" onClick={() => setMenuOpen(false)}>
@@ -93,11 +102,8 @@ export default function Header() {
                     </div>
 
                     <NavLink to="/admin/login" className="btn btn-secondary login-btn" onClick={() => setMenuOpen(false)}>Log In</NavLink>
+                    <Link to="/#quick-book" className="btn btn-primary nav-book-btn" onClick={() => setMenuOpen(false)}>Book Now</Link>
                 </nav>
-
-                <div className="header-actions">
-                    <Link to="/#quick-book" className="btn btn-primary">Book Now</Link>
-                </div>
             </div>
         </header>
     );

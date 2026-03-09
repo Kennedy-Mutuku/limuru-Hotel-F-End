@@ -150,6 +150,10 @@ export default function BookingForm({ initialResort: propResort }) {
                 updates.roomType = '';
                 updates.excursionId = '';
             }
+            // Auto-update nationality based on guestType selection
+            if (name === 'guestType') {
+                updates.nationality = value === 'non-residential' ? 'intl' : 'kenyan';
+            }
             return updates;
         });
     };
@@ -193,6 +197,7 @@ export default function BookingForm({ initialResort: propResort }) {
         if (!validateField(!formData.checkIn, "Please select a Check-in date.", 'stay-details')) return;
         if (!validateField(!formData.checkOut, "Please select a Check-out date.", 'stay-details')) return;
         if (!validateField(!formData.packageType, "Please select a Meal Plan.", 'stay-details')) return;
+        if (!validateField(!formData.excursionId, "Please select an Additional Service.", 'stay-details')) return;
 
         // Child Details Validation
         if (!isConference && !isHostel && parseInt(formData.childrenCount) > 0) {
@@ -580,7 +585,7 @@ export default function BookingForm({ initialResort: propResort }) {
 
                                 {error && <div className="alert alert-error" style={{ marginBottom: '0' }}>{error}</div>}
 
-                                {/* ── Guest Info ── */}
+                                {/* ── Guest Information ── */}
                                 <div id="guest-info" style={{ background: 'white', borderRadius: '14px', padding: '22px', border: '1px solid #eee', boxShadow: '0 2px 12px rgba(0,0,0,0.04)' }}>
                                     <h4 style={{ color: 'var(--primary-green)', marginBottom: '18px', display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.95rem', fontWeight: '700' }}>
                                         <i className="fas fa-user-circle" style={{ fontSize: '1.2rem' }}></i> Guest Information
@@ -602,73 +607,6 @@ export default function BookingForm({ initialResort: propResort }) {
                                     <div>
                                         <label style={{ fontSize: '0.72rem', color: '#888', fontWeight: '600', display: 'block', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Phone Number <span style={{ color: '#e74c3c' }}>*</span></label>
                                         <input type="tel" name="phone" className="form-control" placeholder="e.g. +254 7XX XXX XXX" value={formData.phone} onChange={handleChange} required style={{ padding: '10px 14px', borderRadius: '10px' }} />
-                                    </div>
-                                </div>
-
-                                {/* ── Guest Type ── */}
-                                <div id="guest-type" style={{ background: 'white', borderRadius: '14px', padding: '22px', border: '1px solid #eee', boxShadow: '0 2px 12px rgba(0,0,0,0.04)' }}>
-                                    <h4 style={{ color: 'var(--primary-green)', marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.95rem', fontWeight: '700' }}>
-                                        <i className="fas fa-globe" style={{ fontSize: '1.1rem' }}></i> Guest Type <span style={{ color: '#e74c3c', fontSize: '0.75rem' }}>*</span>
-                                    </h4>
-                                    <div style={{ display: 'flex', gap: '10px' }}>
-                                        {[
-                                            { value: 'residential', label: 'Residential', sub: 'Kenyan / EA (KES)', icon: 'fas fa-flag', activeColor: 'var(--primary-green)', activeBg: '#edf7f0' },
-                                            { value: 'non-residential', label: 'Non-Residential', sub: 'International (USD)', icon: 'fas fa-globe-africa', activeColor: 'var(--primary-orange)', activeBg: '#fff8f0' }
-                                        ].filter(opt => !(formData.resort === 'kanamai' && opt.value === 'non-residential')).map(opt => {
-                                            const isActive = formData.guestType === opt.value;
-                                            return (
-                                                <div key={opt.value}
-                                                    onClick={() => setFormData(prev => ({ ...prev, guestType: opt.value, nationality: opt.value === 'non-residential' ? 'intl' : 'kenyan' }))}
-                                                    style={{
-                                                        flex: 1, border: `2px solid ${isActive ? opt.activeColor : '#e8e8e8'}`,
-                                                        borderRadius: '12px', padding: '16px 10px', textAlign: 'center', cursor: 'pointer',
-                                                        background: isActive ? opt.activeBg : '#fafafa',
-                                                        transition: 'all 0.25s ease', position: 'relative',
-                                                        boxShadow: isActive ? `0 4px 15px ${opt.value === 'residential' ? 'rgba(39,110,54,0.12)' : 'rgba(243,156,18,0.12)'}` : 'none'
-                                                    }}
-                                                >
-                                                    {isActive && <div style={{ position: 'absolute', top: '8px', right: '8px', width: '18px', height: '18px', borderRadius: '50%', background: opt.activeColor, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><i className="fas fa-check" style={{ color: 'white', fontSize: '0.55rem' }}></i></div>}
-                                                    <i className={opt.icon} style={{ fontSize: '1.4rem', color: isActive ? opt.activeColor : '#ccc', marginBottom: '8px', display: 'block', transition: 'color 0.25s' }}></i>
-                                                    <div style={{ fontSize: '0.85rem', fontWeight: '700', color: isActive ? 'var(--text-dark)' : '#888' }}>{opt.label}</div>
-                                                    <div style={{ fontSize: '0.68rem', color: isActive ? '#888' : '#bbb', marginTop: '2px' }}>{opt.sub}</div>
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                </div>
-
-
-                                {/* ── Payment Choice ── */}
-                                <div id="payment-method" style={{ background: 'white', borderRadius: '14px', padding: '22px', border: '1px solid #eee', boxShadow: '0 2px 12px rgba(0,0,0,0.04)' }}>
-                                    <h4 style={{ color: 'var(--primary-green)', marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.95rem', fontWeight: '700' }}>
-                                        <i className="fas fa-wallet" style={{ fontSize: '1.1rem' }}></i> Payment Method <span style={{ color: '#e74c3c', fontSize: '0.75rem' }}>*</span>
-                                    </h4>
-                                    <div style={{ display: 'flex', gap: '8px', flexWrap: isMobile ? 'wrap' : 'nowrap' }}>
-                                        {[
-                                            { value: 'mpesa', label: 'M-Pesa', icon: 'fas fa-mobile-alt', desc: 'Mobile Money' },
-                                            { value: 'bank', label: 'Bank Transfer', icon: 'fas fa-university', desc: 'Direct Transfer' },
-                                            { value: 'pay-on-arrival', label: 'Pay on Arrival', icon: 'fas fa-hand-holding-usd', desc: 'At Check-in' }
-                                        ].map(method => {
-                                            const isActive = formData.paymentMethod === method.value;
-                                            return (
-                                                <div key={method.value}
-                                                    onClick={() => setFormData(prev => ({ ...prev, paymentMethod: method.value }))}
-                                                    style={{
-                                                        flex: isMobile ? '1 1 calc(50% - 4px)' : '1',
-                                                        border: `2px solid ${isActive ? 'var(--primary-green)' : '#e8e8e8'}`,
-                                                        borderRadius: '12px', padding: '14px 8px', textAlign: 'center', cursor: 'pointer',
-                                                        background: isActive ? '#edf7f0' : '#fafafa',
-                                                        boxShadow: isActive ? '0 4px 15px rgba(39,110,54,0.1)' : 'none',
-                                                        transition: 'all 0.25s ease', position: 'relative'
-                                                    }}
-                                                >
-                                                    {isActive && <div style={{ position: 'absolute', top: '6px', right: '6px', width: '16px', height: '16px', borderRadius: '50%', background: 'var(--primary-green)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><i className="fas fa-check" style={{ color: 'white', fontSize: '0.5rem' }}></i></div>}
-                                                    <i className={method.icon} style={{ fontSize: '1.2rem', color: isActive ? 'var(--primary-green)' : '#ccc', marginBottom: '6px', display: 'block', transition: 'color 0.25s' }}></i>
-                                                    <div style={{ fontSize: '0.8rem', fontWeight: '700', color: isActive ? 'var(--text-dark)' : '#888' }}>{method.label}</div>
-                                                    <div style={{ fontSize: '0.62rem', color: isActive ? '#888' : '#bbb', marginTop: '2px' }}>{method.desc}</div>
-                                                </div>
-                                            );
-                                        })}
                                     </div>
                                 </div>
                             </div>
@@ -778,12 +716,34 @@ export default function BookingForm({ initialResort: propResort }) {
                                             </select>
                                         </div>
                                         <div>
-                                            <label style={{ fontSize: '0.72rem', color: '#888', fontWeight: '600', display: 'block', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Additional Services</label>
-                                            <select name="excursionId" className="form-control" value={formData.excursionId} onChange={handleChange} style={{ padding: '10px 14px', borderRadius: '10px' }}>
-                                                <option value="">None (Room Only)</option>
+                                            <label style={{ fontSize: '0.72rem', color: '#888', fontWeight: '600', display: 'block', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Additional Services <span style={{ color: '#e74c3c' }}>*</span></label>
+                                            <select name="excursionId" className="form-control" value={formData.excursionId} onChange={handleChange} required style={{ padding: '10px 14px', borderRadius: '10px' }}>
+                                                <option value="" disabled>Choose Service</option>
+                                                <option value="none">None (Room Only)</option>
                                                 {excursions.map(ex => (
                                                     <option key={ex.id} value={ex.id}>{ex.label} (+{currency} {ex.price.toLocaleString()})</option>
                                                 ))}
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    {/* ── Guest Type & Payment Dropdowns ── */}
+                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '12px' }}>
+                                        <div>
+                                            <label style={{ fontSize: '0.72rem', color: '#888', fontWeight: '600', display: 'block', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Guest Type <span style={{ color: '#e74c3c' }}>*</span></label>
+                                            <select name="guestType" className="form-control" value={formData.guestType} onChange={handleChange} required style={{ padding: '10px 14px', borderRadius: '10px' }}>
+                                                <option value="" disabled>Choose Guest Type</option>
+                                                <option value="residential">Residential (Kenyan / EA)</option>
+                                                {formData.resort !== 'kanamai' && <option value="non-residential">Non-Residential (International)</option>}
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label style={{ fontSize: '0.72rem', color: '#888', fontWeight: '600', display: 'block', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Payment Method <span style={{ color: '#e74c3c' }}>*</span></label>
+                                            <select name="paymentMethod" className="form-control" value={formData.paymentMethod} onChange={handleChange} required style={{ padding: '10px 14px', borderRadius: '10px' }}>
+                                                <option value="" disabled>Choose Payment</option>
+                                                <option value="mpesa">M-Pesa (Mobile Money)</option>
+                                                <option value="bank">Bank Transfer (Direct)</option>
+                                                <option value="pay-on-arrival">Pay on Arrival (Check-in)</option>
                                             </select>
                                         </div>
                                     </div>
@@ -875,6 +835,6 @@ export default function BookingForm({ initialResort: propResort }) {
                 )}
 
             </div>
-        </div>
+        </div >
     );
 }
