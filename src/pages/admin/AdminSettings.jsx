@@ -27,6 +27,9 @@ export function AdminSettings() {
     const [passwords, setPasswords] = useState({ current: '', newPass: '', confirm: '' });
     const [passMsg, setPassMsg] = useState(null);
     const [passLoading, setPassLoading] = useState(false);
+    const [showPw, setShowPw] = useState({ newPass: false, confirm: false, staffPw: false });
+    const togglePw = key => setShowPw(s => ({ ...s, [key]: !s[key] }));
+
 
     // ── Staff list (GM only) ──
     const [staff, setStaff] = useState([]);
@@ -203,15 +206,27 @@ export function AdminSettings() {
                     <form onSubmit={savePassword}>
                         <div style={{ marginBottom: '16px' }}>
                             <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: '700', marginBottom: '6px', color: '#374151' }}>New Password</label>
-                            <input className="form-input" type="password" value={passwords.newPass}
-                                onChange={e => setPasswords(p => ({ ...p, newPass: e.target.value }))}
-                                placeholder="At least 6 characters" style={{ width: '100%' }} />
+                            <div style={{ position: 'relative' }}>
+                                <input className="form-input" type={showPw.newPass ? 'text' : 'password'} value={passwords.newPass}
+                                    onChange={e => setPasswords(p => ({ ...p, newPass: e.target.value }))}
+                                    placeholder="At least 6 characters" style={{ width: '100%', paddingRight: '40px' }} />
+                                <button type="button" onClick={() => togglePw('newPass')}
+                                    style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8', fontSize: '0.9rem', padding: '4px' }}>
+                                    <i className={`fas fa-${showPw.newPass ? 'eye-slash' : 'eye'}`}></i>
+                                </button>
+                            </div>
                         </div>
                         <div style={{ marginBottom: '20px' }}>
                             <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: '700', marginBottom: '6px', color: '#374151' }}>Confirm New Password</label>
-                            <input className="form-input" type="password" value={passwords.confirm}
-                                onChange={e => setPasswords(p => ({ ...p, confirm: e.target.value }))}
-                                placeholder="Repeat new password" style={{ width: '100%' }} />
+                            <div style={{ position: 'relative' }}>
+                                <input className="form-input" type={showPw.confirm ? 'text' : 'password'} value={passwords.confirm}
+                                    onChange={e => setPasswords(p => ({ ...p, confirm: e.target.value }))}
+                                    placeholder="Repeat new password" style={{ width: '100%', paddingRight: '40px' }} />
+                                <button type="button" onClick={() => togglePw('confirm')}
+                                    style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8', fontSize: '0.9rem', padding: '4px' }}>
+                                    <i className={`fas fa-${showPw.confirm ? 'eye-slash' : 'eye'}`}></i>
+                                </button>
+                            </div>
                         </div>
                         <button type="submit" className="btn btn-primary" style={{ width: '100%', background: '#4338ca' }} disabled={passLoading}>
                             {passLoading ? <><i className="fas fa-spinner fa-spin"></i> Updating...</> : <><i className="fas fa-key"></i> Change Password</>}
@@ -287,9 +302,15 @@ export function AdminSettings() {
                                 </div>
                                 <div style={{ marginBottom: '12px' }}>
                                     <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: '700', marginBottom: '5px' }}>Temporary Password</label>
-                                    <input className="form-input" type="password" value={newStaff.password}
-                                        onChange={e => setNewStaff(s => ({ ...s, password: e.target.value }))}
-                                        placeholder="Min 6 characters" required style={{ width: '100%' }} />
+                                    <div style={{ position: 'relative' }}>
+                                        <input className="form-input" type={showPw.staffPw ? 'text' : 'password'} value={newStaff.password}
+                                            onChange={e => setNewStaff(s => ({ ...s, password: e.target.value }))}
+                                            placeholder="Min 6 characters" required style={{ width: '100%', paddingRight: '40px' }} />
+                                        <button type="button" onClick={() => togglePw('staffPw')}
+                                            style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8', fontSize: '0.9rem', padding: '4px' }}>
+                                            <i className={`fas fa-${showPw.staffPw ? 'eye-slash' : 'eye'}`}></i>
+                                        </button>
+                                    </div>
                                 </div>
                                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '16px' }}>
                                     <div>
