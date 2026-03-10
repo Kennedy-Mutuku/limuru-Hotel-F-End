@@ -55,7 +55,7 @@ export default function Footer() {
                 <div className="copyright">
                     <p>&copy; {new Date().getFullYear()} Jumuia Resorts. All Rights Reserved.</p>
                     <p style={{ fontSize: '0.65rem', opacity: 0.4, marginTop: '4px', letterSpacing: '0.3px' }}>
-                        Software by Fominion Softwares Ltd
+                        Software by Dominion Softwares
                     </p>
                 </div>
             </div>
