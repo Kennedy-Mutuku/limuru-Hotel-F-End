@@ -15,8 +15,8 @@ const PROPERTY_NAMES = {
 };
 
 const COLORS = {
-    revenue: 'var(--primary-green)',
-    bookings: 'var(--primary-orange)',
+    revenue: '#16a34a',
+    bookings: '#f97316',
     applications: '#4338ca',
     bids: '#9c27b0',
     claims: '#0ea5e9',
@@ -25,19 +25,19 @@ const COLORS = {
     kisumu: '#4338ca'
 };
 
-const CustomTooltip = ({ active, payload, label, title, isCurrency }) => {
+const CustomRevenueTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
         return (
-            <div style={{ background: 'white', padding: '15px', border: '1px solid #e2e8f0', boxShadow: '0 4px 12px rgba(0,0,0,0.1)', borderRadius: '12px' }}>
-                <p style={{ fontWeight: '800', marginBottom: '12px', color: 'var(--text-main)', fontSize: '0.9rem' }}>{title || label}</p>
-                {payload.map((entry, index) => (
-                    <div key={index} style={{ color: entry.color || entry.fill, fontSize: '0.85rem', marginBottom: '6px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '20px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <div style={{ width: '8px', height: '8px', borderRadius: '20px', background: entry.color || entry.fill }}></div>
-                            <span>{entry.name}:</span>
+            <div style={{ background: 'white', padding: '14px 18px', border: '1px solid #e2e8f0', boxShadow: '0 8px 24px rgba(0,0,0,0.1)', borderRadius: '12px', minWidth: '180px' }}>
+                <p style={{ fontWeight: '800', marginBottom: '10px', color: '#1e293b', fontSize: '0.85rem', borderBottom: '1px solid #f1f5f9', paddingBottom: '8px' }}>{label}</p>
+                {payload.map((entry, i) => (
+                    <div key={i} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', marginBottom: '6px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '7px' }}>
+                            <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: entry.color || entry.fill }} />
+                            <span style={{ fontSize: '0.78rem', color: '#64748b' }}>{entry.name}</span>
                         </div>
-                        <span style={{ fontWeight: '700' }}>
-                            {entry.dataKey.includes('revenue') ? `KES ${(entry.value || 0).toLocaleString()}` : entry.value}
+                        <span style={{ fontSize: '0.82rem', fontWeight: '700', color: '#1e293b' }}>
+                            {entry.dataKey === 'revenue' ? `KES ${(entry.value || 0).toLocaleString()}` : entry.value}
                         </span>
                     </div>
                 ))}
@@ -84,12 +84,13 @@ export default function AdminDashboard() {
         ? [assignedBranch]
         : ['limuru', 'kanamai', 'kisumu'];
 
-    // Prepare Pie Data for Revenue Share
-    const latestMonth = stats?.revenueHistory?.months[stats.revenueHistory.months.length - 1] || {};
+    const months = stats?.revenueHistory?.months || [];
+
+    // Pie data: use total property revenue (always has data)
     const pieData = [
-        { name: 'Limuru', value: latestMonth.limuru_revenue || 0, color: COLORS.limuru },
-        { name: 'Kanamai', value: latestMonth.kanamai_revenue || 0, color: COLORS.kanamai },
-        { name: 'Kisumu', value: latestMonth.kisumu_revenue || 0, color: COLORS.kisumu }
+        { name: 'Limuru', value: stats?.properties?.limuru?.revenue || 0, color: COLORS.limuru },
+        { name: 'Kanamai', value: stats?.properties?.kanamai?.revenue || 0, color: COLORS.kanamai },
+        { name: 'Kisumu', value: stats?.properties?.kisumu?.revenue || 0, color: COLORS.kisumu }
     ].filter(d => d.value > 0);
 
     return (
@@ -104,7 +105,7 @@ export default function AdminDashboard() {
                 </div>
             </div>
 
-            {/* Selector */}
+            {/* Property Selector */}
             {!isManager && (
                 <div className="property-selector" style={{ marginBottom: '25px' }}>
                     {properties.map(prop => (
@@ -120,8 +121,8 @@ export default function AdminDashboard() {
                 <div style={{ textAlign: 'center', padding: '100px' }}><div className="spinner" style={{ margin: '0 auto' }}></div></div>
             ) : (
                 <>
-                    {/* Stats Grid */}
-                    <div className="stats-grid">
+                    {/* KPI Cards */}
+                    <div className="stats-grid" style={{ marginBottom: '24px' }}>
                         <div className="stat-card">
                             <div className="stat-icon green"><i className="fas fa-wallet"></i></div>
                             <div className="stat-info">
@@ -139,7 +140,7 @@ export default function AdminDashboard() {
                         <div className="stat-card">
                             <div className="stat-icon blue"><i className="fas fa-id-badge"></i></div>
                             <div className="stat-info">
-                                <p>Jobs Applied</p>
+                                <p>Pending Bookings</p>
                                 <h3>{stats?.global?.pendingBookings || 0} New</h3>
                             </div>
                         </div>
@@ -152,8 +153,8 @@ export default function AdminDashboard() {
                         </div>
                     </div>
 
+                    {/* Performance + Pie Row */}
                     <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '24px', marginBottom: '24px' }}>
-                        {/* PERFORMANCE TABLE */}
                         <div className="admin-card">
                             <h3 style={{ marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
                                 <i className="fas fa-chart-line" style={{ color: 'var(--primary-green)' }}></i>
@@ -188,96 +189,104 @@ export default function AdminDashboard() {
                             </div>
                         </div>
 
-                        {/* REVENUE SHARE PIE */}
+                        {/* Revenue Donut */}
                         <div className="admin-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
-                            <h3 style={{ alignSelf: 'flex-start', marginBottom: '10px' }}>Revenue Distribution</h3>
-                            <p style={{ alignSelf: 'flex-start', fontSize: '0.8rem', color: '#888', marginBottom: '20px' }}>Contribution by property (Current Period)</p>
-                            <div style={{ height: '220px', width: '100%' }}>
-                                <ResponsiveContainer width="100%" height="100%">
-                                    <PieChart>
-                                        <Pie data={pieData} innerRadius={60} outerRadius={80} paddingAngle={5} dataKey="value">
-                                            {pieData.map((entry, index) => <Cell key={`cell-${index}`} fill={entry.color} />)}
-                                        </Pie>
-                                        <Tooltip />
-                                    </PieChart>
-                                </ResponsiveContainer>
-                            </div>
-                            <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap', justifyContent: 'center', marginTop: '10px' }}>
-                                {pieData.map(d => (
-                                    <div key={d.name} style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.75rem', fontWeight: '700' }}>
-                                        <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: d.color }}></div>
-                                        {d.name}
+                            <h3 style={{ alignSelf: 'flex-start', marginBottom: '4px' }}>Revenue Distribution</h3>
+                            <p style={{ alignSelf: 'flex-start', fontSize: '0.8rem', color: '#888', marginBottom: '16px' }}>All-time revenue by property</p>
+                            {pieData.length > 0 ? (
+                                <>
+                                    <div style={{ height: '200px', width: '100%' }}>
+                                        <ResponsiveContainer width="100%" height="100%">
+                                            <PieChart>
+                                                <Pie data={pieData} innerRadius={55} outerRadius={80} paddingAngle={4} dataKey="value">
+                                                    {pieData.map((entry, index) => <Cell key={`cell-${index}`} fill={entry.color} />)}
+                                                </Pie>
+                                                <Tooltip formatter={(val) => [`KES ${val.toLocaleString()}`, '']} />
+                                            </PieChart>
+                                        </ResponsiveContainer>
                                     </div>
-                                ))}
-                            </div>
+                                    <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap', justifyContent: 'center', marginTop: '10px' }}>
+                                        {pieData.map(d => (
+                                            <div key={d.name} style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.75rem', fontWeight: '700' }}>
+                                                <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: d.color }}></div>
+                                                {d.name}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </>
+                            ) : (
+                                <div style={{ color: '#aaa', fontSize: '0.85rem' }}>No revenue data yet</div>
+                            )}
                         </div>
                     </div>
 
-                    {/* MAIN ANALYTICS GRID */}
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))', gap: '24px' }}>
+                    {/* Charts Row */}
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(480px, 1fr))', gap: '24px' }}>
 
-                        {/* GROWTH CHART (DUAL AXIS) */}
+                        {/* REVENUE TREND CHART */}
                         <div className="admin-card" style={{ padding: '24px' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '25px' }}>
-                                <div>
-                                    <h3 style={{ margin: 0, fontSize: '1.25rem' }}>Daily Growth</h3>
-                                    <p style={{ margin: 0, fontSize: '0.8rem', color: '#888' }}>Revenue vs Booking Velocity (14 Days)</p>
-                                </div>
-                                <div style={{ display: 'flex', gap: '15px' }}>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.7rem', fontWeight: '700' }}>
-                                        <div style={{ width: '8px', height: '8px', borderRadius: '2px', background: COLORS.revenue }}></div> Revenue
-                                    </div>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.7rem', fontWeight: '700' }}>
-                                        <div style={{ width: '8px', height: '8px', borderRadius: '2px', background: COLORS.bookings }}></div> Bookings
-                                    </div>
-                                </div>
+                            <div style={{ marginBottom: '20px' }}>
+                                <h3 style={{ margin: 0, marginBottom: '4px' }}>📈 Revenue Trend</h3>
+                                <p style={{ margin: 0, fontSize: '0.8rem', color: '#888' }}>Monthly bookings & revenue (all time)</p>
                             </div>
-                            <div style={{ height: '300px' }}>
-                                <ResponsiveContainer width="100%" height="100%">
-                                    <AreaChart data={stats?.revenueHistory?.days || []}>
-                                        <defs>
-                                            <linearGradient id="colorRev" x1="0" y1="0" x2="0" y2="1">
-                                                <stop offset="5%" stopColor={COLORS.revenue} stopOpacity={0.1} />
-                                                <stop offset="95%" stopColor={COLORS.revenue} stopOpacity={0} />
-                                            </linearGradient>
-                                        </defs>
-                                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                                        <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 10 }} dy={10} />
-                                        <YAxis yAxisId="left" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 10 }} tickFormatter={(v) => `${v / 1000}k`} />
-                                        <YAxis yAxisId="right" orientation="right" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 10 }} />
-                                        <Tooltip content={<CustomTooltip title="Daily Performance" />} />
-                                        <Area yAxisId="left" type="monotone" name="Revenue" dataKey="revenue" stroke={COLORS.revenue} strokeWidth={3} fillOpacity={1} fill="url(#colorRev)" />
-                                        <Line yAxisId="right" type="step" name="Bookings" dataKey="bookings" stroke={COLORS.bookings} strokeWidth={2} dot={{ r: 3 }} />
-                                    </AreaChart>
-                                </ResponsiveContainer>
+                            <div style={{ height: '280px' }}>
+                                {months.length > 0 ? (
+                                    <ResponsiveContainer width="100%" height="100%">
+                                        <AreaChart data={months} margin={{ top: 5, right: 5, bottom: 5, left: 0 }}>
+                                            <defs>
+                                                <linearGradient id="gradRevenue" x1="0" y1="0" x2="0" y2="1">
+                                                    <stop offset="5%" stopColor={COLORS.revenue} stopOpacity={0.15} />
+                                                    <stop offset="95%" stopColor={COLORS.revenue} stopOpacity={0} />
+                                                </linearGradient>
+                                                <linearGradient id="gradBookings" x1="0" y1="0" x2="0" y2="1">
+                                                    <stop offset="5%" stopColor={COLORS.bookings} stopOpacity={0.15} />
+                                                    <stop offset="95%" stopColor={COLORS.bookings} stopOpacity={0} />
+                                                </linearGradient>
+                                            </defs>
+                                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                                            <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 11 }} dy={8} />
+                                            <YAxis axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 10 }} tickFormatter={v => v >= 1000 ? `${(v / 1000).toFixed(0)}k` : v} width={40} />
+                                            <Tooltip content={<CustomRevenueTooltip />} />
+                                            <Legend wrapperStyle={{ fontSize: '0.75rem', fontWeight: '600', paddingTop: '10px' }} />
+                                            <Area type="monotone" name="Revenue (KES)" dataKey="revenue" stroke={COLORS.revenue} strokeWidth={2.5} fill="url(#gradRevenue)" dot={{ r: 3, fill: COLORS.revenue }} activeDot={{ r: 5 }} />
+                                            <Area type="monotone" name="Bookings" dataKey="bookings" stroke={COLORS.bookings} strokeWidth={2.5} fill="url(#gradBookings)" dot={{ r: 3, fill: COLORS.bookings }} activeDot={{ r: 5 }} />
+                                        </AreaChart>
+                                    </ResponsiveContainer>
+                                ) : (
+                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: '#ccc', flexDirection: 'column', gap: '10px' }}>
+                                        <i className="fas fa-chart-area" style={{ fontSize: '2.5rem', opacity: 0.3 }}></i>
+                                        <span style={{ fontSize: '0.85rem' }}>No booking data found</span>
+                                    </div>
+                                )}
                             </div>
                         </div>
 
-                        {/* ECOSYSTEM ACTIVITY (BARS) */}
+                        {/* ECOSYSTEM ACTIVITY CHART */}
                         <div className="admin-card" style={{ padding: '24px' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '25px' }}>
-                                <div>
-                                    <h3 style={{ margin: 0, fontSize: '1.25rem' }}>Ecosystem Activity</h3>
-                                    <p style={{ margin: 0, fontSize: '0.8rem', color: '#888' }}>Applications, Bids & Claims (8 Weeks)</p>
-                                </div>
-                                <Legend payload={[
-                                    { value: 'Apps', type: 'rect', color: COLORS.applications },
-                                    { value: 'Bids', type: 'rect', color: COLORS.bids },
-                                    { value: 'Claims', type: 'rect', color: COLORS.claims }
-                                ]} wrapperStyle={{ fontSize: '0.7rem', fontWeight: '700' }} />
+                            <div style={{ marginBottom: '20px' }}>
+                                <h3 style={{ margin: 0, marginBottom: '4px' }}>🌐 Ecosystem Activity</h3>
+                                <p style={{ margin: 0, fontSize: '0.8rem', color: '#888' }}>Applications, bids & claims by month</p>
                             </div>
-                            <div style={{ height: '300px' }}>
-                                <ResponsiveContainer width="100%" height="100%">
-                                    <BarChart data={stats?.revenueHistory?.weeks || []}>
-                                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                                        <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 10 }} dy={10} />
-                                        <YAxis axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 10 }} />
-                                        <Tooltip content={<CustomTooltip title="Weekly Interactions" />} />
-                                        <Bar name="Applications" dataKey="applications" stackId="a" fill={COLORS.applications} radius={[0, 0, 0, 0]} />
-                                        <Bar name="Tender Bids" dataKey="bids" stackId="a" fill={COLORS.bids} />
-                                        <Bar name="Offer Claims" dataKey="claims" stackId="a" fill={COLORS.claims} radius={[6, 6, 0, 0]} />
-                                    </BarChart>
-                                </ResponsiveContainer>
+                            <div style={{ height: '280px' }}>
+                                {months.length > 0 ? (
+                                    <ResponsiveContainer width="100%" height="100%">
+                                        <BarChart data={months} margin={{ top: 5, right: 5, bottom: 5, left: 0 }}>
+                                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                                            <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 11 }} dy={8} />
+                                            <YAxis axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 10 }} allowDecimals={false} width={30} />
+                                            <Tooltip content={<CustomRevenueTooltip />} />
+                                            <Legend wrapperStyle={{ fontSize: '0.75rem', fontWeight: '600', paddingTop: '10px' }} />
+                                            <Bar name="Applications" dataKey="applications" stackId="eco" fill={COLORS.applications} radius={[0, 0, 0, 0]} />
+                                            <Bar name="Tender Bids" dataKey="bids" stackId="eco" fill={COLORS.bids} />
+                                            <Bar name="Offer Claims" dataKey="claims" stackId="eco" fill={COLORS.claims} radius={[5, 5, 0, 0]} />
+                                        </BarChart>
+                                    </ResponsiveContainer>
+                                ) : (
+                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: '#ccc', flexDirection: 'column', gap: '10px' }}>
+                                        <i className="fas fa-chart-bar" style={{ fontSize: '2.5rem', opacity: 0.3 }}></i>
+                                        <span style={{ fontSize: '0.85rem' }}>No ecosystem activity data</span>
+                                    </div>
+                                )}
                             </div>
                         </div>
 
