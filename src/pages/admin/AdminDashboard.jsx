@@ -331,17 +331,17 @@ export default function AdminDashboard() {
                         <div className="admin-card" style={{ padding: '24px' }}>
                             <div style={{ marginBottom: '14px' }}>
                                 <h3 style={{ margin: 0, marginBottom: '3px' }}>🌐 Ecosystem Activity</h3>
-                                <p style={{ margin: 0, fontSize: '0.8rem', color: '#888' }}>Applications, bids & claims by month</p>
+                                <p style={{ margin: 0, fontSize: '0.8rem', color: '#888' }}>Job applications, supplier bids &amp; offer claims — by month</p>
                             </div>
                             <div style={{ display: 'flex', gap: '16px', marginBottom: '12px' }}>
-                                {[{ c: '#4338ca', lbl: 'Applications' }, { c: '#9c27b0', lbl: 'Bids' }, { c: '#0ea5e9', lbl: 'Claims' }].map(l => (
+                                {[{ c: '#4338ca', lbl: 'Job Applications' }, { c: '#9c27b0', lbl: 'Supplier Bids' }, { c: '#0ea5e9', lbl: 'Offer Claims' }].map(l => (
                                     <div key={l.lbl} style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.72rem', fontWeight: '700', color: '#555' }}>
-                                        <div style={{ width: '10px', height: '10px', borderRadius: '2px', background: l.c }}></div>{l.lbl}
+                                        <div style={{ width: '14px', height: '3px', background: l.c, borderRadius: '2px' }}></div>{l.lbl}
                                     </div>
                                 ))}
                             </div>
-                            <BarChartSVG data={months} keys={['applications', 'bids', 'claims']}
-                                colors={['#4338ca', '#9c27b0', '#0ea5e9']} labels={['Applications', 'Bids', 'Claims']} height={240} />
+                            <AreaChartSVG data={months} keys={['applications', 'bids', 'claims']}
+                                colors={['#4338ca', '#9c27b0', '#0ea5e9']} labels={['Job Applications', 'Supplier Bids', 'Offer Claims']} height={240} />
                         </div>
 
                     </div>
