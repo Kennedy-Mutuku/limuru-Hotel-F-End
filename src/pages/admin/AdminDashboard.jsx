@@ -195,8 +195,8 @@ export default function AdminDashboard() {
                             <p style={{ alignSelf: 'flex-start', fontSize: '0.8rem', color: '#888', marginBottom: '16px' }}>All-time revenue by property</p>
                             {pieData.length > 0 ? (
                                 <>
-                                    <div style={{ height: '200px', width: '100%' }}>
-                                        <ResponsiveContainer width="100%" height="100%">
+                                    <div style={{ height: '200px', width: '100%', overflow: 'hidden' }}>
+                                        <ResponsiveContainer width="100%" height={200}>
                                             <PieChart>
                                                 <Pie data={pieData} innerRadius={55} outerRadius={80} paddingAngle={4} dataKey="value">
                                                     {pieData.map((entry, index) => <Cell key={`cell-${index}`} fill={entry.color} />)}
@@ -229,9 +229,9 @@ export default function AdminDashboard() {
                                 <h3 style={{ margin: 0, marginBottom: '4px' }}>📈 Revenue Trend</h3>
                                 <p style={{ margin: 0, fontSize: '0.8rem', color: '#888' }}>Monthly bookings & revenue (all time)</p>
                             </div>
-                            <div style={{ height: '280px' }}>
+                            <div style={{ height: '280px', width: '100%', overflow: 'hidden' }}>
                                 {months.length > 0 ? (
-                                    <ResponsiveContainer width="100%" height="100%">
+                                    <ResponsiveContainer width="100%" height={280}>
                                         <AreaChart data={months} margin={{ top: 5, right: 5, bottom: 5, left: 0 }}>
                                             <defs>
                                                 <linearGradient id="gradRevenue" x1="0" y1="0" x2="0" y2="1">
@@ -267,9 +267,9 @@ export default function AdminDashboard() {
                                 <h3 style={{ margin: 0, marginBottom: '4px' }}>🌐 Ecosystem Activity</h3>
                                 <p style={{ margin: 0, fontSize: '0.8rem', color: '#888' }}>Applications, bids & claims by month</p>
                             </div>
-                            <div style={{ height: '280px' }}>
+                            <div style={{ height: '280px', width: '100%', overflow: 'hidden' }}>
                                 {months.length > 0 ? (
-                                    <ResponsiveContainer width="100%" height="100%">
+                                    <ResponsiveContainer width="100%" height={280}>
                                         <BarChart data={months} margin={{ top: 5, right: 5, bottom: 5, left: 0 }}>
                                             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
                                             <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 11 }} dy={8} />
