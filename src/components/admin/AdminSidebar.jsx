@@ -42,7 +42,6 @@ export default function AdminSidebar() {
             section: 'Management', items: [
                 { to: '/admin/offers', icon: 'fas fa-tags', label: 'Offer Postings', count: counts.offers },
                 { to: '/admin/offers?tab=claims', icon: 'fas fa-hand-holding-usd', label: 'Offer Claims', count: counts.claims?.total, unread: counts.claims?.unread },
-                { to: '/admin/content', icon: 'fas fa-edit', label: 'Content' },
                 { to: '/admin/feedback', icon: 'fas fa-star', label: 'Feedback', count: counts.feedback?.total, unread: counts.feedback?.unread },
                 { to: '/admin/tenders', icon: 'fas fa-gavel', label: 'Tender Postings', count: counts.tenders },
                 { to: '/admin/tenders/bidders', icon: 'fas fa-users', label: 'Tender Bidders', count: counts.bids?.total, unread: counts.bids?.unread },
