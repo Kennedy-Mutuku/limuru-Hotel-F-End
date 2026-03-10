@@ -310,13 +310,13 @@ export default function AdminReports() {
                             <p style={{ margin: 0, fontSize: '0.78rem', color: '#888' }}>Activity across recruitment, tenders and offers</p>
                         </div>
                         <div style={{ display: 'flex', gap: '14px', marginBottom: '10px' }}>
-                            {[{ c: '#4338ca', lbl: 'Applications' }, { c: '#9c27b0', lbl: 'Bids' }, { c: '#0ea5e9', lbl: 'Claims' }].map(l => (
+                            {[{ c: '#4338ca', lbl: 'Job Applications' }, { c: '#9c27b0', lbl: 'Supplier Bids' }, { c: '#0ea5e9', lbl: 'Offer Claims' }].map(l => (
                                 <div key={l.lbl} style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '0.7rem', fontWeight: '700', color: '#555' }}>
-                                    <div style={{ width: '10px', height: '10px', borderRadius: '2px', background: l.c }}></div>{l.lbl}
+                                    <div style={{ width: '14px', height: '3px', background: l.c, borderRadius: '2px' }}></div>{l.lbl}
                                 </div>
                             ))}
                         </div>
-                        <BarChartSVG data={months} keys={['applications', 'bids', 'claims']} colors={['#4338ca', '#9c27b0', '#0ea5e9']} labels={['Applications', 'Bids', 'Claims']} height={220} />
+                        <AreaChartSVG data={months} keys={['applications', 'bids', 'claims']} colors={['#4338ca', '#9c27b0', '#0ea5e9']} labels={['Job Applications', 'Supplier Bids', 'Offer Claims']} height={220} />
                     </div>
 
                     <div className="admin-card" style={{ padding: '22px', display: 'flex', flexDirection: 'column' }}>
