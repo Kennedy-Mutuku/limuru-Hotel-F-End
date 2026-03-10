@@ -35,7 +35,6 @@ export default function AdminSidebar() {
             section: 'Main', items: [
                 { to: '/admin/dashboard', icon: 'fas fa-tachometer-alt', label: 'Dashboard' },
                 { to: '/admin/bookings', icon: 'fas fa-calendar-check', label: 'Bookings', count: counts.bookings?.total, unread: counts.bookings?.unread },
-                { to: '/admin/calendar', icon: 'fas fa-calendar-alt', label: 'Calendar' },
             ]
         },
         {

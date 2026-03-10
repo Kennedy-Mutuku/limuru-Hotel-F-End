@@ -64,7 +64,6 @@ export default function App() {
           <Route path="/admin" element={<AdminLayout />}>
             <Route path="dashboard" element={<AdminDashboard />} />
             <Route path="bookings" element={<AdminBookings />} />
-            <Route path="calendar" element={<AdminCalendar />} />
             <Route path="offers" element={<AdminOffers />} />
             <Route path="content" element={<AdminContent />} />
             <Route path="feedback" element={<AdminFeedback />} />
