@@ -26,7 +26,7 @@ import AdminRecruitment from './pages/admin/AdminRecruitment';
 import AdminApplications from './pages/admin/AdminApplications';
 import AdminOffers from './pages/admin/AdminOffers';
 import AdminUsers from './pages/admin/AdminUsers';
-import { AdminSettings } from './pages/admin/AdminModuleStubs';
+import { AdminSettings } from './pages/admin/AdminSettings';
 import AdminReports from './pages/admin/AdminReports';
 import AdminBranchManagers from './pages/admin/AdminBranchManagers';
 
