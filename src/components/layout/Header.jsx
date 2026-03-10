@@ -94,7 +94,16 @@ export default function Header() {
                         </div>
                     </div>
 
-                    <NavLink to="/tenders" onClick={() => setMenuOpen(false)}>Tenders</NavLink>
+                    {/* Join Us Dropdown */}
+                    <div className="nav-dropdown">
+                        <NavLink to="/tenders" className="dropdown-trigger" onClick={() => setMenuOpen(false)}>
+                            Join Us <i className="fas fa-chevron-down" style={{ fontSize: '0.75rem', marginLeft: '4px' }}></i>
+                        </NavLink>
+                        <div className="dropdown-menu">
+                            <Link to="/tenders#tenders" onClick={() => setMenuOpen(false)}>Tenders</Link>
+                            <Link to="/tenders#recruitments" onClick={() => setMenuOpen(false)}>Recruitments</Link>
+                        </div>
+                    </div>
 
                     {/* Mobile-Only CTA - Hidden on Desktop via CSS */}
                     <div className="mobile-only-cta">

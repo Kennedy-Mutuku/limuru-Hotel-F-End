@@ -22,6 +22,8 @@ import AdminBookings from './pages/admin/AdminBookings';
 import AdminFeedback from './pages/admin/AdminFeedback';
 import AdminTenders from './pages/admin/AdminTenders';
 import AdminBids from './pages/admin/AdminBids';
+import AdminRecruitment from './pages/admin/AdminRecruitment';
+import AdminApplications from './pages/admin/AdminApplications';
 import AdminOffers from './pages/admin/AdminOffers';
 import AdminUsers from './pages/admin/AdminUsers';
 import { AdminCalendar, AdminContent, AdminSettings } from './pages/admin/AdminModuleStubs';
@@ -68,6 +70,8 @@ export default function App() {
             <Route path="feedback" element={<AdminFeedback />} />
             <Route path="tenders" element={<AdminTenders />} />
             <Route path="tenders/bidders" element={<AdminBids />} />
+            <Route path="recruitments" element={<AdminRecruitment />} />
+            <Route path="recruitments/applications" element={<AdminApplications />} />
             <Route path="users" element={<AdminUsers />} />
             <Route path="branch-managers" element={<AdminBranchManagers />} />
             <Route path="reports" element={<AdminReports />} />
