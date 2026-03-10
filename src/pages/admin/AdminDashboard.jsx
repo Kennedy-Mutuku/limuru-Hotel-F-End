@@ -1,9 +1,7 @@
-import { useState, useEffect } from 'react';
-import { useAuth } from '../../context/AuthContext';
-import api from '../../services/api';
 import {
-    LineChart, Line,
-    XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
+    LineChart, Line, BarChart, Bar,
+    XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+    Legend, AreaChart, Area, Cell, PieChart, Pie
 } from 'recharts';
 
 const PROPERTY_NAMES = {
@@ -13,15 +11,31 @@ const PROPERTY_NAMES = {
     all: 'All Properties',
 };
 
-const CustomTooltip = ({ active, payload, label, title }) => {
+const COLORS = {
+    revenue: 'var(--primary-green)',
+    bookings: 'var(--primary-orange)',
+    applications: '#4338ca',
+    bids: '#9c27b0',
+    claims: '#0ea5e9',
+    limuru: '#22440f',
+    kanamai: '#f3a435',
+    kisumu: '#4338ca'
+};
+
+const CustomTooltip = ({ active, payload, label, title, isCurrency }) => {
     if (active && payload && payload.length) {
         return (
-            <div style={{ background: 'white', padding: '15px', border: '1px solid #e2e8f0', boxShadow: '0 4px 12px rgba(0,0,0,0.1)', borderRadius: '8px' }}>
-                <p style={{ fontWeight: '700', marginBottom: '10px', color: 'var(--text-main)' }}>{title || label}</p>
+            <div style={{ background: 'white', padding: '15px', border: '1px solid #e2e8f0', boxShadow: '0 4px 12px rgba(0,0,0,0.1)', borderRadius: '12px' }}>
+                <p style={{ fontWeight: '800', marginBottom: '12px', color: 'var(--text-main)', fontSize: '0.9rem' }}>{title || label}</p>
                 {payload.map((entry, index) => (
-                    <div key={index} style={{ color: entry.color, fontSize: '0.9rem', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: entry.color }}></div>
-                        <strong>{entry.name}:</strong> KES {(entry.value || 0).toLocaleString()}
+                    <div key={index} style={{ color: entry.color || entry.fill, fontSize: '0.85rem', marginBottom: '6px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '20px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <div style={{ width: '8px', height: '8px', borderRadius: '20px', background: entry.color || entry.fill }}></div>
+                            <span>{entry.name}:</span>
+                        </div>
+                        <span style={{ fontWeight: '700' }}>
+                            {entry.dataKey.includes('revenue') ? `KES ${(entry.value || 0).toLocaleString()}` : entry.value}
+                        </span>
                     </div>
                 ))}
             </div>
@@ -59,18 +73,24 @@ export default function AdminDashboard() {
         return 'Good Evening';
     };
 
-    // GM sees all properties; manager sees only their single branch
     const properties = isManager
         ? [assignedBranch]
         : ['all', 'limuru', 'kanamai', 'kisumu'];
 
-    // For the performance table, show only the manager's branch or all 3 for GM
     const performanceProperties = isManager
         ? [assignedBranch]
         : ['limuru', 'kanamai', 'kisumu'];
 
+    // Prepare Pie Data for Revenue Share
+    const latestMonth = stats?.revenueHistory?.months[stats.revenueHistory.months.length - 1] || {};
+    const pieData = [
+        { name: 'Limuru', value: latestMonth.limuru_revenue || 0, color: COLORS.limuru },
+        { name: 'Kanamai', value: latestMonth.kanamai_revenue || 0, color: COLORS.kanamai },
+        { name: 'Kisumu', value: latestMonth.kisumu_revenue || 0, color: COLORS.kisumu }
+    ].filter(d => d.value > 0);
+
     return (
-        <div>
+        <div style={{ animation: 'fadeIn 0.6s ease-out' }}>
             {/* Header */}
             <div className="admin-page-header">
                 <div>
@@ -78,194 +98,186 @@ export default function AdminDashboard() {
                     <p style={{ color: 'var(--text-light)', marginBottom: '4px' }}>
                         {new Date().toLocaleDateString('en-KE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                     </p>
-                    {isManager && (
-                        <div style={{
-                            display: 'inline-flex', alignItems: 'center', gap: '8px',
-                            background: 'var(--light-green)', borderRadius: '20px',
-                            padding: '5px 14px', marginTop: '6px'
-                        }}>
-                            <i className="fas fa-building" style={{ color: 'var(--primary-green)', fontSize: '0.85rem' }}></i>
-                            <span style={{ color: 'var(--primary-green)', fontWeight: '600', fontSize: '0.9rem' }}>
-                                {PROPERTY_NAMES[assignedBranch]} — Branch Admin Portal
-                            </span>
-                        </div>
-                    )}
                 </div>
             </div>
 
-            {/* Property Filter — only for General Manager */}
+            {/* Selector */}
             {!isManager && (
-                <div className="property-selector">
+                <div className="property-selector" style={{ marginBottom: '25px' }}>
                     {properties.map(prop => (
                         <button key={prop} className={`property-btn ${currentProperty === prop ? 'active' : ''}`}
                             onClick={() => setCurrentProperty(prop)}>
-                            {prop === 'all' ? 'All Properties' : prop.charAt(0).toUpperCase() + prop.slice(1)}
+                            {prop === 'all' ? 'Ecosystem View' : prop.charAt(0).toUpperCase() + prop.slice(1)}
                         </button>
                     ))}
                 </div>
             )}
 
             {loading ? (
-                <div style={{ textAlign: 'center', padding: '60px' }}><div className="spinner" style={{ margin: '0 auto' }}></div></div>
+                <div style={{ textAlign: 'center', padding: '100px' }}><div className="spinner" style={{ margin: '0 auto' }}></div></div>
             ) : (
                 <>
-                    {/* Stats Cards */}
+                    {/* Stats Grid */}
                     <div className="stats-grid">
                         <div className="stat-card">
-                            <div className="stat-icon green"><i className="fas fa-money-bill-wave"></i></div>
+                            <div className="stat-icon green"><i className="fas fa-wallet"></i></div>
                             <div className="stat-info">
-                                <h3>KES {(stats?.global?.totalRevenue || 0).toLocaleString()}</h3>
                                 <p>Total Revenue</p>
+                                <h3>KES {(stats?.global?.totalRevenue || 0).toLocaleString()}</h3>
                             </div>
                         </div>
                         <div className="stat-card">
                             <div className="stat-icon orange"><i className="fas fa-calendar-check"></i></div>
                             <div className="stat-info">
-                                <h3>{stats?.global?.totalBookings || 0}</h3>
                                 <p>Total Bookings</p>
+                                <h3>{stats?.global?.totalBookings || 0}</h3>
                             </div>
                         </div>
                         <div className="stat-card">
-                            <div className="stat-icon blue"><i className="fas fa-bed"></i></div>
+                            <div className="stat-icon blue"><i className="fas fa-id-badge"></i></div>
                             <div className="stat-info">
-                                <h3>{stats?.global?.totalOccupancy || 0}%</h3>
-                                <p>Occupancy Rate</p>
+                                <p>Jobs Applied</p>
+                                <h3>{stats?.global?.pendingBookings || 0} New</h3>
                             </div>
                         </div>
                         <div className="stat-card">
                             <div className="stat-icon" style={{ background: '#9c27b0' }}><i className="fas fa-star"></i></div>
                             <div className="stat-info">
-                                <h3>{stats?.global?.avgRating || 0}</h3>
-                                <p>Average Rating</p>
+                                <p>Avg. Trust Score</p>
+                                <h3>{stats?.global?.avgRating || 0} / 5</h3>
                             </div>
                         </div>
                     </div>
 
-                    {/* Performance Table */}
-                    <div className="admin-card" style={{ marginBottom: '24px' }}>
-                        <h3 style={{ marginBottom: '16px', color: 'var(--primary-green)' }}>
-                            {isManager
-                                ? `${PROPERTY_NAMES[assignedBranch]} — Performance Overview`
-                                : 'Property Performance Comparison'}
-                        </h3>
-                        <div className="admin-table-wrapper">
-                            <table className="admin-table">
-                                <thead>
-                                    <tr>
-                                        <th>Property</th>
-                                        <th>Revenue</th>
-                                        <th>Bookings</th>
-                                        <th>Occupancy</th>
-                                        <th>Rating</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {performanceProperties.map(prop => {
-                                        const ps = stats?.properties?.[prop] || {};
-                                        return (
+                    <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '24px', marginBottom: '24px' }}>
+                        {/* PERFORMANCE TABLE */}
+                        <div className="admin-card">
+                            <h3 style={{ marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                <i className="fas fa-chart-line" style={{ color: 'var(--primary-green)' }}></i>
+                                Performance Comparison
+                            </h3>
+                            <div className="admin-table-wrapper">
+                                <table className="admin-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Branch</th>
+                                            <th>Revenue</th>
+                                            <th>Bookings</th>
+                                            <th>Rating</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {performanceProperties.map(prop => (
                                             <tr key={prop}>
-                                                <td style={{ fontWeight: '600' }}>
-                                                    <i className="fas fa-map-marker-alt" style={{ marginRight: '8px', color: 'var(--primary-green)', fontSize: '0.8rem' }}></i>
-                                                    {PROPERTY_NAMES[prop]}
-                                                </td>
-                                                <td>KES {(ps.revenue || 0).toLocaleString()}</td>
-                                                <td>{ps.bookings || 0}</td>
-                                                <td>{ps.occupancy || 0}%</td>
+                                                <td style={{ fontWeight: '700' }}>{PROPERTY_NAMES[prop]}</td>
+                                                <td style={{ fontWeight: '800', color: 'var(--primary-green)' }}>KES {(stats?.properties?.[prop]?.revenue || 0).toLocaleString()}</td>
+                                                <td>{stats?.properties?.[prop]?.bookings || 0}</td>
                                                 <td>
-                                                    <span style={{ color: 'var(--primary-orange)' }}>{'★'.repeat(Math.round(ps.rating || 0))}</span>
-                                                    {' '}{ps.rating || 0}
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                                                        <i className="fas fa-star" style={{ color: '#ffc107', fontSize: '0.8rem' }}></i>
+                                                        {stats?.properties?.[prop]?.rating || 0}
+                                                    </div>
                                                 </td>
                                             </tr>
-                                        );
-                                    })}
-                                </tbody>
-                            </table>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        {/* REVENUE SHARE PIE */}
+                        <div className="admin-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
+                            <h3 style={{ alignSelf: 'flex-start', marginBottom: '10px' }}>Revenue Distribution</h3>
+                            <p style={{ alignSelf: 'flex-start', fontSize: '0.8rem', color: '#888', marginBottom: '20px' }}>Contribution by property (Current Period)</p>
+                            <div style={{ height: '220px', width: '100%' }}>
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <PieChart>
+                                        <Pie data={pieData} innerRadius={60} outerRadius={80} paddingAngle={5} dataKey="value">
+                                            {pieData.map((entry, index) => <Cell key={`cell-${index}`} fill={entry.color} />)}
+                                        </Pie>
+                                        <Tooltip />
+                                    </PieChart>
+                                </ResponsiveContainer>
+                            </div>
+                            <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap', justifyContent: 'center', marginTop: '10px' }}>
+                                {pieData.map(d => (
+                                    <div key={d.name} style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.75rem', fontWeight: '700' }}>
+                                        <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: d.color }}></div>
+                                        {d.name}
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     </div>
 
-                    {/* Comparative Revenue Dashboards Key */}
-                    <div style={{
-                        display: 'flex', justifyContent: 'center', gap: '30px',
-                        background: 'white', padding: '15px 25px', borderRadius: '12px',
-                        border: '1px solid #e2e8f0', marginBottom: '20px',
-                        boxShadow: '0 2px 4px rgba(0,0,0,0.02)'
-                    }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <div style={{ width: '15px', height: '15px', background: '#22440f', borderRadius: '3px' }}></div>
-                            <span style={{ fontWeight: '600', color: 'var(--text-main)', fontSize: '0.95rem' }}>Limuru Resort</span>
-                        </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <div style={{ width: '15px', height: '15px', background: '#f3a435', borderRadius: '3px' }}></div>
-                            <span style={{ fontWeight: '600', color: 'var(--text-main)', fontSize: '0.95rem' }}>Kanamai Beach</span>
-                        </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <div style={{ width: '15px', height: '15px', background: '#4338ca', borderRadius: '3px' }}></div>
-                            <span style={{ fontWeight: '600', color: 'var(--text-main)', fontSize: '0.95rem' }}>Hotel Kisumu</span>
-                        </div>
-                    </div>
+                    {/* MAIN ANALYTICS GRID */}
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))', gap: '24px' }}>
 
-                    {/* Comparative Revenue Dashboards */}
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '20px', marginBottom: '24px' }}>
-
-                        {/* DAILY CHART */}
+                        {/* GROWTH CHART (DUAL AXIS) */}
                         <div className="admin-card" style={{ padding: '24px' }}>
-                            <h3 style={{ margin: '0 0 20px 0', color: 'var(--primary-green)', fontFamily: 'Playfair Display, serif', fontSize: '1.2rem' }}>
-                                Daily Growth <span style={{ fontSize: '0.8rem', color: 'var(--text-light)', fontWeight: 'normal' }}>(Last 14 Days)</span>
-                            </h3>
-                            <div style={{ height: '280px', width: '100%' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '25px' }}>
+                                <div>
+                                    <h3 style={{ margin: 0, fontSize: '1.25rem' }}>Daily Growth</h3>
+                                    <p style={{ margin: 0, fontSize: '0.8rem', color: '#888' }}>Revenue vs Booking Velocity (14 Days)</p>
+                                </div>
+                                <div style={{ display: 'flex', gap: '15px' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.7rem', fontWeight: '700' }}>
+                                        <div style={{ width: '8px', height: '8px', borderRadius: '2px', background: COLORS.revenue }}></div> Revenue
+                                    </div>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.7rem', fontWeight: '700' }}>
+                                        <div style={{ width: '8px', height: '8px', borderRadius: '2px', background: COLORS.bookings }}></div> Bookings
+                                    </div>
+                                </div>
+                            </div>
+                            <div style={{ height: '300px' }}>
                                 <ResponsiveContainer width="100%" height="100%">
-                                    <LineChart data={stats?.revenueHistory?.days || []} margin={{ top: 10, right: 10, left: 10, bottom: 20 }}>
+                                    <AreaChart data={stats?.revenueHistory?.days || []}>
+                                        <defs>
+                                            <linearGradient id="colorRev" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="5%" stopColor={COLORS.revenue} stopOpacity={0.1} />
+                                                <stop offset="95%" stopColor={COLORS.revenue} stopOpacity={0} />
+                                            </linearGradient>
+                                        </defs>
                                         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                                        <XAxis dataKey="name" axisLine={{ stroke: '#e2e8f0' }} tickLine={false} tick={{ fill: '#64748b', fontSize: 10 }} dy={10} />
-                                        <YAxis tickFormatter={(val) => val >= 1000 ? `${(val / 1000).toFixed(0)}k` : val} axisLine={{ stroke: '#e2e8f0' }} tickLine={false} tick={{ fill: '#64748b', fontSize: 10 }} dy={0} />
-                                        <Tooltip content={<CustomTooltip title="Daily Revenue" />} cursor={{ stroke: '#e2e8f0', strokeWidth: 1 }} />
-                                        {(!isManager || (user?.properties?.includes('limuru'))) && <Line name="Limuru" type="monotone" dataKey="limuru" stroke="#22440f" strokeWidth={3} dot={{ r: 4, fill: '#22440f', strokeWidth: 2, stroke: '#fff' }} activeDot={{ r: 6 }} connectNulls />}
-                                        {(!isManager || (user?.properties?.includes('kanamai'))) && <Line name="Kanamai" type="monotone" dataKey="kanamai" stroke="#f3a435" strokeWidth={3} dot={{ r: 4, fill: '#f3a435', strokeWidth: 2, stroke: '#fff' }} activeDot={{ r: 6 }} connectNulls />}
-                                        {(!isManager || (user?.properties?.includes('kisumu'))) && <Line name="Kisumu" type="monotone" dataKey="kisumu" stroke="#4338ca" strokeWidth={3} dot={{ r: 4, fill: '#4338ca', strokeWidth: 2, stroke: '#fff' }} activeDot={{ r: 6 }} connectNulls />}
-                                    </LineChart>
+                                        <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 10 }} dy={10} />
+                                        <YAxis yAxisId="left" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 10 }} tickFormatter={(v) => `${v / 1000}k`} />
+                                        <YAxis yAxisId="right" orientation="right" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 10 }} />
+                                        <Tooltip content={<CustomTooltip title="Daily Performance" />} />
+                                        <Area yAxisId="left" type="monotone" name="Revenue" dataKey="revenue" stroke={COLORS.revenue} strokeWidth={3} fillOpacity={1} fill="url(#colorRev)" />
+                                        <Line yAxisId="right" type="step" name="Bookings" dataKey="bookings" stroke={COLORS.bookings} strokeWidth={2} dot={{ r: 3 }} />
+                                    </AreaChart>
                                 </ResponsiveContainer>
                             </div>
                         </div>
 
-                        {/* WEEKLY CHART */}
+                        {/* ECOSYSTEM ACTIVITY (BARS) */}
                         <div className="admin-card" style={{ padding: '24px' }}>
-                            <h3 style={{ margin: '0 0 20px 0', color: 'var(--primary-green)', fontFamily: 'Playfair Display, serif', fontSize: '1.2rem' }}>
-                                Weekly Trends <span style={{ fontSize: '0.8rem', color: 'var(--text-light)', fontWeight: 'normal' }}>(Last 8 Weeks)</span>
-                            </h3>
-                            <div style={{ height: '280px', width: '100%' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '25px' }}>
+                                <div>
+                                    <h3 style={{ margin: 0, fontSize: '1.25rem' }}>Ecosystem Activity</h3>
+                                    <p style={{ margin: 0, fontSize: '0.8rem', color: '#888' }}>Applications, Bids & Claims (8 Weeks)</p>
+                                </div>
+                                <Legend payload={[
+                                    { value: 'Apps', type: 'rect', color: COLORS.applications },
+                                    { value: 'Bids', type: 'rect', color: COLORS.bids },
+                                    { value: 'Claims', type: 'rect', color: COLORS.claims }
+                                ]} wrapperStyle={{ fontSize: '0.7rem', fontWeight: '700' }} />
+                            </div>
+                            <div style={{ height: '300px' }}>
                                 <ResponsiveContainer width="100%" height="100%">
-                                    <LineChart data={stats?.revenueHistory?.weeks || []} margin={{ top: 10, right: 10, left: 10, bottom: 20 }}>
+                                    <BarChart data={stats?.revenueHistory?.weeks || []}>
                                         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                                        <XAxis dataKey="name" axisLine={{ stroke: '#e2e8f0' }} tickLine={false} tick={{ fill: '#64748b', fontSize: 10 }} dy={10} />
-                                        <YAxis tickFormatter={(val) => val >= 1000 ? `${(val / 1000).toFixed(0)}k` : val} axisLine={{ stroke: '#e2e8f0' }} tickLine={false} tick={{ fill: '#64748b', fontSize: 10 }} dy={0} />
-                                        <Tooltip content={<CustomTooltip title="Weekly Revenue" />} cursor={{ stroke: '#e2e8f0', strokeWidth: 1 }} />
-                                        {(!isManager || (user?.properties?.includes('limuru'))) && <Line name="Limuru" type="monotone" dataKey="limuru" stroke="#22440f" strokeWidth={3} dot={{ r: 4, fill: '#22440f', strokeWidth: 2, stroke: '#fff' }} activeDot={{ r: 6 }} connectNulls />}
-                                        {(!isManager || (user?.properties?.includes('kanamai'))) && <Line name="Kanamai" type="monotone" dataKey="kanamai" stroke="#f3a435" strokeWidth={3} dot={{ r: 4, fill: '#f3a435', strokeWidth: 2, stroke: '#fff' }} activeDot={{ r: 6 }} connectNulls />}
-                                        {(!isManager || (user?.properties?.includes('kisumu'))) && <Line name="Kisumu" type="monotone" dataKey="kisumu" stroke="#4338ca" strokeWidth={3} dot={{ r: 4, fill: '#4338ca', strokeWidth: 2, stroke: '#fff' }} activeDot={{ r: 6 }} connectNulls />}
-                                    </LineChart>
+                                        <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 10 }} dy={10} />
+                                        <YAxis axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 10 }} />
+                                        <Tooltip content={<CustomTooltip title="Weekly Interactions" />} />
+                                        <Bar name="Applications" dataKey="applications" stackId="a" fill={COLORS.applications} radius={[0, 0, 0, 0]} />
+                                        <Bar name="Tender Bids" dataKey="bids" stackId="a" fill={COLORS.bids} />
+                                        <Bar name="Offer Claims" dataKey="claims" stackId="a" fill={COLORS.claims} radius={[6, 6, 0, 0]} />
+                                    </BarChart>
                                 </ResponsiveContainer>
                             </div>
                         </div>
 
-                        {/* MONTHLY CHART */}
-                        <div className="admin-card" style={{ padding: '24px' }}>
-                            <h3 style={{ margin: '0 0 20px 0', color: 'var(--primary-green)', fontFamily: 'Playfair Display, serif', fontSize: '1.2rem' }}>
-                                Monthly Review <span style={{ fontSize: '0.8rem', color: 'var(--text-light)', fontWeight: 'normal' }}>(Last 6 Months)</span>
-                            </h3>
-                            <div style={{ height: '280px', width: '100%' }}>
-                                <ResponsiveContainer width="100%" height="100%">
-                                    <LineChart data={stats?.revenueHistory?.months || []} margin={{ top: 10, right: 10, left: 10, bottom: 20 }}>
-                                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                                        <XAxis dataKey="name" axisLine={{ stroke: '#e2e8f0' }} tickLine={false} tick={{ fill: '#64748b', fontSize: 10 }} dy={10} />
-                                        <YAxis tickFormatter={(val) => val >= 1000 ? `${(val / 1000).toFixed(0)}k` : val} axisLine={{ stroke: '#e2e8f0' }} tickLine={false} tick={{ fill: '#64748b', fontSize: 10 }} dy={0} />
-                                        <Tooltip content={<CustomTooltip title="Monthly Revenue" />} cursor={{ stroke: '#e2e8f0', strokeWidth: 1 }} />
-                                        {(!isManager || user?.properties?.includes('limuru')) && <Line name="Limuru" type="monotone" dataKey="limuru" stroke="#22440f" strokeWidth={3} dot={{ r: 5, fill: '#22440f', strokeWidth: 2, stroke: '#fff' }} activeDot={{ r: 8 }} connectNulls />}
-                                        {(!isManager || user?.properties?.includes('kanamai')) && <Line name="Kanamai" type="monotone" dataKey="kanamai" stroke="#f3a435" strokeWidth={3} dot={{ r: 5, fill: '#f3a435', strokeWidth: 2, stroke: '#fff' }} activeDot={{ r: 8 }} connectNulls />}
-                                        {(!isManager || user?.properties?.includes('kisumu')) && <Line name="Kisumu" type="monotone" dataKey="kisumu" stroke="#4338ca" strokeWidth={3} dot={{ r: 5, fill: '#4338ca', strokeWidth: 2, stroke: '#fff' }} activeDot={{ r: 8 }} connectNulls />}
-                                    </LineChart>
-                                </ResponsiveContainer>
-                            </div>
-                        </div>
                     </div>
                 </>
             )}
