@@ -1137,7 +1137,7 @@ export default function ResortDetail() {
             const element = document.getElementById(activeTab);
             if (element) {
                 // Determine a sensible offset based on header height
-                const headerOffset = 180;
+                const headerOffset = 200;
                 const elementPosition = element.getBoundingClientRect().top;
                 const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
                 window.scrollTo({
@@ -1180,7 +1180,7 @@ export default function ResortDetail() {
         const element = document.getElementById(sectionIdToScroll);
 
         if (element) {
-            const headerOffset = isMobile ? 120 : 180;
+            const headerOffset = 200;
             const elementPosition = element.getBoundingClientRect().top;
             const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 

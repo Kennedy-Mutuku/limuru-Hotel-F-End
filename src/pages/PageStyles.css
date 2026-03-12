@@ -159,13 +159,11 @@
 /* ===== Resort Sub-Website Navigation (Stacked) ===== */
 .resort-sticky-container {
     position: sticky;
-    top: 96px;
-    /* Below global header */
+    top: 125px;
+    /* Exactly below global header height from Layout.jsx */
     z-index: 999;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     background-color: white;
-    padding-top: 15px;
-    /* Ensure permanent solid white space above the green bar */
 }
 
 .resort-header {
@@ -327,8 +325,8 @@
     }
 
     .resort-sticky-container {
-        top: 60px;
-        /* Adjust to header height */
+        top: 125px;
+        /* Match desktop for consistency with Layout.jsx mobile behavior */
     }
 
     .compact-hide {
