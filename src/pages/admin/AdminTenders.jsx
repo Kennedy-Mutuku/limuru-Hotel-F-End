@@ -17,10 +17,9 @@ export default function AdminTenders() {
         requirements: '', // Will split by newline
         closingDate: '',
         resort: 'global',
-        tenderDocument: ''
+        googleFormLink: ''
     });
 
-    const [uploadingPdf, setUploadingPdf] = useState(false);
 
     useEffect(() => {
         fetchTenders();
@@ -37,29 +36,6 @@ export default function AdminTenders() {
         }
     };
 
-    const handlePdfUpload = (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-
-        if (file.type !== 'application/pdf') {
-            alert('Please upload a PDF document.');
-            return;
-        }
-
-        if (file.size > 10 * 1024 * 1024) {
-            alert('File too large. Max 10MB allowed.');
-            return;
-        }
-
-        setUploadingPdf(true);
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            setFormData({ ...formData, tenderDocument: reader.result });
-            setUploadingPdf(false);
-        };
-        reader.readAsDataURL(file);
-    };
-
     const handleCreateTender = async (e) => {
         e.preventDefault();
         try {
@@ -69,7 +45,7 @@ export default function AdminTenders() {
             };
             await api.post('/tenders', payload);
             setShowModal(false);
-            setFormData({ title: '', category: 'Goods & Supplies', description: '', requirements: '', closingDate: '', resort: 'global', tenderDocument: '' });
+            setFormData({ title: '', category: 'Goods & Supplies', description: '', requirements: '', closingDate: '', resort: 'global', googleFormLink: '' });
             fetchTenders();
         } catch (err) {
             console.error('Tender creation error:', err);
@@ -147,7 +123,7 @@ export default function AdminTenders() {
                                     <th>Title</th>
                                     <th>Category</th>
                                     <th>Closing Date</th>
-                                    <th>Document</th>
+                                    <th>Application Link</th>
                                     <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
@@ -160,15 +136,17 @@ export default function AdminTenders() {
                                         <td><span className="admin-badge-sm" style={{ background: '#f1f5f9', color: '#475569' }}>{t.category}</span></td>
                                         <td>{new Date(t.closingDate).toLocaleDateString()}</td>
                                         <td>
-                                            {t.tenderDocument ? (
-                                                <button
-                                                    onClick={() => openPdf(t.tenderDocument)}
-                                                    style={{ border: 'none', background: 'none', color: 'var(--primary-orange)', cursor: 'pointer', fontWeight: '700', fontSize: '0.85rem' }}
+                                            {t.googleFormLink ? (
+                                                <a
+                                                    href={t.googleFormLink}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    style={{ color: 'var(--primary-orange)', fontWeight: '700', fontSize: '0.85rem', textDecoration: 'none' }}
                                                 >
-                                                    <i className="fas fa-file-pdf"></i> View PDF
-                                                </button>
+                                                    <i className="fas fa-external-link-alt"></i> View Form
+                                                </a>
                                             ) : (
-                                                <span style={{ color: '#ccc', fontStyle: 'italic', fontSize: '0.8rem' }}>No PDF</span>
+                                                <span style={{ color: '#ccc', fontStyle: 'italic', fontSize: '0.8rem' }}>No Link</span>
                                             )}
                                         </td>
                                         <td>
@@ -228,32 +206,17 @@ export default function AdminTenders() {
                             </div>
 
                             <div className="form-field-wrapper">
-                                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', marginBottom: '8px' }}>UPLOAD TENDER DOCUMENT (PDF) *</label>
-                                <div
-                                    onClick={() => document.getElementById('pdfInput').click()}
-                                    style={{
-                                        border: '2px dashed #ddd', borderRadius: '10px', padding: '20px', textAlign: 'center',
-                                        cursor: 'pointer', background: formData.tenderDocument ? '#f0fff4' : '#fafafa'
-                                    }}
-                                >
-                                    <input type="file" id="pdfInput" accept=".pdf" style={{ display: 'none' }} onChange={handlePdfUpload} />
-                                    {uploadingPdf ? (
-                                        <div className="spinner-sm"></div>
-                                    ) : formData.tenderDocument ? (
-                                        <div style={{ color: 'var(--primary-green)', fontWeight: '700' }}>
-                                            <i className="fas fa-check-circle" style={{ marginRight: '8px' }}></i>
-                                            PDF Encoded Successfully
-                                        </div>
-                                    ) : (
-                                        <div style={{ color: '#666' }}>
-                                            <i className="fas fa-file-pdf" style={{ fontSize: '1.5rem', marginBottom: '10px', display: 'block' }}></i>
-                                            Click to select PDF document
-                                        </div>
-                                    )}
-                                </div>
-                                <small style={{ color: '#888', marginTop: '5px', display: 'block' }}>Providing a PDF document is mandatory for professional procurement.</small>
+                                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', marginBottom: '8px' }}>GOOGLE FORM LINK (Application Redirect)</label>
+                                <input 
+                                    className="form-control" 
+                                    placeholder="https://docs.google.com/forms/d/..." 
+                                    required 
+                                    value={formData.googleFormLink} 
+                                    onChange={e => setFormData({ ...formData, googleFormLink: e.target.value })} 
+                                />
+                                <small style={{ color: '#888', marginTop: '5px', display: 'block' }}>Applicants will be redirected to this link when they click "Apply".</small>
                             </div>
-                            <button type="submit" className="btn btn-primary" style={{ width: '100%', padding: '15px', fontWeight: '800' }} disabled={uploadingPdf}>Publish Tender Opportunity</button>
+                            <button type="submit" className="btn btn-primary" style={{ width: '100%', padding: '15px', fontWeight: '800' }}>Publish Tender Opportunity</button>
                         </form>
                     </div>
                 </div>

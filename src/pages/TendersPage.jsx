@@ -64,57 +64,6 @@ export default function TendersPage() {
         }
     };
 
-    const handleBidLetterUpload = (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-
-        if (file.type !== 'application/pdf') {
-            alert('Please upload your bid letter in PDF format.');
-            return;
-        }
-
-        if (file.size > 10 * 1024 * 1024) {
-            alert('File too large. Max 10MB allowed.');
-            return;
-        }
-
-        setUploadingPdf(true);
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            setBidData({ ...bidData, attachmentLink: reader.result });
-            setUploadingPdf(false);
-        };
-        reader.readAsDataURL(file);
-    };
-
-    const handleBidSubmit = async (e) => {
-        e.preventDefault();
-
-        if (!bidData.attachmentLink) {
-            alert('Please upload your official bid letter (PDF).');
-            return;
-        }
-
-        setSubmitting(true);
-        setBidStatus(null);
-        try {
-            await api.post('/tenders/bid', {
-                ...bidData,
-                tenderId: selectedTender._id
-            });
-            setBidStatus({ type: 'success', message: 'Bid submitted successfully! Our procurement team will review your proposal.' });
-            setBidData({ companyName: '', contactPerson: '', email: '', phone: '', bidAmount: '', attachmentLink: '' });
-            setTimeout(() => {
-                setSelectedTender(null);
-                setBidStatus(null);
-            }, 3000);
-        } catch (err) {
-            setBidStatus({ type: 'error', message: err.response?.data?.message || 'Failed to submit bid.' });
-        } finally {
-            setSubmitting(false);
-        }
-    };
-
     const handleAppFileUpload = (e, label) => {
         const file = e.target.files[0];
         if (!file) return;
@@ -316,65 +265,41 @@ export default function TendersPage() {
                                 </div>
                             </div>
 
-                            <div style={{ background: '#fff', border: '1px solid #eee', padding: '30px', borderRadius: '15px', boxShadow: '0 10px 30px rgba(0,0,0,0.05)' }}>
-                                <h3 style={{ marginBottom: '25px', textAlign: 'center', color: 'var(--primary-green)' }}>Application Portal</h3>
-                                {bidStatus && (
-                                    <div className={`alert alert-${bidStatus.type}`} style={{ marginBottom: '20px', fontSize: '0.9rem' }}>
-                                        {bidStatus.message}
+                            <div style={{ background: '#fff', border: '1px solid #eee', padding: '30px', borderRadius: '15px', boxShadow: '0 10px 30px rgba(0,0,0,0.05)', display: 'flex', flexDirection: 'column', justifyContent: 'center', textAlign: 'center' }}>
+                                <i className="fas fa-file-signature" style={{ fontSize: '3rem', color: 'var(--primary-green)', marginBottom: '20px', opacity: 0.1 }}></i>
+                                <h3 style={{ marginBottom: '15px', color: 'var(--primary-green)' }}>Application Portal</h3>
+                                <p style={{ color: '#666', marginBottom: '30px', fontSize: '0.95rem' }}>
+                                    To ensure a fair and streamlined procurement process, all applications for this tender are handled through our specialized secure application portal.
+                                </p>
+                                
+                                <div style={{ background: '#f0fff4', padding: '20px', borderRadius: '10px', marginBottom: '30px', border: '1px solid #c6f6d5' }}>
+                                    <h4 style={{ color: '#2f855a', marginBottom: '10px', fontSize: '0.9rem' }}>Requirement Checklist</h4>
+                                    <ul style={{ textAlign: 'left', fontSize: '0.85rem', color: '#48bb78', listStyle: 'none', padding: 0 }}>
+                                        <li style={{ marginBottom: '5px' }}><i className="fas fa-check-circle"></i> Professional Proposal (PDF)</li>
+                                        <li style={{ marginBottom: '5px' }}><i className="fas fa-check-circle"></i> Compliance Certificates</li>
+                                        <li><i className="fas fa-check-circle"></i> Technical Qualifications</li>
+                                    </ul>
+                                </div>
+
+                                {selectedTender.googleFormLink ? (
+                                    <a 
+                                        href={selectedTender.googleFormLink} 
+                                        target="_blank" 
+                                        rel="noopener noreferrer" 
+                                        className="btn btn-primary" 
+                                        style={{ width: '100%', padding: '18px', fontWeight: '800', fontSize: '1.1rem', textDecoration: 'none', display: 'block' }}
+                                    >
+                                        Apply for Tender <i className="fas fa-external-link-alt" style={{ marginLeft: '10px', fontSize: '0.9rem' }}></i>
+                                    </a>
+                                ) : (
+                                    <div style={{ color: '#888', fontStyle: 'italic', padding: '20px', background: '#f9f9f9', borderRadius: '10px' }}>
+                                        Application portal link is currently being updated. Please check back shortly.
                                     </div>
                                 )}
-                                <form onSubmit={handleBidSubmit}>
-                                    <div className="form-field-wrapper">
-                                        <input className="form-control" placeholder="Company Name *" required value={bidData.companyName} onChange={e => setBidData({ ...bidData, companyName: e.target.value })} />
-                                    </div>
-                                    <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
-                                        <div className="form-field-wrapper">
-                                            <input className="form-control" placeholder="Contact Person *" required value={bidData.contactPerson} onChange={e => setBidData({ ...bidData, contactPerson: e.target.value })} />
-                                        </div>
-                                        <div className="form-field-wrapper">
-                                            <input className="form-control" placeholder="Phone *" required value={bidData.phone} onChange={e => setBidData({ ...bidData, phone: e.target.value })} />
-                                        </div>
-                                    </div>
-                                    <div className="form-field-wrapper">
-                                        <input type="email" className="form-control" placeholder="Email Address *" required value={bidData.email} onChange={e => setBidData({ ...bidData, email: e.target.value })} />
-                                    </div>
-                                    <div className="form-field-wrapper">
-                                        <input type="number" className="form-control" placeholder="Bid Amount (KES) *" required value={bidData.bidAmount} onChange={e => setBidData({ ...bidData, bidAmount: e.target.value })} />
-                                        <small style={{ color: 'var(--text-light)', display: 'block', marginTop: '5px' }}>Include total project cost inclusive of all taxes.</small>
-                                    </div>
-                                    <div className="form-field-wrapper">
-                                        <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: '700', marginBottom: '8px', color: 'var(--text-main)' }}>OFFICIAL BID LETTER (PDF) *</label>
-                                        <div
-                                            onClick={() => document.getElementById('bidLetter').click()}
-                                            style={{
-                                                border: '2px dashed #ddd', borderRadius: '10px', padding: '20px', textAlign: 'center',
-                                                cursor: 'pointer', background: bidData.attachmentLink ? '#f0fff4' : '#fafafa',
-                                                transition: 'all 0.3s'
-                                            }}
-                                            onMouseOver={e => e.currentTarget.style.borderColor = 'var(--primary-orange)'}
-                                            onMouseOut={e => e.currentTarget.style.borderColor = '#ddd'}
-                                        >
-                                            <input type="file" id="bidLetter" accept=".pdf" style={{ display: 'none' }} onChange={handleBidLetterUpload} />
-                                            {uploadingPdf ? (
-                                                <div className="spinner-sm" style={{ margin: '0 auto' }}></div>
-                                            ) : bidData.attachmentLink ? (
-                                                <div style={{ color: 'var(--primary-green)', fontWeight: '700' }}>
-                                                    <i className="fas fa-check-circle" style={{ marginRight: '8px' }}></i>
-                                                    Document Attached
-                                                </div>
-                                            ) : (
-                                                <div style={{ color: '#666' }}>
-                                                    <i className="fas fa-file-pdf" style={{ fontSize: '1.5rem', marginBottom: '10px', display: 'block' }}></i>
-                                                    Click to upload professional bid letter
-                                                </div>
-                                            )}
-                                        </div>
-                                        <small style={{ color: 'var(--text-light)', display: 'block', marginTop: '10px' }}>Upload your formal proposal letter in PDF format (Max 10MB).</small>
-                                    </div>
-                                    <button type="submit" className="btn btn-primary" style={{ width: '100%', padding: '15px', fontWeight: '800', marginTop: '10px' }} disabled={submitting || uploadingPdf}>
-                                        {submitting ? 'Submitting Application...' : 'Confirm Submission'}
-                                    </button>
-                                </form>
+                                
+                                <p style={{ marginTop: '20px', fontSize: '0.8rem', color: 'var(--text-light)' }}>
+                                    You will be redirected to our secure external portal.
+                                </p>
                             </div>
                         </div>
                     </div>
