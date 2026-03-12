@@ -427,7 +427,7 @@ export default function BookingForm({ initialResort: propResort }) {
                             </div>
                             <h2 style={{ fontSize: '2.5rem', color: 'var(--primary-green)', marginBottom: '16px', fontWeight: '800' }}>Reservation Sent!</h2>
                             <p style={{ color: 'var(--text-light)', fontSize: '1.15rem', marginBottom: '35px', lineHeight: '1.8' }}>
-                                We've received your booking at <strong style={{ color: 'var(--text-dark)' }}>{submittedResortName}</strong>. Our team will contact you shortly via email and phone to confirm availability and finalize payment.
+                                Hi <strong style={{ color: 'var(--text-dark)' }}>{formData.firstName}</strong>! We've received your booking at <strong style={{ color: 'var(--text-dark)' }}>{submittedResortName}</strong>. We are so excited and eagerly waiting to see you soon!
                             </p>
                             <button className="btn btn-primary" style={{ padding: '16px 45px', fontSize: '1.15rem', borderRadius: '30px', fontWeight: '700', letterSpacing: '0.5px', boxShadow: '0 8px 25px rgba(39, 110, 54, 0.2)' }} onClick={handleCloseSuccessModal}>
                                 Return to Homepage
