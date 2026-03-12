@@ -11,15 +11,6 @@ export default function TendersPage() {
     const [loadingRecs, setLoadingRecs] = useState(true);
     const [selectedTender, setSelectedTender] = useState(null);
     const [selectedRec, setSelectedRec] = useState(null);
-    const [appData, setAppData] = useState({
-        candidateName: '',
-        candidateEmail: '',
-        candidatePhone: '',
-        documents: [] // { label, fileLink }
-    });
-    const [submittingApp, setSubmittingApp] = useState(false);
-    const [appStatus, setAppStatus] = useState(null);
-    const [showAppForm, setShowAppForm] = useState(false);
 
     useEffect(() => {
         fetchTenders();
@@ -61,65 +52,6 @@ export default function TendersPage() {
             console.error('Error fetching recruitments', err);
         } finally {
             setLoadingRecs(false);
-        }
-    };
-
-    const handleAppFileUpload = (e, label) => {
-        const file = e.target.files[0];
-        if (!file) return;
-
-        if (file.type !== 'application/pdf') {
-            alert('Please upload documents in PDF format.');
-            return;
-        }
-
-        if (file.size > 10 * 1024 * 1024) {
-            alert('File too large. Max 10MB allowed.');
-            return;
-        }
-
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            const existing = appData.documents.filter(d => d.label !== label);
-            setAppData({
-                ...appData,
-                documents: [...existing, { label, fileLink: reader.result }]
-            });
-        };
-        reader.readAsDataURL(file);
-    };
-
-    const handleAppSubmit = async (e) => {
-        e.preventDefault();
-
-        // Validate all required docs are uploaded
-        const missing = selectedRec.requiredDocuments.filter(
-            reqDoc => !appData.documents.find(d => d.label === reqDoc)
-        );
-
-        if (missing.length > 0) {
-            alert(`Please upload the following required documents: ${missing.join(', ')}`);
-            return;
-        }
-
-        setSubmittingApp(true);
-        setAppStatus(null);
-        try {
-            await api.post('/applications/submit', {
-                ...appData,
-                recruitmentId: selectedRec._id
-            });
-            setAppStatus({ type: 'success', message: 'Application submitted successfully! Our HR team will review your profile.' });
-            setAppData({ candidateName: '', candidateEmail: '', candidatePhone: '', documents: [] });
-            setTimeout(() => {
-                setSelectedRec(null);
-                setShowAppForm(false);
-                setAppStatus(null);
-            }, 3000);
-        } catch (err) {
-            setAppStatus({ type: 'error', message: err.response?.data?.message || 'Failed to submit application.' });
-        } finally {
-            setSubmittingApp(false);
         }
     };
 
@@ -318,7 +250,7 @@ export default function TendersPage() {
                     <div className="admin-card anim-pop-in" style={{ maxWidth: '800px', width: '100%', maxHeight: '90vh', overflowY: 'auto', padding: '40px', position: 'relative' }}>
                         <button onClick={() => setSelectedRec(null)} style={{ position: 'absolute', top: '20px', right: '20px', background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer', color: '#ccc' }}>&times;</button>
 
-                        {!showAppForm ? (
+                        <div style={{ animation: 'fadeIn 0.3s ease' }}>
                             <>
                                 <div style={{ marginBottom: '30px', textAlign: 'center' }}>
                                     <span style={{ background: 'var(--primary-orange)', color: 'white', padding: '4px 12px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: '700', marginBottom: '15px', display: 'inline-block' }}>{selectedRec.department}</span>
@@ -357,82 +289,52 @@ export default function TendersPage() {
                                 )}
 
                                 <div style={{ background: '#f8fafc', padding: '30px', borderRadius: '15px', border: '1px solid #e2e8f0', textAlign: 'center' }}>
-                                    <h4 style={{ marginBottom: '15px' }}>Ready to join us?</h4>
-                                    <p style={{ marginBottom: '20px' }}>Interested candidates who meet the above requirements are invited to apply directly through our portal.</p>
-                                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '15px' }}>
-                                        <button className="btn btn-primary" style={{ padding: '12px 40px', fontWeight: '800' }} onClick={() => setShowAppForm(true)}>Apply Now</button>
-                                        <div style={{ padding: '15px', background: '#fff', borderRadius: '10px', display: 'inline-block', border: '1px solid #eee' }}>
-                                            <div style={{ fontSize: '0.8rem', color: 'var(--text-light)', fontWeight: '700' }}>APPLICATION DEADLINE</div>
-                                            <div style={{ fontSize: '1.2rem', fontWeight: '800', color: 'var(--primary-orange)' }}>{new Date(selectedRec.closingDate).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</div>
-                                        </div>
+                                    <h4 style={{ marginBottom: '15px', color: 'var(--primary-green)' }}>Detailed Overview</h4>
+                                    
+                                    {selectedRec.jobDescriptionPdf && (
+                                        <button 
+                                            className="btn btn-outline"
+                                            style={{ 
+                                                width: '100%', borderColor: 'var(--primary-orange)', color: 'var(--primary-orange)', 
+                                                fontWeight: '700', padding: '15px', borderRadius: '10px', marginBottom: '20px'
+                                            }}
+                                            onClick={() => {
+                                                const newWindow = window.open();
+                                                newWindow.document.write(`<iframe src="${selectedRec.jobDescriptionPdf}" frameborder="0" style="border:0; top:0; left:0; bottom:0; right:0; width:100%; height:100%;" allowfullscreen></iframe>`);
+                                                newWindow.document.title = "Job Description PDF";
+                                            }}
+                                        >
+                                            <i className="fas fa-file-pdf" style={{ marginRight: '8px' }}></i> Read Full Job Description (PDF)
+                                        </button>
+                                    )}
+
+                                    <div style={{ background: '#fff', padding: '20px', borderRadius: '10px', border: '1px solid #eee', marginBottom: '25px' }}>
+                                        <div style={{ fontSize: '0.8rem', color: 'var(--text-light)', fontWeight: '700' }}>APPLICATION DEADLINE</div>
+                                        <div style={{ fontSize: '1.2rem', fontWeight: '800', color: 'var(--primary-orange)' }}>{new Date(selectedRec.closingDate).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</div>
                                     </div>
+
+                                    {selectedRec.googleFormLink ? (
+                                        <a 
+                                            href={selectedRec.googleFormLink} 
+                                            target="_blank" 
+                                            rel="noopener noreferrer" 
+                                            className="btn btn-primary" 
+                                            style={{ width: '100%', padding: '18px', fontWeight: '800', fontSize: '1.1rem', textDecoration: 'none', display: 'block' }}
+                                        >
+                                            Apply for Job <i className="fas fa-external-link-alt" style={{ marginLeft: '10px', fontSize: '0.9rem' }}></i>
+                                        </a>
+                                    ) : (
+                                        <div style={{ color: '#888', fontStyle: 'italic', padding: '20px', background: '#f9f9f9', borderRadius: '10px' }}>
+                                            Online application portal link is currently being updated.
+                                        </div>
+                                    )}
+                                    
+                                    <p style={{ marginTop: '20px', fontSize: '0.8rem', color: 'var(--text-light)' }}>
+                                        Closing date: {new Date(selectedRec.closingDate).toLocaleDateString()}
+                                    </p>
                                 </div>
                             </>
-                        ) : (
-                            <div style={{ animation: 'fadeIn 0.3s ease' }}>
-                                <button onClick={() => setShowAppForm(false)} style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'none', border: 'none', color: 'var(--primary-green)', fontWeight: '700', cursor: 'pointer', marginBottom: '20px' }}>
-                                    <i className="fas fa-arrow-left"></i> Back to Role Details
-                                </button>
-                                <h1 style={{ textAlign: 'center', color: 'var(--primary-green)', marginBottom: '30px' }}>Application Portal</h1>
-
-                                {appStatus && (
-                                    <div className={`alert alert-${appStatus.type}`} style={{ marginBottom: '20px' }}>
-                                        {appStatus.message}
-                                    </div>
-                                )}
-
-                                <form onSubmit={handleAppSubmit}>
-                                    <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
-                                        <div className="form-field-wrapper">
-                                            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', marginBottom: '8px' }}>FULL NAME *</label>
-                                            <input className="form-control" required value={appData.candidateName} onChange={e => setAppData({ ...appData, candidateName: e.target.value })} />
-                                        </div>
-                                        <div className="form-field-wrapper">
-                                            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', marginBottom: '8px' }}>EMAIL ADDRESS *</label>
-                                            <input type="email" className="form-control" required value={appData.candidateEmail} onChange={e => setAppData({ ...appData, candidateEmail: e.target.value })} />
-                                        </div>
-                                    </div>
-                                    <div className="form-field-wrapper">
-                                        <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', marginBottom: '8px' }}>PHONE NUMBER *</label>
-                                        <input className="form-control" required value={appData.candidatePhone} onChange={e => setAppData({ ...appData, candidatePhone: e.target.value })} />
-                                    </div>
-
-                                    <div style={{ marginTop: '30px' }}>
-                                        <h4 style={{ marginBottom: '20px', color: 'var(--text-main)', borderBottom: '2px solid #eee', paddingBottom: '10px' }}>Required Documents</h4>
-                                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
-                                            {selectedRec.requiredDocuments?.map((reqDoc, idx) => (
-                                                <div key={idx} className="form-field-wrapper">
-                                                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: '800', marginBottom: '8px', color: 'var(--primary-green)' }}>{reqDoc.toUpperCase()} (PDF) *</label>
-                                                    <div
-                                                        onClick={() => document.getElementById(`doc-${idx}`).click()}
-                                                        style={{
-                                                            border: '2px dashed #ddd', borderRadius: '10px', padding: '15px', textAlign: 'center',
-                                                            cursor: 'pointer', background: appData.documents.find(d => d.label === reqDoc) ? '#f0fff4' : '#fafafa',
-                                                            transition: 'all 0.3s'
-                                                        }}
-                                                    >
-                                                        <input type="file" id={`doc-${idx}`} accept=".pdf" style={{ display: 'none' }} onChange={(e) => handleAppFileUpload(e, reqDoc)} />
-                                                        {appData.documents.find(d => d.label === reqDoc) ? (
-                                                            <div style={{ color: 'var(--primary-green)', fontSize: '0.85rem', fontWeight: '700' }}>
-                                                                <i className="fas fa-check-circle"></i> Uploaded
-                                                            </div>
-                                                        ) : (
-                                                            <div style={{ color: '#666', fontSize: '0.85rem' }}>
-                                                                <i className="fas fa-cloud-upload-alt" style={{ marginBottom: '5px' }}></i> Upload {reqDoc}
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-
-                                    <button type="submit" className="btn btn-primary" style={{ width: '100%', padding: '15px', fontWeight: '800', marginTop: '30px' }} disabled={submittingApp}>
-                                        {submittingApp ? 'Submitting Application...' : 'Submit Professional Application'}
-                                    </button>
-                                </form>
-                            </div>
-                        )}
+                        </div>
                     </div>
                 </div>
             )}

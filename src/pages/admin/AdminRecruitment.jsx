@@ -17,8 +17,12 @@ export default function AdminRecruitment() {
         responsibilities: '',
         closingDate: '',
         requiredDocuments: 'CV\nCover Letter', // Default documents
-        resort: 'global'
+        resort: 'global',
+        googleFormLink: '',
+        jobDescriptionPdf: ''
     });
+
+    const [uploadingPdf, setUploadingPdf] = useState(false);
 
     useEffect(() => {
         fetchRecruitments();
@@ -56,13 +60,44 @@ export default function AdminRecruitment() {
                 responsibilities: '',
                 closingDate: '',
                 requiredDocuments: 'CV\nCover Letter',
-                resort: 'global'
+                resort: 'global',
+                googleFormLink: '',
+                jobDescriptionPdf: ''
             });
             fetchRecruitments();
         } catch (err) {
             console.error('Recruitment creation error:', err);
             alert('Error creating recruitment: ' + (err.response?.data?.message || err.message));
         }
+    };
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        // 30MB limit
+        if (file.size > 30 * 1024 * 1024) {
+            alert('File too large. Maximum size is 30MB.');
+            return;
+        }
+
+        setUploadingPdf(true);
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            setFormData(prev => ({ ...prev, jobDescriptionPdf: reader.result }));
+            setUploadingPdf(false);
+        };
+        reader.onerror = () => {
+            alert('Error reading file. Please try again.');
+            setUploadingPdf(false);
+        };
+        reader.readAsDataURL(file);
+    };
+
+    const openPdf = (data) => {
+        const newWindow = window.open();
+        newWindow.document.write(`<iframe src="${data}" frameborder="0" style="border:0; top:0; left:0; bottom:0; right:0; width:100%; height:100%;" allowfullscreen></iframe>`);
+        newWindow.document.title = "Job Description PDF";
     };
 
     const deleteRecruitment = async (id) => {
@@ -111,6 +146,8 @@ export default function AdminRecruitment() {
                                     <th>Department</th>
                                     <th>Type</th>
                                     <th>Closing Date</th>
+                                    <th>Job Description</th>
+                                    <th>Application Link</th>
                                     <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
@@ -122,6 +159,32 @@ export default function AdminRecruitment() {
                                         <td><span className="admin-badge-sm" style={{ background: '#f1f5f9', color: '#475569' }}>{r.department}</span></td>
                                         <td>{r.type}</td>
                                         <td>{new Date(r.closingDate).toLocaleDateString()}</td>
+                                        <td>
+                                            {r.jobDescriptionPdf ? (
+                                                <button 
+                                                    onClick={() => openPdf(r.jobDescriptionPdf)}
+                                                    style={{ border: 'none', background: 'none', color: 'var(--primary-green)', cursor: 'pointer', fontWeight: '700', fontSize: '0.85rem' }}
+                                                >
+                                                    <i className="fas fa-file-pdf"></i> View PDF
+                                                </button>
+                                            ) : (
+                                                <span style={{ color: '#ccc', fontStyle: 'italic', fontSize: '0.8rem' }}>No PDF</span>
+                                            )}
+                                        </td>
+                                        <td>
+                                            {r.googleFormLink ? (
+                                                <a
+                                                    href={r.googleFormLink}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    style={{ color: 'var(--primary-orange)', fontWeight: '700', fontSize: '0.85rem', textDecoration: 'none' }}
+                                                >
+                                                    <i className="fas fa-external-link-alt"></i> Form Link
+                                                </a>
+                                            ) : (
+                                                <span style={{ color: '#ccc', fontStyle: 'italic', fontSize: '0.8rem' }}>No Link</span>
+                                            )}
+                                        </td>
                                         <td>
                                             <span className={`status-badge ${r.status.toLowerCase()}`}>{r.status}</span>
                                         </td>
@@ -212,7 +275,54 @@ export default function AdminRecruitment() {
                                 <small style={{ color: 'var(--text-light)', marginTop: '5px', display: 'block' }}>These will be shown as specific upload fields for candidates.</small>
                             </div>
 
-                            <button type="submit" className="btn btn-primary" style={{ width: '100%', padding: '15px', fontWeight: '800' }}>Publish Vacancy</button>
+                            <div className="form-field-wrapper">
+                                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', marginBottom: '8px' }}>GOOGLE FORM LINK (Application Redirect)</label>
+                                <input 
+                                    className="form-control" 
+                                    placeholder="https://docs.google.com/forms/d/..." 
+                                    value={formData.googleFormLink} 
+                                    onChange={e => setFormData({ ...formData, googleFormLink: e.target.value })} 
+                                />
+                                <small style={{ color: '#888', marginTop: '5px', display: 'block' }}>Candidates will be redirected to this link when they click "Apply".</small>
+                            </div>
+
+                            <div className="form-field-wrapper">
+                                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', marginBottom: '8px' }}>JOB DESCRIPTION PDF (Official Document)</label>
+                                <div 
+                                    onClick={() => document.getElementById('jobPdf').click()}
+                                    style={{ 
+                                        border: '2px dashed #ddd', borderRadius: '10px', padding: '20px', textAlign: 'center', 
+                                        cursor: 'pointer', background: formData.jobDescriptionPdf ? '#f0fff4' : '#fafafa',
+                                        transition: 'all 0.3s'
+                                    }}
+                                >
+                                    <input 
+                                        type="file" 
+                                        id="jobPdf" 
+                                        accept=".pdf" 
+                                        style={{ display: 'none' }} 
+                                        onChange={handleFileChange} 
+                                    />
+                                    {uploadingPdf ? (
+                                        <div style={{ color: 'var(--primary-green)', fontWeight: '700' }}>
+                                            <i className="fas fa-spinner fa-spin"></i> Processing...
+                                        </div>
+                                    ) : formData.jobDescriptionPdf ? (
+                                        <div style={{ color: 'var(--primary-green)', fontWeight: '700' }}>
+                                            <i className="fas fa-check-circle"></i> Document Attached (Max 30MB)
+                                        </div>
+                                    ) : (
+                                        <div style={{ color: '#666' }}>
+                                            <i className="fas fa-cloud-upload-alt" style={{ fontSize: '1.5rem', marginBottom: '8px', display: 'block' }}></i>
+                                            Click to upload job description PDF (Max 30MB)
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+
+                            <button type="submit" className="btn btn-primary" style={{ width: '100%', padding: '15px', fontWeight: '800' }} disabled={uploadingPdf}>
+                                {uploadingPdf ? 'Processing PDF...' : 'Publish Vacancy'}
+                            </button>
                         </form>
                     </div>
                 </div>
