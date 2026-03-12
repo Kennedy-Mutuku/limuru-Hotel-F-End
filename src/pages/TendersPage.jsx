@@ -152,17 +152,18 @@ export default function TendersPage() {
             {selectedTender && (
                 <div className="success-modal-overlay" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: isMobile ? '10px' : '20px' }}>
                     <div className="admin-card anim-pop-in" style={{ 
-                        maxWidth: '960px', 
+                        maxWidth: '800px', 
                         width: '100%', 
-                        maxHeight: '95vh', 
+                        maxHeight: '92vh', 
                         overflowY: 'auto', 
-                        padding: isMobile ? '25px 15px' : '40px', 
+                        padding: isMobile ? '30px 20px' : '50px 40px', 
                         position: 'relative',
-                        borderRadius: isMobile ? '15px' : '20px'
+                        borderRadius: '20px',
+                        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
                     }}>
                         <button onClick={() => setSelectedTender(null)} style={{ position: 'absolute', top: '15px', right: '15px', background: 'white', borderRadius: '50%', width: '30px', height: '30px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #eee', fontSize: '1.2rem', cursor: 'pointer', color: '#999', zIndex: 10 }}>&times;</button>
                         
-                        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1.2fr 0.8fr', gap: isMobile ? '25px' : '40px' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '40px' }}>
                             <div>
                                 <div style={{ marginBottom: isMobile ? '20px' : '30px' }}>
                                     <span style={{ background: 'var(--primary-green)', color: 'white', padding: '4px 12px', borderRadius: '20px', fontSize: '0.7rem', fontWeight: '700', marginBottom: '12px', display: 'inline-block' }}>{selectedTender.category}</span>
@@ -218,7 +219,7 @@ export default function TendersPage() {
                                 </div>
                             </div>
 
-                            <div style={{ background: '#fff', border: '1px solid #eee', padding: '30px', borderRadius: '15px', boxShadow: '0 10px 30px rgba(0,0,0,0.05)', display: 'flex', flexDirection: 'column', justifyContent: 'center', textAlign: 'center' }}>
+                            <div style={{ background: '#fff', border: '1px solid #eee', padding: isMobile ? '25px' : '40px', borderRadius: '15px', boxShadow: '0 10px 30px rgba(0,0,0,0.05)', display: 'flex', flexDirection: 'column', justifyContent: 'center', textAlign: 'center', marginTop: '20px' }}>
                                 <i className="fas fa-file-signature" style={{ fontSize: '3rem', color: 'var(--primary-green)', marginBottom: '20px', opacity: 0.1 }}></i>
                                 <h3 style={{ marginBottom: '15px', color: 'var(--primary-green)' }}>Application Portal</h3>
                                 <p style={{ color: '#666', marginBottom: '30px', fontSize: '0.95rem' }}>
@@ -263,13 +264,14 @@ export default function TendersPage() {
             {selectedRec && (
                 <div className="success-modal-overlay" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: isMobile ? '10px' : '20px' }}>
                     <div className="admin-card anim-pop-in" style={{ 
-                        maxWidth: '850px', 
+                        maxWidth: '800px', 
                         width: '100%', 
-                        maxHeight: '95vh', 
+                        maxHeight: '92vh', 
                         overflowY: 'auto', 
-                        padding: isMobile ? '30px 20px' : '50px', 
+                        padding: isMobile ? '30px 20px' : '50px 40px', 
                         position: 'relative',
-                        borderRadius: isMobile ? '15px' : '20px' 
+                        borderRadius: '20px',
+                        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
                     }}>
                         <button onClick={() => setSelectedRec(null)} style={{ position: 'absolute', top: '15px', right: '15px', background: 'white', borderRadius: '50%', width: '30px', height: '30px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #eee', fontSize: '1.2rem', cursor: 'pointer', color: '#999', zIndex: 10 }}>&times;</button>
 
