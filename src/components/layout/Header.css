@@ -203,17 +203,37 @@
     /* Crucial: Hidden on desktop */
 }
 
-@media (max-width: 992px) {
+/* ===== Desktop Scaling (Tablets) ===== */
+@media (min-width: 601px) and (max-width: 1100px) {
     .main-nav {
-        gap: 15px;
+        gap: 12px;
+    }
+
+    .main-nav a {
+        font-size: 0.85rem;
+    }
+
+    .logo-img {
+        width: 60px;
     }
 
     .logo-text h1 {
-        font-size: 1.3rem;
+        font-size: 1.4rem;
+    }
+
+    .logo-text p {
+        font-size: 0.75rem;
+    }
+
+    .login-btn,
+    .nav-book-btn {
+        padding: 6px 14px !important;
+        font-size: 0.8rem !important;
+        height: 36px !important;
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 600px) {
     .header-top-actions {
         display: none; /* Hide contacts to give slogan full space */
     }
@@ -302,7 +322,7 @@
         top: 129px; /* Positioned exactly below the header */
         left: 0;
         width: 100%;
-        height: calc(100vh - 129px); /* Fill remaining viewport height */
+        height: calc(100svh - 129px); /* Fill remaining viewport height */
         background: rgba(0, 0, 0, 0.5);
         backdrop-filter: blur(4px);
         -webkit-backdrop-filter: blur(4px);
@@ -324,7 +344,7 @@
         width: 240px;
         max-width: 80vw;
         height: max-content;
-        max-height: calc(100vh - 129px); /* Strictly fits the content below the header */
+        max-height: calc(100svh - 129px); /* Strictly fits the content below the header */
         border-bottom-right-radius: 20px;
         background: linear-gradient(180deg, var(--dark-green) 0%, var(--primary-green) 100%);
         flex-direction: column;

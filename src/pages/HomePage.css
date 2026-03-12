@@ -336,8 +336,8 @@
 }
 
 /* ===== Responsive ===== */
-/* ===== Responsive ===== */
-@media (max-width: 768px) {
+/* ===== Responsive Viewports ===== */
+@media (max-width: 600px) {
     .section-title h2 {
         font-size: 2rem;
     }

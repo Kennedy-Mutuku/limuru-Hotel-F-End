@@ -485,23 +485,18 @@ body {
 }
 
 /* Responsive Overrides */
-@media (max-width: 1024px) {
-    .contact-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .contact-form-card {
-        padding: 40px;
-    }
-}
-
-@media (max-width: 768px) {
+/* ===== Responsive Viewports ===== */
+@media (max-width: 600px) {
     .contact-page-hero {
-        padding: 100px 0 100px;
+        padding: 80px 0 80px;
     }
 
     .contact-page-hero h1 {
-        font-size: 2.2rem;
+        font-size: 1.8rem;
+    }
+
+    .contact-overlap-section {
+        margin-top: -40px;
     }
 
     .form-grid {
@@ -515,23 +510,20 @@ body {
     .cta-buttons {
         flex-direction: column;
     }
-}
-
-@media (max-width: 576px) {
-    .contact-page-hero {
-        padding: 80px 0 80px;
-    }
-
-    .contact-page-hero h1 {
-        font-size: 1.8rem;
-    }
-
-    .contact-overlap-section {
-        margin-top: -40px;
-    }
 
     .section-title h2 {
         font-size: 1.6rem;
+    }
+}
+
+/* Scaling Desktop for Tablets */
+@media (min-width: 601px) and (max-width: 1024px) {
+    .contact-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .contact-form-card {
+        padding: 40px;
     }
 }
 

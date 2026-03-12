@@ -9,7 +9,7 @@ export default function Header() {
     const [mobileMenus, setMobileMenus] = useState({ about: false, feedback: false });
 
     const toggleMobileMenu = (e, menu) => {
-        if (window.innerWidth <= 768) {
+        if (window.innerWidth <= 600) {
             e.preventDefault();
             setMobileMenus(prev => ({ ...prev, [menu]: !prev[menu] }));
         } else {

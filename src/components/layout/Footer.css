@@ -89,8 +89,8 @@
     font-size: 0.9rem;
 }
 
-/* ===== Responsive ===== */
-@media (max-width: 768px) {
+/* ===== Responsive Viewports ===== */
+@media (max-width: 600px) {
     .site-footer {
         padding: 40px 0 20px; /* Reduced from 70px top padding */
     }
