@@ -17,8 +17,11 @@ export default function AdminTenders() {
         requirements: '', // Will split by newline
         closingDate: '',
         resort: 'global',
-        googleFormLink: ''
+        googleFormLink: '',
+        tenderDocument: ''
     });
+
+    const [uploadingPdf, setUploadingPdf] = useState(false);
 
 
     useEffect(() => {
@@ -45,7 +48,7 @@ export default function AdminTenders() {
             };
             await api.post('/tenders', payload);
             setShowModal(false);
-            setFormData({ title: '', category: 'Goods & Supplies', description: '', requirements: '', closingDate: '', resort: 'global', googleFormLink: '' });
+            setFormData({ title: '', category: 'Goods & Supplies', description: '', requirements: '', closingDate: '', resort: 'global', googleFormLink: '', tenderDocument: '' });
             fetchTenders();
         } catch (err) {
             console.error('Tender creation error:', err);
@@ -79,6 +82,29 @@ export default function AdminTenders() {
         } catch (err) {
             alert('Error awarding bid: ' + err.message);
         }
+    };
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        // 30MB limit
+        if (file.size > 30 * 1024 * 1024) {
+            alert('File too large. Maximum size is 30MB.');
+            return;
+        }
+
+        setUploadingPdf(true);
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            setFormData(prev => ({ ...prev, tenderDocument: reader.result }));
+            setUploadingPdf(false);
+        };
+        reader.onerror = () => {
+            alert('Error reading file. Please try again.');
+            setUploadingPdf(false);
+        };
+        reader.readAsDataURL(file);
     };
 
     const deleteTender = async (id) => {
@@ -123,6 +149,7 @@ export default function AdminTenders() {
                                     <th>Title</th>
                                     <th>Category</th>
                                     <th>Closing Date</th>
+                                    <th>Official Document</th>
                                     <th>Application Link</th>
                                     <th>Status</th>
                                     <th>Actions</th>
@@ -135,6 +162,18 @@ export default function AdminTenders() {
                                         <td>{t.title}</td>
                                         <td><span className="admin-badge-sm" style={{ background: '#f1f5f9', color: '#475569' }}>{t.category}</span></td>
                                         <td>{new Date(t.closingDate).toLocaleDateString()}</td>
+                                        <td>
+                                            {t.tenderDocument ? (
+                                                <button 
+                                                    onClick={() => openPdf(t.tenderDocument)}
+                                                    style={{ border: 'none', background: 'none', color: 'var(--primary-green)', cursor: 'pointer', fontWeight: '700', fontSize: '0.85rem' }}
+                                                >
+                                                    <i className="fas fa-file-pdf"></i> View PDF
+                                                </button>
+                                            ) : (
+                                                <span style={{ color: '#ccc', fontStyle: 'italic', fontSize: '0.8rem' }}>No Document</span>
+                                            )}
+                                        </td>
                                         <td>
                                             {t.googleFormLink ? (
                                                 <a
@@ -216,7 +255,44 @@ export default function AdminTenders() {
                                 />
                                 <small style={{ color: '#888', marginTop: '5px', display: 'block' }}>Applicants will be redirected to this link when they click "Apply".</small>
                             </div>
-                            <button type="submit" className="btn btn-primary" style={{ width: '100%', padding: '15px', fontWeight: '800' }}>Publish Tender Opportunity</button>
+
+                            <div className="form-field-wrapper">
+                                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', marginBottom: '8px' }}>OFFICIAL TENDER DOCUMENT (PDF)</label>
+                                <div 
+                                    onClick={() => document.getElementById('tenderPdf').click()}
+                                    style={{ 
+                                        border: '2px dashed #ddd', borderRadius: '10px', padding: '20px', textAlign: 'center', 
+                                        cursor: 'pointer', background: formData.tenderDocument ? '#f0fff4' : '#fafafa',
+                                        transition: 'all 0.3s'
+                                    }}
+                                >
+                                    <input 
+                                        type="file" 
+                                        id="tenderPdf" 
+                                        accept=".pdf" 
+                                        style={{ display: 'none' }} 
+                                        onChange={handleFileChange} 
+                                    />
+                                    {uploadingPdf ? (
+                                        <div style={{ color: 'var(--primary-green)', fontWeight: '700' }}>
+                                            <i className="fas fa-spinner fa-spin"></i> Processing...
+                                        </div>
+                                    ) : formData.tenderDocument ? (
+                                        <div style={{ color: 'var(--primary-green)', fontWeight: '700' }}>
+                                            <i className="fas fa-check-circle"></i> Document Attached (Max 30MB)
+                                        </div>
+                                    ) : (
+                                        <div style={{ color: '#666' }}>
+                                            <i className="fas fa-cloud-upload-alt" style={{ fontSize: '1.5rem', marginBottom: '8px', display: 'block' }}></i>
+                                            Click to upload official tender PDF (Max 30MB)
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+
+                            <button type="submit" className="btn btn-primary" style={{ width: '100%', padding: '15px', fontWeight: '800' }} disabled={uploadingPdf}>
+                                {uploadingPdf ? 'Processing PDF...' : 'Publish Tender Opportunity'}
+                            </button>
                         </form>
                     </div>
                 </div>

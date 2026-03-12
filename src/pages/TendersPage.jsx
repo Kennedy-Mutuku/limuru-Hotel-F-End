@@ -249,16 +249,22 @@ export default function TendersPage() {
                                     </div>
                                     {selectedTender.tenderDocument && (
                                         <div style={{ marginTop: '20px', borderTop: '1px solid #e2e8f0', paddingTop: '20px' }}>
+                                            <p style={{ fontSize: '0.85rem', color: '#666', marginBottom: '15px' }}>
+                                                An official procurement document is available for this tender. Please review all terms and conditions carefully.
+                                            </p>
                                             <button
                                                 className="btn btn-outline"
-                                                style={{ width: '100%', borderColor: 'var(--primary-orange)', color: 'var(--primary-orange)', fontWeight: '700' }}
+                                                style={{ 
+                                                    width: '100%', borderColor: 'var(--primary-orange)', color: 'var(--primary-orange)', 
+                                                    fontWeight: '700', padding: '15px', borderRadius: '10px'
+                                                }}
                                                 onClick={() => {
                                                     const newWindow = window.open();
                                                     newWindow.document.write(`<iframe src="${selectedTender.tenderDocument}" frameborder="0" style="border:0; top:0; left:0; bottom:0; right:0; width:100%; height:100%;" allowfullscreen></iframe>`);
-                                                    newWindow.document.title = "Tender Document";
+                                                    newWindow.document.title = "Tender Official Document";
                                                 }}
                                             >
-                                                <i className="fas fa-file-pdf" style={{ marginRight: '8px' }}></i> View Official Tender Document
+                                                <i className="fas fa-file-pdf" style={{ marginRight: '8px' }}></i> Read Full Tender Document (PDF)
                                             </button>
                                         </div>
                                     )}
