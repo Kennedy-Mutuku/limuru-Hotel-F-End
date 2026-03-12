@@ -1207,7 +1207,7 @@ export default function ResortDetail() {
                     borderBottom: '1px solid rgba(255,255,255,0.1)'
                 }}>
                     <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <Link to="/resorts" style={{ color: 'white', display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}>
+                        <Link to="/" style={{ color: 'white', display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}>
                             <i className="fas fa-arrow-left"></i>
                             <span>Back <span className="compact-hide">to Jumuia Resorts Home</span></span>
                         </Link>

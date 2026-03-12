@@ -343,62 +343,49 @@
     }
 
     .hero::before {
-        display: none !important;
-        animation: none !important;
+        display: block !important; /* Re-enable for professional backdrop */
+        animation: slideShow 18s infinite !important;
+        filter: brightness(0.5); /* Slightly darker for mobile readability */
     }
 
     .hero {
-        height: 100svh; /* Use SVH for mobile browser bottom bars */
-        padding: 0;
-        display: flex;
-        align-items: center;
+        height: auto; /* Shrink to content */
+        padding: 100px 0 60px; /* Shifted card upwards: reduced top gap for better visual balance */
+        display: flex; /* Flexbox for horizontal centering */
+        flex-direction: column;
+        align-items: center; 
         justify-content: center;
-        background: var(--primary-green); /* Solid dark background outside the card */
+        background: transparent !important; /* Reveal the animated ::before */
+        min-height: unset !important; /* Force override any lower queries */
     }
 
     .hero-content {
-        position: relative; /* Base for animated pseudo-element */
-        isolation: isolate; /* Create new stacking context for negative z-index children */
-        overflow: hidden; /* Constrain animation to card dimensions */
+        position: relative; 
+        isolation: isolate; 
+        overflow: hidden; 
         width: 92%;
         max-width: 420px;
         height: auto;
-        min-height: 48vh; /* Sufficient height for the "animated area" */
+        min-height: unset; 
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        padding: 35px 20px;
+        padding: 35px 20px; 
         border-radius: 28px;
-        box-shadow: 0 15px 45px rgba(0,0,0,0.4);
-        border: 1px solid rgba(255,255,255,0.2);
-        margin-top: 35px;
-        background: transparent; /* Explicit transparency */
+        /* Glassmorphism Effect */
+        background: rgba(10, 26, 1, 0.4); /* Subtle green tint */
+        backdrop-filter: blur(12px); /* Blurred motion underneath */
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        margin: 0; 
     }
 
-    /* Moving images constrained to the card's width and height */
-    .hero-content::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        z-index: -2;
-        background-image: url('/images/resorts/limuru/limuru-front.jpeg'); /* Initial state */
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        animation: slideShow 18s infinite;
-        will-change: background-image; /* Hardware acceleration hint */
-    }
-
-    /* Darkening overlay for text legibility */
+    /* Constrained pseudo-elements removed in favor of full hero background */
+    .hero-content::before,
     .hero-content::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        z-index: -1;
-        background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.7)); /* Graduated tint */
-        backdrop-filter: blur(3px); /* Subtler professional blur */
-        -webkit-backdrop-filter: blur(3px);
+        display: none !important;
     }
 
     .hero h1 {
@@ -444,7 +431,11 @@
     .resorts-section-pad,
     .services-section,
     .booking-section {
-        padding: 30px 0 !important; /* Compact section padding */
+        padding: 25px 0 !important; /* Even more compact */
+    }
+
+    .vision-mission {
+        padding: 5px 0 20px !important; /* Almost zero gap from hero */
     }
 
     .vision-card,
@@ -493,7 +484,7 @@
 
 @media (max-width: 576px) {
     .hero {
-        min-height: 550px;
+        min-height: unset;
     }
 
     .hero h1 {
