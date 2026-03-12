@@ -6,6 +6,16 @@ import './Header.css';
 
 export default function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
+    const [mobileMenus, setMobileMenus] = useState({ about: false, feedback: false });
+
+    const toggleMobileMenu = (e, menu) => {
+        if (window.innerWidth <= 768) {
+            e.preventDefault();
+            setMobileMenus(prev => ({ ...prev, [menu]: !prev[menu] }));
+        } else {
+            setMenuOpen(false);
+        }
+    };
     const { user, logout } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
@@ -50,16 +60,17 @@ export default function Header() {
                     </div>
                 </Link>
 
-                <button className="mobile-menu-btn" onClick={() => setMenuOpen(!menuOpen)}>
+                <button className={`mobile-menu-btn ${menuOpen ? 'menu-open' : ''}`} onClick={() => setMenuOpen(!menuOpen)}>
                     <i className={menuOpen ? 'fas fa-times' : 'fas fa-bars'}></i>
                 </button>
 
+                <div className={`mobile-overlay ${menuOpen ? 'active' : ''}`} onClick={() => setMenuOpen(false)}></div>
                 <nav className={`main-nav ${menuOpen ? 'active' : ''}`}>
                     <NavLink to="/" end onClick={handleHomeClick}>Home</NavLink>
                     {/* About Us Dropdown */}
-                    <div className="nav-dropdown">
-                        <NavLink to="/about" className="dropdown-trigger" onClick={() => setMenuOpen(false)}>
-                            About Us <i className="fas fa-chevron-down" style={{ fontSize: '0.75rem', marginLeft: '4px' }}></i>
+                    <div className={`nav-dropdown ${mobileMenus.about ? 'mobile-expanded' : ''}`}>
+                        <NavLink to="/about" className="dropdown-trigger" onClick={(e) => toggleMobileMenu(e, 'about')}>
+                            About Us <i className={`fas fa-chevron-${mobileMenus.about ? 'up' : 'down'}`} style={{ fontSize: '0.75rem', marginLeft: '4px' }}></i>
                         </NavLink>
                         <div className="dropdown-menu">
                             <Link to="/about#who-we-are" onClick={() => setMenuOpen(false)}>Who We Are</Link>
@@ -69,7 +80,7 @@ export default function Header() {
                     </div>
 
                     {/* Resorts Dropdown */}
-                    <div className="nav-dropdown">
+                    <div className="nav-dropdown mobile-always-expanded">
                         <NavLink to="/resorts" className="dropdown-trigger" onClick={() => setMenuOpen(false)}>
                             Our Resorts <i className="fas fa-chevron-down" style={{ fontSize: '0.75rem', marginLeft: '4px' }}></i>
                         </NavLink>
@@ -84,9 +95,9 @@ export default function Header() {
                     <NavLink to="/offers" onClick={() => setMenuOpen(false)}>Offers</NavLink>
 
                     {/* Feedback & Contact Dropdown */}
-                    <div className="nav-dropdown">
-                        <NavLink to="/feedback" className="dropdown-trigger" onClick={() => setMenuOpen(false)}>
-                            Feedback <i className="fas fa-chevron-down" style={{ fontSize: '0.75rem', marginLeft: '4px' }}></i>
+                    <div className={`nav-dropdown ${mobileMenus.feedback ? 'mobile-expanded' : ''}`}>
+                        <NavLink to="/feedback" className="dropdown-trigger" onClick={(e) => toggleMobileMenu(e, 'feedback')}>
+                            Feedback <i className={`fas fa-chevron-${mobileMenus.feedback ? 'up' : 'down'}`} style={{ fontSize: '0.75rem', marginLeft: '4px' }}></i>
                         </NavLink>
                         <div className="dropdown-menu">
                             <Link to="/feedback#feedback" onClick={() => setMenuOpen(false)}>Guest Feedback</Link>
@@ -95,7 +106,7 @@ export default function Header() {
                     </div>
 
                     {/* Join Us Dropdown */}
-                    <div className="nav-dropdown">
+                    <div className="nav-dropdown mobile-always-expanded">
                         <NavLink to="/tenders" className="dropdown-trigger" onClick={() => setMenuOpen(false)}>
                             Join Us <i className="fas fa-chevron-down" style={{ fontSize: '0.75rem', marginLeft: '4px' }}></i>
                         </NavLink>
@@ -105,10 +116,7 @@ export default function Header() {
                         </div>
                     </div>
 
-                    {/* Mobile-Only CTA - Hidden on Desktop via CSS */}
-                    <div className="mobile-only-cta">
-                        <Link to="/#quick-book" className="btn btn-primary" onClick={() => setMenuOpen(false)} style={{ width: '100%', textAlign: 'center' }}>Book Now</Link>
-                    </div>
+
 
                     <NavLink to="/admin/login" className="btn btn-secondary login-btn" onClick={() => setMenuOpen(false)}>Log In</NavLink>
                     <Link to="/#quick-book" className="btn btn-primary nav-book-btn" onClick={() => setMenuOpen(false)}>Book Now</Link>

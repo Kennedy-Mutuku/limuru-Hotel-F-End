@@ -203,6 +203,22 @@ img {
 
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
+    /* Center Booking Form Fields on Mobile */
+    #guest-info label,
+    #stay-details label,
+    #children-details label {
+        text-align: center !important;
+    }
+
+    #guest-info input,
+    #guest-info select,
+    #stay-details input,
+    #stay-details select,
+    #children-details input,
+    #children-details select {
+        text-align: left !important;
+        text-align-last: left !important; 
+    }
     .btn {
         padding: 10px 20px;
         font-size: 0.9rem;

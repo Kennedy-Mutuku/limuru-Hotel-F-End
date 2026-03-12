@@ -3,7 +3,7 @@
     position: fixed;
     width: 100%;
     top: 0;
-    z-index: 1000;
+    z-index: 9999;
     background-color: var(--primary-white);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
@@ -214,43 +214,174 @@
 }
 
 @media (max-width: 768px) {
+    .header-top-actions {
+        display: none; /* Hide contacts to give slogan full space */
+    }
+
+    .header-top-content {
+        justify-content: center; /* Center the slogan */
+        text-align: center;
+        width: 100%;
+    }
+
+    .slogan {
+        font-size: 0.82rem;
+    }
+
     .mobile-menu-btn {
-        display: block;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        transition: all 0.3s;
+        z-index: 1000; /* Above the overlay and menu */
+        color: var(--primary-green);
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .mobile-menu-btn.menu-open {
+        color: var(--primary-green); /* Keep green to stay visible on white header */
+        background: rgba(34, 68, 15, 0.08); /* Subtle highlight */
+    }
+
+    .mobile-menu-btn:active {
+        transform: translateY(-50%) scale(0.9);
+    }
+
+    .header-container {
+        padding: 12px 15px;
+        position: relative; /* Context for absolute hamburger menu */
+        justify-content: center;
+    }
+
+    .logo {
+        flex-direction: row; /* Display logo and text side-by-side */
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        margin: 0; 
+        text-align: left; /* Keep text left aligned relative to the logo image */
+        max-width: calc(100vw - 110px); /* Strictly constrain width so it can never overflow horizontally */
+    }
+
+    .logo-img {
+        width: 75px; /* Significantly enlarged to beautifully match height of text stack */
+        height: auto;
+        flex-shrink: 0;
+    }
+
+    .logo-text {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .logo-text h1 {
+        font-size: 1.25rem; /* Perfectly sized to fit without overflowing */
+        margin-bottom: 0px; /* Tighter layout relative to large logo */
+        white-space: normal; /* Override desktop nowrap */
+        line-height: 1.2;
+    }
+
+    .logo-text p {
+        font-size: 0.72rem;
+        white-space: normal; /* Allow text to wrap! */
+        line-height: 1.3;
+        max-width: 100%; /* Hug text perfectly */
+        color: var(--text-light);
+    }
+
+    .mobile-overlay {
+        position: fixed;
+        top: 129px; /* Positioned exactly below the header */
+        left: 0;
+        width: 100%;
+        height: calc(100vh - 129px); /* Fill remaining viewport height */
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        z-index: 998;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .mobile-overlay.active {
+        opacity: 1;
+        visibility: visible;
     }
 
     .main-nav {
         position: fixed;
-        top: 90px;
-        left: -100%;
-        width: 100%;
-        height: calc(100vh - 90px);
-        background-color: var(--primary-white);
+        top: 129px; /* Positioned exactly below the header */
+        left: -280px;
+        width: 240px;
+        max-width: 80vw;
+        height: max-content;
+        max-height: calc(100vh - 129px); /* Strictly fits the content below the header */
+        border-bottom-right-radius: 20px;
+        background: linear-gradient(180deg, var(--dark-green) 0%, var(--primary-green) 100%);
         flex-direction: column;
-        align-items: center;
+        align-items: flex-start;
         justify-content: flex-start;
-        padding-top: 40px;
-        padding-bottom: 40px;
+        padding-top: 25px; /* Reduced since header is no longer overlapping */
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-bottom: 25px;
         overflow-y: auto;
-        transition: left 0.3s;
-        gap: 30px;
+        transition: left 0.4s cubic-bezier(0.175, 0.885, 0.32, 1);
+        gap: 10px;
+        z-index: 999;
+        box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.3);
+        opacity: 1; /* Always 1, managed by 'left' property */
+        visibility: visible;
+        transform: none;
     }
 
     .main-nav.active {
         left: 0;
     }
 
+    .main-nav.active > * {
+        animation: none; /* Removed the fadeUp animation because sliding covers it cleanly */
+        opacity: 1;
+    }
+
+    .main-nav a {
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: var(--primary-white);
+        width: 100%;
+        padding: 5px 0;
+    }
+
+    .main-nav a.active {
+        color: var(--primary-orange);
+    }
+
+    .main-nav a.active::after {
+        display: none;
+    }
+
     .nav-dropdown {
         width: 100%;
         display: flex;
         flex-direction: column;
-        align-items: center;
+        align-items: flex-start;
     }
 
-    .nav-dropdown>.dropdown-trigger {
-        padding-bottom: 10px;
+    .nav-dropdown > .dropdown-trigger {
+        padding-bottom: 8px;
         margin-bottom: 0px;
-        justify-content: center;
+        justify-content: space-between;
         width: 100%;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
     }
 
     .dropdown-menu {
@@ -259,20 +390,49 @@
         visibility: visible;
         transform: none;
         box-shadow: none;
-        background-color: #f9f9f9;
-        margin-top: 5px;
-        margin-bottom: 10px;
+        background-color: rgba(0, 0, 0, 0.15);
+        margin-top: 8px;
+        margin-bottom: 5px;
         border: none;
         display: none;
         width: 100%;
-        text-align: center;
+        text-align: left;
+        border-radius: 8px;
+        padding: 5px 0;
     }
 
-    /* On mobile, display the menu when hovered, clicked, or focused */
-    .nav-dropdown:hover .dropdown-menu,
-    .nav-dropdown:active .dropdown-menu,
-    .nav-dropdown:focus-within .dropdown-menu {
+    .dropdown-menu a,
+    .dropdown-menu a:link,
+    .dropdown-menu a:visited {
+        font-size: 0.85rem;
+        color: rgba(255, 255, 255, 0.85) !important;
+        padding: 8px 15px;
+        border-bottom: none;
+    }
+
+    .dropdown-menu a:active {
+        background-color: rgba(255, 255, 255, 0.08) !important;
+        color: var(--primary-white) !important;
+    }
+
+    /* Class-based expansion for mobile */
+    .nav-dropdown.mobile-expanded .dropdown-menu,
+    .nav-dropdown.mobile-always-expanded .dropdown-menu {
         display: block;
+    }
+
+    .nav-dropdown.mobile-expanded .dropdown-menu {
+        animation: slideDownMobile 0.3s ease forwards;
+    }
+
+    /* Hide chevron for always expanded sections */
+    .nav-dropdown.mobile-always-expanded .dropdown-trigger i {
+        display: none;
+    }
+
+    @keyframes slideDownMobile {
+        from { opacity: 0; transform: translateY(-5px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 
     .header-top-actions {
@@ -285,19 +445,36 @@
     }
 
     .mobile-only-cta {
-        display: block;
-        /* Visible on mobile */
-        width: 80%;
-        margin-top: 10px;
+        display: none; /* User requested removal */
     }
 
-    .login-btn {
-        margin-left: 0;
-        width: 80%;
-    }
-
+    .btn.login-btn,
     .mobile-auth-btn {
-        width: 80%;
-        text-align: center;
+        margin-left: 0;
+        width: 100%;
+        background-color: transparent !important;
+        border: 1px solid rgba(255, 255, 255, 0.5) !important;
+        color: var(--primary-white) !important;
+        margin-top: 10px;
+        padding: 6px 15px !important;
+        height: 38px !important;
+        font-size: 0.85rem !important;
+    }
+    
+    .btn.login-btn:hover,
+    .mobile-auth-btn:hover {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    .btn.nav-book-btn {
+        width: 100%;
+        background-color: var(--primary-orange) !important;
+        color: var(--primary-white) !important;
+        border: none !important;
+        margin-left: 0;
+        margin-top: 5px;
+        padding: 6px 15px !important;
+        height: 38px !important;
+        font-size: 0.85rem !important;
     }
 }

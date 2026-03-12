@@ -11,6 +11,13 @@ export default function TendersPage() {
     const [loadingRecs, setLoadingRecs] = useState(true);
     const [selectedTender, setSelectedTender] = useState(null);
     const [selectedRec, setSelectedRec] = useState(null);
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth <= 768);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     useEffect(() => {
         fetchTenders();
@@ -143,16 +150,24 @@ export default function TendersPage() {
             </section>
 
             {selectedTender && (
-                <div className="success-modal-overlay" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-                    <div className="admin-card anim-pop-in" style={{ maxWidth: '900px', width: '100%', maxHeight: '90vh', overflowY: 'auto', padding: '40px', position: 'relative' }}>
-                        <button onClick={() => setSelectedTender(null)} style={{ position: 'absolute', top: '20px', right: '20px', background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer', color: '#ccc' }}>&times;</button>
-                        {/* Existing Tender Modal Content */}
-                        <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '40px' }}>
+                <div className="success-modal-overlay" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: isMobile ? '10px' : '20px' }}>
+                    <div className="admin-card anim-pop-in" style={{ 
+                        maxWidth: '960px', 
+                        width: '100%', 
+                        maxHeight: '95vh', 
+                        overflowY: 'auto', 
+                        padding: isMobile ? '25px 15px' : '40px', 
+                        position: 'relative',
+                        borderRadius: isMobile ? '15px' : '20px'
+                    }}>
+                        <button onClick={() => setSelectedTender(null)} style={{ position: 'absolute', top: '15px', right: '15px', background: 'white', borderRadius: '50%', width: '30px', height: '30px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #eee', fontSize: '1.2rem', cursor: 'pointer', color: '#999', zIndex: 10 }}>&times;</button>
+                        
+                        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1.2fr 0.8fr', gap: isMobile ? '25px' : '40px' }}>
                             <div>
-                                <div style={{ marginBottom: '30px' }}>
-                                    <span style={{ background: 'var(--primary-green)', color: 'white', padding: '4px 12px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: '700', marginBottom: '15px', display: 'inline-block' }}>{selectedTender.category}</span>
-                                    <h2 style={{ fontSize: '2rem', color: 'var(--primary-green)', marginBottom: '10px' }}>{selectedTender.title}</h2>
-                                    <p style={{ color: 'var(--text-light)', fontWeight: '600' }}>Reference: {selectedTender.referenceNumber}</p>
+                                <div style={{ marginBottom: isMobile ? '20px' : '30px' }}>
+                                    <span style={{ background: 'var(--primary-green)', color: 'white', padding: '4px 12px', borderRadius: '20px', fontSize: '0.7rem', fontWeight: '700', marginBottom: '12px', display: 'inline-block' }}>{selectedTender.category}</span>
+                                    <h2 style={{ fontSize: isMobile ? '1.5rem' : '2.2rem', color: 'var(--primary-green)', marginBottom: '8px', lineHeight: '1.2' }}>{selectedTender.title}</h2>
+                                    <p style={{ color: 'var(--text-light)', fontWeight: '600', fontSize: '0.85rem' }}>Reference: {selectedTender.referenceNumber}</p>
                                 </div>
 
                                 <div style={{ marginBottom: '30px' }}>
@@ -246,16 +261,24 @@ export default function TendersPage() {
 
             {/* Application Modal (Recruitment) */}
             {selectedRec && (
-                <div className="success-modal-overlay" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-                    <div className="admin-card anim-pop-in" style={{ maxWidth: '800px', width: '100%', maxHeight: '90vh', overflowY: 'auto', padding: '40px', position: 'relative' }}>
-                        <button onClick={() => setSelectedRec(null)} style={{ position: 'absolute', top: '20px', right: '20px', background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer', color: '#ccc' }}>&times;</button>
+                <div className="success-modal-overlay" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: isMobile ? '10px' : '20px' }}>
+                    <div className="admin-card anim-pop-in" style={{ 
+                        maxWidth: '850px', 
+                        width: '100%', 
+                        maxHeight: '95vh', 
+                        overflowY: 'auto', 
+                        padding: isMobile ? '30px 20px' : '50px', 
+                        position: 'relative',
+                        borderRadius: isMobile ? '15px' : '20px' 
+                    }}>
+                        <button onClick={() => setSelectedRec(null)} style={{ position: 'absolute', top: '15px', right: '15px', background: 'white', borderRadius: '50%', width: '30px', height: '30px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #eee', fontSize: '1.2rem', cursor: 'pointer', color: '#999', zIndex: 10 }}>&times;</button>
 
                         <div style={{ animation: 'fadeIn 0.3s ease' }}>
                             <>
-                                <div style={{ marginBottom: '30px', textAlign: 'center' }}>
-                                    <span style={{ background: 'var(--primary-orange)', color: 'white', padding: '4px 12px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: '700', marginBottom: '15px', display: 'inline-block' }}>{selectedRec.department}</span>
-                                    <h2 style={{ fontSize: '2.5rem', color: 'var(--primary-green)', marginBottom: '10px' }}>{selectedRec.title}</h2>
-                                    <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', color: 'var(--text-light)' }}>
+                                <div style={{ marginBottom: isMobile ? '25px' : '35px', textAlign: 'center' }}>
+                                    <span style={{ background: 'var(--primary-orange)', color: 'white', padding: '4px 12px', borderRadius: '20px', fontSize: '0.7rem', fontWeight: '700', marginBottom: '12px', display: 'inline-block' }}>{selectedRec.department}</span>
+                                    <h2 style={{ fontSize: isMobile ? '1.8rem' : '2.8rem', color: 'var(--primary-green)', marginBottom: '10px', lineHeight: '1.1' }}>{selectedRec.title}</h2>
+                                    <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: isMobile ? '10px' : '20px', color: 'var(--text-light)', fontSize: '0.9rem' }}>
                                         <span><i className="fas fa-clock"></i> {selectedRec.type}</span>
                                         <span><i className="fas fa-map-marker-alt"></i> {selectedRec.location}</span>
                                     </div>

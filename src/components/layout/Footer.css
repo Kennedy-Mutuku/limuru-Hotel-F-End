@@ -88,3 +88,47 @@
     color: rgba(255, 255, 255, 0.7);
     font-size: 0.9rem;
 }
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+    .site-footer {
+        padding: 40px 0 20px; /* Reduced from 70px top padding */
+    }
+
+    .footer-container {
+        gap: 25px; /* Reduced from 40px */
+        margin-bottom: 25px;
+    }
+
+    .footer-column h3 {
+        font-size: 1.2rem; /* More compact header size */
+        margin-bottom: 20px;
+    }
+
+    .footer-column h3::after {
+        bottom: -6px;
+    }
+
+    .footer-links li {
+        margin-bottom: 8px; /* Tighter vertical spacing between links */
+    }
+
+    .contact-info {
+        gap: 10px; /* Tighter contact details spacing */
+    }
+
+    .social-links {
+        margin-top: 15px;
+        gap: 12px;
+    }
+
+    .social-links a {
+        width: 36px; /* Smaller social icons for mobile balance */
+        height: 36px;
+    }
+
+    .copyright {
+        padding-top: 20px; /* Reduced from 30px */
+        font-size: 0.82rem;
+    }
+}

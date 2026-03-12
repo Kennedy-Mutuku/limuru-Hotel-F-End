@@ -226,6 +226,7 @@
     padding: 25px;
     box-shadow: var(--shadow);
     margin-bottom: 20px;
+    min-width: 0; /* Critical for CSS Grid text wrapping and horizontal scrolling */
 }
 
 .admin-card h3 {
@@ -238,6 +239,8 @@
 /* ===== Admin Tables ===== */
 .admin-table-wrapper {
     overflow-x: auto;
+    width: 100%;
+    max-width: 100%;
 }
 
 .admin-table {
@@ -323,6 +326,7 @@
     display: flex;
     gap: 10px;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .admin-toolbar select {
@@ -340,6 +344,8 @@
     align-items: center;
     justify-content: center;
     background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 .login-box {
@@ -504,6 +510,7 @@
     display: flex;
     gap: 10px;
     margin-bottom: 20px;
+    flex-wrap: wrap; /* allow wrapping on small screens */
 }
 
 .property-btn {
@@ -654,8 +661,11 @@
 
     .admin-main {
         margin-left: 0;
-        padding: 90px 20px 30px; /* Space for fixed mobile header */
+        padding: 90px 15px 30px; /* Space for fixed mobile header */
         transition: all 0.3s;
+        width: 100%;
+        max-width: 100vw;
+        box-sizing: border-box;
     }
 
     .admin-page-header h1 {
@@ -712,6 +722,38 @@
     .admin-card {
         padding: 15px;
     }
+
+    /* Professional mobile login constraints */
+    .login-page {
+        padding: 15px;
+    }
+
+    .login-box {
+        padding: 30px 20px;
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+    }
+
+    .login-header-logo {
+        margin-bottom: 20px;
+    }
+
+    .login-header-logo svg {
+        width: 50px !important; /* using !important because it might have inline style */
+        margin-bottom: 5px;
+    }
+
+    .login-header-logo h3 {
+        font-size: 1.35rem;
+    }
+
+    .login-title {
+        margin-bottom: 20px;
+    }
+
+    .login-title h2 {
+        font-size: 1.4rem;
+    }
 }
 
 .perf-grid-row {
@@ -723,7 +765,7 @@
 
 .charts-grid-row {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(460px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr));
     gap: 24px;
 }
 
@@ -752,10 +794,19 @@
 
     .admin-main {
         margin-left: 0;
-        padding: 20px;
+        padding: 90px 15px 20px; /* Space for mobile header */
+        width: 100vw;
+        max-width: 100vw;
+        box-sizing: border-box;
+    }
+    
+    .admin-wrapper {
+        overflow-x: hidden;
+        width: 100%;
+        max-width: 100vw;
     }
 
     .stats-grid {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr;
     }
 }

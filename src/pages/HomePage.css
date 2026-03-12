@@ -343,79 +343,134 @@
     }
 
     .hero {
-        height: auto;
-        min-height: 260px;
-        /* Aggressively reduced further */
-        padding: 65px 0 20px;
-        /* Tighter vertical padding */
+        height: 100svh; /* Use SVH for mobile browser bottom bars */
+        padding: 0;
         display: flex;
         align-items: center;
         justify-content: center;
     }
 
     .hero-content {
-        width: 100%;
-        padding: 0 15px;
+        width: 92%;
+        max-width: 420px;
+        height: auto;
+        min-height: 45vh; /* Occupies "half-ish" but hugs content more professionally */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 20px 20px; /* Tighter vertical padding */
+        background: rgba(10, 26, 1, 0.65); /* Slightly darker for better contrast */
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-radius: 28px;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        border: 1px solid rgba(255,255,255,0.15);
+        margin-top: 35px; /* Reduced offset to bring card closer to header */
     }
 
     .hero h1 {
-        font-size: 1.6rem;
-        /* Scaled down even more */
-        margin-bottom: 8px;
+        font-size: 2.1rem;
+        margin-bottom: 8px; /* Reduced from 15px */
         line-height: 1.2;
     }
 
     .hero p.tagline {
-        font-size: 1rem;
-        margin-bottom: 15px;
+        font-size: 1.15rem;
+        margin-bottom: 10px; /* Reduced from 15px */
     }
 
     .hero p.description {
-        display: none;
-        /* Hide for all mobile screens to save space */
+        display: block; 
+        font-size: 0.92rem;
+        line-height: 1.45;
+        margin-bottom: 18px; /* Reduced from 25px */
+        color: rgba(255, 255, 255, 0.9);
     }
 
     .hero .btn {
-        padding: 12px 30px !important;
-        /* Scale down the large inline padding */
-        font-size: 1rem !important;
+        padding: 14px 30px !important;
+        font-size: 1.05rem !important;
+        width: 100%;
+        border-radius: 50px;
     }
 
-    .vm-grid,
-    .services-grid {
-        grid-template-columns: 1fr;
-        gap: 15px;
+    .section-header {
+        margin-bottom: 25px !important; /* Half of desktop margin */
     }
 
-    .resorts-grid {
-        grid-template-columns: 1fr;
+    .section-header h2 {
+        font-size: 1.8rem;
+        margin-bottom: 5px;
+    }
+
+    .section-header p {
+        font-size: 0.9rem;
     }
 
     .vm-section,
+    .resorts-section-pad,
     .services-section,
     .booking-section {
-        padding: 40px 0;
+        padding: 30px 0 !important; /* Compact section padding */
     }
 
-    .vm-card,
+    .vision-card,
+    .mission-card,
+    .core-values-card,
+    .resort-card,
     .service-card {
-        padding: 25px 20px;
+        border-radius: 18px;
+        padding: 20px 15px !important; /* Much tighter padding */
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        border: 1px solid var(--gray-border);
+    }
+
+    .vm-icon, .service-icon {
+        font-size: 1.8rem !important;
+        margin-bottom: 12px !important;
+    }
+
+    .vm-grid,
+    .services-grid,
+    .resorts-grid {
+        grid-template-columns: 1fr;
+        gap: 12px !important; /* Tighter gap between rows */
+    }
+
+    .resort-img {
+        height: 180px !important; /* Shorter images for dense look */
+        border-top-left-radius: 18px;
+        border-top-right-radius: 18px;
+    }
+
+    .values-tags {
+        gap: 6px !important;
+        margin-bottom: 15px !important;
+    }
+
+    .value-tag {
+        padding: 5px 12px !important;
+        font-size: 0.8rem !important;
+    }
+
+    .motto-banner p {
+        font-size: 1.1rem !important;
     }
 }
 
 @media (max-width: 576px) {
     .hero {
-        padding: 60px 0 15px;
-        min-height: 220px;
+        min-height: 550px;
     }
 
     .hero h1 {
-        font-size: 1.4rem;
+        font-size: 1.95rem;
     }
 
     .hero p.tagline {
-        font-size: 0.85rem;
-        margin-bottom: 12px;
+        font-size: 1.05rem;
+        margin-bottom: 15px;
     }
 
     .section-title h2 {

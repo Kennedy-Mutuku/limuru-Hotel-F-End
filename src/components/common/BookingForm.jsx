@@ -593,11 +593,11 @@ export default function BookingForm({ initialResort: propResort }) {
                                     <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
                                         <div>
                                             <label style={{ fontSize: '0.72rem', color: '#888', fontWeight: '600', display: 'block', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>First Name <span style={{ color: '#e74c3c' }}>*</span></label>
-                                            <input type="text" name="firstName" className="form-control" placeholder="e.g. John" value={formData.firstName} onChange={handleChange} required style={{ padding: '10px 14px', borderRadius: '10px' }} />
+                                            <input type="text" name="firstName" className="form-control" placeholder="Kennedy" value={formData.firstName} onChange={handleChange} required style={{ padding: '10px 14px', borderRadius: '10px' }} />
                                         </div>
                                         <div>
                                             <label style={{ fontSize: '0.72rem', color: '#888', fontWeight: '600', display: 'block', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Last Name <span style={{ color: '#e74c3c' }}>*</span></label>
-                                            <input type="text" name="lastName" className="form-control" placeholder="e.g. Doe" value={formData.lastName} onChange={handleChange} required style={{ padding: '10px 14px', borderRadius: '10px' }} />
+                                            <input type="text" name="lastName" className="form-control" placeholder="Mutuku" value={formData.lastName} onChange={handleChange} required style={{ padding: '10px 14px', borderRadius: '10px' }} />
                                         </div>
                                     </div>
                                     <div style={{ marginBottom: '12px' }}>
@@ -647,7 +647,7 @@ export default function BookingForm({ initialResort: propResort }) {
                                     </div>
 
                                     {/* Number of Delegates/Guests/Adults - Move up if conference */}
-                                    <div style={{ display: 'grid', gridTemplateColumns: (!isConference && !isHostel) ? '1fr 1fr' : '1fr', gap: '10px', marginBottom: '12px' }}>
+                                    <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : ((!isConference && !isHostel) ? '1fr 1fr' : '1fr'), gap: '10px', marginBottom: '12px' }}>
                                         {isFlatRate ? (
                                             <div>
                                                 <label style={{ fontSize: '0.72rem', color: '#888', fontWeight: '600', display: 'block', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
@@ -685,7 +685,7 @@ export default function BookingForm({ initialResort: propResort }) {
                                     </div>
 
                                     {/* Dates */}
-                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '12px' }}>
+                                    <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: '10px', marginBottom: '12px' }}>
                                         <div>
                                             <label style={{ fontSize: '0.72rem', color: '#888', fontWeight: '600', display: 'block', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Check-in <span style={{ color: '#e74c3c' }}>*</span></label>
                                             <input type="date" name="checkIn" className="form-control" min={today} value={formData.checkIn} onChange={handleChange} required style={{ padding: '10px 14px', borderRadius: '10px' }} />
@@ -697,7 +697,7 @@ export default function BookingForm({ initialResort: propResort }) {
                                     </div>
 
                                     {/* Meal Plan Dropdown */}
-                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '12px' }}>
+                                    <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: '10px', marginBottom: '12px' }}>
                                         <div>
                                             <label style={{ fontSize: '0.72rem', color: '#888', fontWeight: '600', display: 'block', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Meal Plan <span style={{ color: '#e74c3c' }}>*</span></label>
                                             <select name="packageType" className="form-control" value={formData.packageType} onChange={handleChange} required style={{ padding: '10px 14px', borderRadius: '10px' }}>
@@ -728,7 +728,7 @@ export default function BookingForm({ initialResort: propResort }) {
                                     </div>
 
                                     {/* ── Guest Type & Payment Dropdowns ── */}
-                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '12px' }}>
+                                    <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: '10px', marginBottom: '12px' }}>
                                         <div>
                                             <label style={{ fontSize: '0.72rem', color: '#888', fontWeight: '600', display: 'block', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Guest Type <span style={{ color: '#e74c3c' }}>*</span></label>
                                             <select name="guestType" className="form-control" value={formData.guestType} onChange={handleChange} required style={{ padding: '10px 14px', borderRadius: '10px' }}>
@@ -771,7 +771,7 @@ export default function BookingForm({ initialResort: propResort }) {
                                                     <div style={{ width: '22px', height: '22px', borderRadius: '50%', background: 'var(--primary-green)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.65rem', fontWeight: '800' }}>{idx + 1}</div>
                                                     Child {idx + 1}
                                                 </div>
-                                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                                                <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: '10px' }}>
                                                     <div>
                                                         <label style={{ fontSize: '0.7rem', color: '#888', fontWeight: '600', display: 'block', marginBottom: '3px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Age <span style={{ color: '#e74c3c' }}>*</span></label>
                                                         <input type="number" min="0" max="17" placeholder="e.g. 5" className="form-control" value={child.age}

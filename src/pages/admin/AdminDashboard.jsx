@@ -316,7 +316,7 @@ export default function AdminDashboard() {
                                 <h3 style={{ margin: 0, marginBottom: '3px' }}>📈 Revenue Trend</h3>
                                 <p style={{ margin: 0, fontSize: '0.8rem', color: '#888' }}>Monthly bookings & revenue (all time)</p>
                             </div>
-                            <div style={{ display: 'flex', gap: '16px', marginBottom: '12px' }}>
+                            <div style={{ display: 'flex', gap: '16px', marginBottom: '12px', flexWrap: 'wrap' }}>
                                 {[{ c: '#16a34a', lbl: 'Revenue (KES)' }, { c: '#f97316', lbl: 'Bookings' }].map(l => (
                                     <div key={l.lbl} style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.72rem', fontWeight: '700', color: '#555' }}>
                                         <div style={{ width: '12px', height: '3px', background: l.c, borderRadius: '2px' }}></div>{l.lbl}
@@ -333,7 +333,7 @@ export default function AdminDashboard() {
                                 <h3 style={{ margin: 0, marginBottom: '3px' }}>🌐 Ecosystem Activity</h3>
                                 <p style={{ margin: 0, fontSize: '0.8rem', color: '#888' }}>Job applications, supplier bids &amp; offer claims — by month</p>
                             </div>
-                            <div style={{ display: 'flex', gap: '16px', marginBottom: '12px' }}>
+                            <div style={{ display: 'flex', gap: '16px', marginBottom: '12px', flexWrap: 'wrap' }}>
                                 {[{ c: '#4338ca', lbl: 'Job Applications' }, { c: '#9c27b0', lbl: 'Supplier Bids' }, { c: '#0ea5e9', lbl: 'Offer Claims' }].map(l => (
                                     <div key={l.lbl} style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.72rem', fontWeight: '700', color: '#555' }}>
                                         <div style={{ width: '14px', height: '3px', background: l.c, borderRadius: '2px' }}></div>{l.lbl}
