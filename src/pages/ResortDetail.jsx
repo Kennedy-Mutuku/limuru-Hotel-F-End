@@ -59,6 +59,14 @@ export function ResortOverview() {
     const data = RESORT_DATA[resort];
     if (!data) return null;
 
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth <= 768);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     const backgroundImage = data.heroImage || data.image;
 
     return (
@@ -69,22 +77,51 @@ export function ResortOverview() {
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 color: 'white',
-                padding: '120px 0 100px',
+                padding: isMobile ? '80px 0 60px' : '120px 0 100px',
                 textAlign: 'center',
                 position: 'relative'
             }}>
                 <div className="container">
-                    <h1 style={{ fontSize: '3.5rem', color: 'white', marginBottom: '20px', fontFamily: "'Playfair Display', serif", fontWeight: '700', textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}>{data.tagline}</h1>
-                    <p style={{ fontSize: '1.2rem', maxWidth: '800px', margin: '0 auto 50px', opacity: 0.95, lineHeight: '1.6' }}>{data.description}</p>
+                    <h1 style={{ 
+                        fontSize: isMobile ? '2.2rem' : '3.5rem', 
+                        color: 'white', 
+                        marginBottom: isMobile ? '15px' : '20px', 
+                        fontFamily: "'Playfair Display', serif", 
+                        fontWeight: '700', 
+                        textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
+                        lineHeight: '1.2' 
+                    }}>{data.tagline}</h1>
+                    <p style={{ 
+                        fontSize: isMobile ? '1rem' : '1.2rem', 
+                        maxWidth: '800px', 
+                        margin: `0 auto ${isMobile ? '30px' : '50px'}`, 
+                        opacity: 0.95, 
+                        lineHeight: '1.6' 
+                    }}>{data.description}</p>
 
 
 
                     {data.highlights && (
-                        <div style={{ display: 'flex', justifyContent: 'center', gap: '25px', flexWrap: 'wrap', marginTop: '60px' }}>
+                        <div style={{ 
+                            display: 'flex', 
+                            justifyContent: 'center', 
+                            gap: isMobile ? '12px' : '25px', 
+                            flexWrap: 'wrap', 
+                            marginTop: isMobile ? '30px' : '60px' 
+                        }}>
                             {data.highlights.map((h, i) => (
-                                <div key={i} style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(5px)', padding: '12px 25px', borderRadius: '50px', display: 'flex', alignItems: 'center', gap: '12px', border: '1px solid rgba(255,255,255,0.2)' }}>
-                                    <i className={h.icon} style={{ color: 'var(--primary-orange)' }}></i>
-                                    <span style={{ fontWeight: '600', fontSize: '0.95rem' }}>{h.title || h.text}</span>
+                                <div key={i} style={{ 
+                                    background: 'rgba(255,255,255,0.15)', 
+                                    backdropFilter: 'blur(5px)', 
+                                    padding: isMobile ? '8px 15px' : '12px 25px', 
+                                    borderRadius: '50px', 
+                                    display: 'flex', 
+                                    alignItems: 'center', 
+                                    gap: '12px', 
+                                    border: '1px solid rgba(255,255,255,0.2)' 
+                                }}>
+                                    <i className={h.icon} style={{ color: 'var(--primary-orange)', fontSize: isMobile ? '0.85rem' : '1rem' }}></i>
+                                    <span style={{ fontWeight: '600', fontSize: isMobile ? '0.8rem' : '0.95rem' }}>{h.title || h.text}</span>
                                 </div>
                             ))}
                         </div>
@@ -93,11 +130,11 @@ export function ResortOverview() {
             </section>
 
             {/* ─── OVERVIEW CONTENT ─── */}
-            <section style={{ padding: '100px 0' }}>
+            <section style={{ padding: isMobile ? '50px 0' : '100px 0' }}>
                 <div className="container">
-                    <div className="resort-overview-grid" style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '80px', alignItems: 'center' }}>
+                    <div className="resort-overview-grid" style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1.2fr 0.8fr', gap: isMobile ? '40px' : '80px', alignItems: 'center' }}>
                         <div>
-                            <h2 style={{ fontSize: '2.8rem', marginBottom: '30px', color: 'var(--primary-green)' }}>Discover {data.name}</h2>
+                            <h2 style={{ fontSize: isMobile ? '1.8rem' : '2.8rem', marginBottom: isMobile ? '20px' : '30px', color: 'var(--primary-green)' }}>Discover {data.name}</h2>
                             {resort === 'limuru' && (
                                 <>
                                     <p style={{ color: 'var(--text-light)', lineHeight: '1.8', fontSize: '1.15rem', marginBottom: '30px' }}>
@@ -188,61 +225,51 @@ export function ResortOverview() {
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '30px', marginBottom: '50px' }}>
                             {/* Swimming Pool Card */}
                             <div style={{ background: 'white', borderRadius: 'var(--radius)', overflow: 'hidden', boxShadow: 'var(--shadow)' }}>
-                                <div style={{ height: '220px', background: "url('/images/resorts/kisumu/swimming pool kisumu.jpg') center/cover", position: 'relative' }}>
+                                <div style={{ height: isMobile ? '180px' : '220px', background: "url('/images/resorts/kisumu/swimming pool kisumu.jpg') center/cover", position: 'relative' }}>
                                     <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '20px', background: 'linear-gradient(transparent, rgba(0,0,0,0.7))', color: 'white' }}>
-                                        <h3 style={{ color: 'white', margin: 0 }}><i className="fas fa-swimming-pool" style={{ marginRight: '10px' }}></i>Swimming Pool</h3>
+                                        <h3 style={{ color: 'white', margin: 0, fontSize: isMobile ? '1.1rem' : '1.25rem' }}><i className="fas fa-swimming-pool" style={{ marginRight: '10px' }}></i>Swimming Pool</h3>
                                     </div>
                                 </div>
-                                <div style={{ padding: '25px' }}>
-                                    <div style={{ display: 'flex', gap: '15px', marginBottom: '20px' }}>
-                                        <div style={{ flex: 1, background: 'var(--primary-green)', color: 'white', padding: '15px', borderRadius: '10px', textAlign: 'center' }}>
-                                            <div style={{ fontSize: '0.75rem', opacity: 0.8, marginBottom: '5px' }}>ADULTS</div>
-                                            <div style={{ fontSize: '1.5rem', fontWeight: '800' }}>KES 350</div>
+                                <div style={{ padding: isMobile ? '20px' : '25px' }}>
+                                    <div style={{ display: 'flex', gap: isMobile ? '10px' : '15px', marginBottom: isMobile ? '15px' : '20px' }}>
+                                        <div style={{ flex: 1, background: 'var(--primary-green)', color: 'white', padding: isMobile ? '10px' : '15px', borderRadius: '10px', textAlign: 'center' }}>
+                                            <div style={{ fontSize: '0.65rem', opacity: 0.8, marginBottom: '5px' }}>ADULTS</div>
+                                            <div style={{ fontSize: isMobile ? '1.2rem' : '1.5rem', fontWeight: '800' }}>KES 350</div>
                                         </div>
-                                        <div style={{ flex: 1, background: 'var(--primary-orange)', color: 'white', padding: '15px', borderRadius: '10px', textAlign: 'center' }}>
-                                            <div style={{ fontSize: '0.75rem', opacity: 0.8, marginBottom: '5px' }}>CHILDREN (Under 10)</div>
-                                            <div style={{ fontSize: '1.5rem', fontWeight: '800' }}>KES 300</div>
+                                        <div style={{ flex: 1, background: 'var(--primary-orange)', color: 'white', padding: isMobile ? '10px' : '15px', borderRadius: '10px', textAlign: 'center' }}>
+                                            <div style={{ fontSize: '0.65rem', opacity: 0.8, marginBottom: '5px' }}>KIDS</div>
+                                            <div style={{ fontSize: isMobile ? '1.2rem' : '1.5rem', fontWeight: '800' }}>KES 300</div>
                                         </div>
                                     </div>
-                                    <h4 style={{ fontSize: '0.85rem', color: 'var(--primary-green)', marginBottom: '10px' }}>Pool Policy</h4>
-                                    <ul style={{ listStyle: 'none', padding: 0, fontSize: '0.85rem', color: 'var(--text-light)' }}>
-                                        <li style={{ marginBottom: '5px' }}><i className="fas fa-clock" style={{ color: 'var(--primary-orange)', marginRight: '8px', width: '16px' }}></i>Open daily: 8:00 AM – 6:00 PM</li>
-                                        <li style={{ marginBottom: '5px' }}><i className="fas fa-tshirt" style={{ color: 'var(--primary-orange)', marginRight: '8px', width: '16px' }}></i>Appropriate swimming costume required</li>
-                                        <li style={{ marginBottom: '5px' }}><i className="fas fa-child" style={{ color: 'var(--primary-orange)', marginRight: '8px', width: '16px' }}></i>Children must be accompanied by a parent/guardian</li>
-                                        <li><i className="fas fa-shield-alt" style={{ color: 'var(--primary-orange)', marginRight: '8px', width: '16px' }}></i>Management reserves right to admission</li>
+                                    <h4 style={{ fontSize: '0.8rem', color: 'var(--primary-green)', marginBottom: '10px' }}>Pool Policy</h4>
+                                    <ul style={{ listStyle: 'none', padding: 0, fontSize: '0.8rem', color: 'var(--text-light)' }}>
+                                        <li style={{ marginBottom: '5px' }}><i className="fas fa-clock" style={{ color: 'var(--primary-orange)', marginRight: '8px', width: '16px' }}></i>Daily: 8:00 AM – 6:00 PM</li>
+                                        <li style={{ marginBottom: '5px' }}><i className="fas fa-tshirt" style={{ color: 'var(--primary-orange)', marginRight: '8px', width: '16px' }}></i>Swim costume required</li>
                                     </ul>
                                 </div>
                             </div>
 
                             {/* Lush Event Grounds Card */}
                             <div style={{ background: 'white', borderRadius: 'var(--radius)', overflow: 'hidden', boxShadow: 'var(--shadow)' }}>
-                                <div style={{ height: '220px', background: "url('/images/resorts/kisumu/kisumu-res.jpg') center/cover", position: 'relative' }}>
+                                <div style={{ height: isMobile ? '180px' : '220px', background: "url('/images/resorts/kisumu/kisumu-res.jpg') center/cover", position: 'relative' }}>
                                     <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '20px', background: 'linear-gradient(transparent, rgba(0,0,0,0.7))', color: 'white' }}>
-                                        <h3 style={{ color: 'white', margin: 0 }}><i className="fas fa-tree" style={{ marginRight: '10px' }}></i>Lush Grounds for Events</h3>
+                                        <h3 style={{ color: 'white', margin: 0, fontSize: isMobile ? '1.1rem' : '1.25rem' }}><i className="fas fa-tree" style={{ marginRight: '10px' }}></i>Lush Grounds</h3>
                                     </div>
                                 </div>
-                                <div style={{ padding: '25px' }}>
-                                    <p style={{ color: 'var(--text-light)', lineHeight: '1.7', marginBottom: '15px' }}>
-                                        Our beautifully landscaped grounds are available for outdoor events, team building activities, weddings, and corporate functions at competitive rates.
+                                <div style={{ padding: isMobile ? '20px' : '25px' }}>
+                                    <p style={{ color: 'var(--text-light)', lineHeight: '1.6', marginBottom: '15px', fontSize: '0.9rem' }}>
+                                        Beautifully landscaped grounds available for outdoor events, weddings, and corporate functions at competitive rates.
                                     </p>
-                                    <ul style={{ listStyle: 'none', padding: 0, fontSize: '0.9rem' }}>
-                                        {['Outdoor weddings & receptions', 'Corporate team building', 'Garden parties & celebrations', 'Contact us for custom event pricing'].map((item, idx) => (
-                                            <li key={idx} style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
-                                                <i className="fas fa-check-circle" style={{ color: 'var(--primary-green)', fontSize: '0.85rem' }}></i>
-                                                <span>{item}</span>
-                                            </li>
-                                        ))}
-                                    </ul>
                                 </div>
                             </div>
                         </div>
 
                         {/* Hotel Policies */}
                         <div style={{ background: 'white', borderRadius: 'var(--radius)', boxShadow: 'var(--shadow)', overflow: 'hidden' }}>
-                            <div style={{ background: 'var(--primary-green)', color: 'white', padding: '18px 25px' }}>
-                                <h3 style={{ margin: 0, color: 'white', fontSize: '1.2rem' }}><i className="fas fa-file-contract" style={{ marginRight: '10px' }}></i>Hotel Policies</h3>
+                            <div style={{ background: 'var(--primary-green)', color: 'white', padding: isMobile ? '15px' : '18px 25px' }}>
+                                <h3 style={{ margin: 0, color: 'white', fontSize: isMobile ? '1.1rem' : '1.2rem' }}><i className="fas fa-file-contract" style={{ marginRight: '10px' }}></i>Hotel Policies</h3>
                             </div>
-                            <div style={{ padding: '30px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '30px' }}>
+                            <div style={{ padding: isMobile ? '20px' : '30px', display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(250px, 1fr))', gap: isMobile ? '20px' : '30px' }}>
                                 {/* Child Policy */}
                                 <div>
                                     <h4 style={{ color: 'var(--primary-green)', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -284,6 +311,14 @@ export function ResortOverview() {
 
 export function ResortRooms() {
     const { resort } = useParams();
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth <= 768);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     const rooms = {
         limuru: [
             { name: 'Standard Room Single', type: 'standard-single', price: '4,450', image: '/images/resorts/limuru/standard-room.jpg', features: ['Single Bed', 'WiFi', 'Tea/Coffee', 'En-suite Bath'], bnb: '4,450', hb: '5,300', fb: '6,100', usd_bnb: '60', usd_hb: '65', usd_fb: '70' },
@@ -311,22 +346,34 @@ export function ResortRooms() {
     };
 
     return (
-        <section className="container" style={{ padding: '60px 0' }}>
-            <div className="section-header"><h2>Rooms & Accommodation</h2><p>Choose the perfect room for your stay</p></div>
+        <section className="container" style={{ padding: isMobile ? '40px 0' : '60px 0' }}>
+            <div className="section-header" style={{ marginBottom: isMobile ? '25px' : '40px' }}>
+                <h2 style={{ fontSize: isMobile ? '1.8rem' : '2.5rem' }}>Rooms & Accommodation</h2>
+                <p style={{ fontSize: isMobile ? '0.9rem' : '1.1rem' }}>Choose the perfect room for your stay</p>
+            </div>
 
             {/* Detailed UI: Meal Package Legend */}
             {(resort === 'kisumu' || resort === 'kanamai' || resort === 'limuru') && (
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '15px', justifyContent: 'center', marginBottom: '35px' }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: isMobile ? '10px' : '15px', justifyContent: 'center', marginBottom: isMobile ? '25px' : '35px' }}>
                     {[
                         { icon: 'fas fa-coffee', label: 'B&B', desc: 'Bed & Breakfast', color: 'var(--primary-green)' },
                         { icon: 'fas fa-utensils', label: 'Half Board', desc: 'Breakfast + Dinner', color: 'var(--primary-orange)' },
                         { icon: 'fas fa-concierge-bell', label: 'Full Board', desc: 'All Meals Included', color: '#8B4513' }
                     ].map((pkg, i) => (
-                        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'white', padding: '10px 18px', borderRadius: '30px', boxShadow: '0 2px 10px rgba(0,0,0,0.06)', border: '1px solid #eee' }}>
-                            <i className={pkg.icon} style={{ color: pkg.color, fontSize: '1rem' }}></i>
+                        <div key={i} style={{ 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            gap: '10px', 
+                            background: 'white', 
+                            padding: isMobile ? '8px 14px' : '10px 18px', 
+                            borderRadius: '30px', 
+                            boxShadow: '0 2px 10px rgba(0,0,0,0.06)', 
+                            border: '1px solid #eee' 
+                        }}>
+                            <i className={pkg.icon} style={{ color: pkg.color, fontSize: isMobile ? '0.9rem' : '1rem' }}></i>
                             <div>
-                                <div style={{ fontWeight: '700', fontSize: '0.82rem', color: 'var(--text-dark)' }}>{pkg.label}</div>
-                                <div style={{ fontSize: '0.7rem', color: '#999' }}>{pkg.desc}</div>
+                                <div style={{ fontWeight: '700', fontSize: isMobile ? '0.75rem' : '0.82rem', color: 'var(--text-dark)' }}>{pkg.label}</div>
+                                <div style={{ fontSize: isMobile ? '0.65' : '0.7rem', color: '#999' }}>{pkg.desc}</div>
                             </div>
                         </div>
                     ))}
@@ -339,17 +386,17 @@ export function ResortRooms() {
                         {/* Room Image */}
                         {room.image && (
                             <div style={{ position: 'relative' }}>
-                                <img src={room.image} alt={room.name || room.type} style={{ width: '100%', height: '200px', objectFit: 'cover' }} />
+                                <img src={room.image} alt={room.name || room.type} style={{ width: '100%', height: isMobile ? '180px' : '200px', objectFit: 'cover' }} />
                                 {room.image && (
-                                    <div style={{ position: 'absolute', top: '12px', right: '12px', background: 'var(--primary-green)', color: 'white', padding: '4px 12px', borderRadius: '20px', fontSize: '0.7rem', fontWeight: '700', letterSpacing: '0.5px' }}>
+                                    <div style={{ position: 'absolute', top: '10px', right: '10px', background: 'var(--primary-green)', color: 'white', padding: '4px 10px', borderRadius: '20px', fontSize: '0.65rem', fontWeight: '700', letterSpacing: '0.5px' }}>
                                         FROM KES {room.price}
                                     </div>
                                 )}
                             </div>
                         )}
 
-                        <div style={{ padding: '22px', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                            <h3 style={{ marginBottom: '8px', fontSize: '1.15rem' }}>{room.name || room.type}</h3>
+                        <div style={{ padding: isMobile ? '15px' : '22px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                            <h3 style={{ marginBottom: isMobile ? '6px' : '8px', fontSize: isMobile ? '1.05rem' : '1.15rem' }}>{room.name || room.type}</h3>
 
                             {/* Features as compact pills */}
                             {room.features && (
@@ -566,6 +613,14 @@ export function ResortRooms() {
 
 export function ResortConference() {
     const { resort } = useParams();
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth <= 768);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     const conferenceFacilities = resort === 'limuru' ? [
         { name: 'Plenary Hall', capacity: '500 pax', image: '/images/resorts/limuru/main-hall.jpg', desc: 'Large hall suitable for major conferences, conventions, and large gatherings.' },
         { name: 'Conference Room A', capacity: '100 pax', image: '/images/resorts/limuru/conference-hall-2.jpg', desc: 'Medium-sized room, ideal for workshops, seminars, and corporate meetings.' },
@@ -582,13 +637,16 @@ export function ResortConference() {
     ] : [];
 
     return (
-        <section className="container" style={{ padding: '60px 0' }}>
-            <div className="section-header"><h2>Conference Facilities</h2><p>Modern meeting spaces for every occasion</p></div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '25px' }}>
+        <section className="container" style={{ padding: isMobile ? '40px 0' : '60px 0' }}>
+            <div className="section-header" style={{ marginBottom: isMobile ? '25px' : '40px' }}>
+                <h2 style={{ fontSize: isMobile ? '1.8rem' : '2.5rem' }}>Conference Facilities</h2>
+                <p style={{ fontSize: isMobile ? '0.9rem' : '1.1rem' }}>Modern meeting spaces for every occasion</p>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(300px, 1fr))', gap: isMobile ? '20px' : '25px' }}>
                 {conferenceFacilities.map((facility, i) => (
-                    <div key={i} style={{ background: 'white', borderRadius: 'var(--radius)', padding: '25px', boxShadow: 'var(--shadow)' }}>
-                        {facility.image && <img src={facility.image} alt={facility.name} style={{ width: '100%', height: '180px', objectFit: 'cover', borderRadius: 'var(--radius)', marginBottom: '15px' }} />}
-                        <i className="fas fa-users" style={{ fontSize: '2rem', color: 'var(--primary-orange)', marginBottom: '15px', display: 'block' }}></i>
+                    <div key={i} style={{ background: 'white', borderRadius: 'var(--radius)', padding: isMobile ? '20px' : '25px', boxShadow: 'var(--shadow)' }}>
+                        {facility.image && <img src={facility.image} alt={facility.name} style={{ width: '100%', height: isMobile ? '160px' : '180px', objectFit: 'cover', borderRadius: 'var(--radius)', marginBottom: isMobile ? '15px' : '15px' }} />}
+                        <i className="fas fa-users" style={{ fontSize: isMobile ? '1.5rem' : '2rem', color: 'var(--primary-orange)', marginBottom: isMobile ? '12px' : '15px', display: 'block' }}></i>
                         <h3 style={{ marginBottom: '10px' }}>{facility.name}</h3>
                         <p style={{ color: 'var(--text-light)' }}>{facility.desc}</p>
                         {facility.capacity && <p style={{ marginTop: '10px', fontWeight: '600' }}>Capacity: {facility.capacity}</p>}
@@ -745,6 +803,14 @@ export function ResortConference() {
 
 export function ResortGallery() {
     const { resort } = useParams();
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth <= 768);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     const images = resort === 'limuru' ? [
         { url: '/images/resorts/limuru/limuru-front.jpeg', title: 'Main Entrance' },
         { url: '/images/resorts/limuru/limuru background.jpg', title: 'Limuru Highlands' },
@@ -779,12 +845,12 @@ export function ResortGallery() {
     ] : [];
 
     return (
-        <div style={{ animation: 'fadeIn 0.5s ease', padding: '60px 0' }}>
+        <div style={{ animation: 'fadeIn 0.5s ease', padding: isMobile ? '40px 0' : '60px 0' }}>
             <div className="container">
-                <h2 style={{ textAlign: 'center', marginBottom: '40px' }}>Photo Gallery</h2>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
+                <h2 style={{ textAlign: 'center', marginBottom: isMobile ? '25px' : '40px', fontSize: isMobile ? '1.8rem' : '2.5rem' }}>Photo Gallery</h2>
+                <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(auto-fill, minmax(140px, 1fr))' : 'repeat(auto-fill, minmax(300px, 1fr))', gap: isMobile ? '12px' : '20px' }}>
                     {images.map((img, i) => (
-                        <div key={i} style={{ borderRadius: '12px', overflow: 'hidden', height: '250px', boxShadow: '0 5px 15px rgba(0,0,0,0.1)' }}>
+                        <div key={i} style={{ borderRadius: '12px', overflow: 'hidden', height: isMobile ? '120px' : '250px', boxShadow: '0 5px 15px rgba(0,0,0,0.1)' }}>
                             <img src={img.url} alt={img.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                         </div>
                     ))}
@@ -796,6 +862,14 @@ export function ResortGallery() {
 
 export function ResortVirtualTour() {
     const { resort } = useParams();
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth <= 768);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     const data = RESORT_DATA[resort];
 
     if (!data?.videoUrl) {
@@ -803,10 +877,10 @@ export function ResortVirtualTour() {
     }
 
     return (
-        <section className="container" style={{ padding: '60px 0' }}>
-            <div className="section-header">
-                <h2>Virtual Tour</h2>
-                <p>Experience {data.name} through an immersive video tour</p>
+        <section className="container" style={{ padding: isMobile ? '40px 0' : '60px 0' }}>
+            <div className="section-header" style={{ marginBottom: isMobile ? '25px' : '40px' }}>
+                <h2 style={{ fontSize: isMobile ? '1.8rem' : '2.5rem' }}>Virtual Tour</h2>
+                <p style={{ fontSize: isMobile ? '0.9rem' : '1.1rem' }}>Experience {data.name} tour</p>
             </div>
 
             <div style={{ maxWidth: '900px', margin: '0 auto', background: 'white', borderRadius: '15px', overflow: 'hidden', boxShadow: 'var(--shadow)' }}>
@@ -845,17 +919,28 @@ export function ResortVirtualTour() {
 
 export function ResortExcursions() {
     const { resort } = useParams();
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth <= 768);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     const excursions = getExcursions(resort);
 
     return (
-        <section className="container" style={{ padding: '60px 0' }}>
-            <div className="section-header"><h2>Excursions & Activities</h2><p>Explore the best of the area</p></div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '25px' }}>
+        <section className="container" style={{ padding: isMobile ? '40px 0' : '60px 0' }}>
+            <div className="section-header" style={{ marginBottom: isMobile ? '25px' : '40px' }}>
+                <h2 style={{ fontSize: isMobile ? '1.8rem' : '2.5rem' }}>Excursions & Activities</h2>
+                <p style={{ fontSize: isMobile ? '0.9rem' : '1.1rem' }}>Explore the best of the area</p>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(280px, 1fr))', gap: isMobile ? '20px' : '25px' }}>
                 {excursions.map((ex, i) => (
                     <div key={i} style={{ background: 'white', borderRadius: 'var(--radius)', overflow: 'hidden', boxShadow: 'var(--shadow)' }}>
-                        <img src={ex.image} alt={ex.name} style={{ width: '100%', height: '200px', objectFit: 'cover' }} />
-                        <div style={{ padding: '20px' }}>
-                            <h3 style={{ marginBottom: '10px' }}>{ex.label}</h3>
+                        <img src={ex.image} alt={ex.name} style={{ width: '100%', height: isMobile ? '170px' : '200px', objectFit: 'cover' }} />
+                        <div style={{ padding: isMobile ? '15px' : '20px' }}>
+                            <h3 style={{ marginBottom: '8px', fontSize: isMobile ? '1.1rem' : '1.25rem' }}>{ex.label}</h3>
                             <p style={{ color: 'var(--text-light)', fontSize: '0.9rem', marginBottom: '15px' }}>{ex.desc}</p>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
                                 <span style={{ fontWeight: '700', color: 'var(--primary-orange)' }}>KES {ex.price?.toLocaleString()}</span>
@@ -880,6 +965,14 @@ export function ResortExcursions() {
 
 export function ResortOffers() {
     const { resort } = useParams();
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth <= 768);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     const [offers, setOffers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedOffer, setSelectedOffer] = useState(null);
@@ -898,17 +991,17 @@ export function ResortOffers() {
     };
 
     return (
-        <div style={{ animation: 'fadeIn 0.5s ease', padding: '60px 0' }}>
+        <div style={{ animation: 'fadeIn 0.5s ease', padding: isMobile ? '40px 0' : '60px 0' }}>
             <div className="container">
-                <div className="section-header" style={{ marginBottom: '50px' }}>
-                    <h2 style={{ fontSize: '2.5rem' }}>Special Resort Offers</h2>
-                    <p>Exclusive deals specifically for {resort.charAt(0).toUpperCase() + resort.slice(1)}</p>
+                <div className="section-header" style={{ marginBottom: isMobile ? '30px' : '50px' }}>
+                    <h2 style={{ fontSize: isMobile ? '1.8rem' : '2.5rem' }}>Special Resort Offers</h2>
+                    <p style={{ fontSize: isMobile ? '0.9rem' : '1.1rem' }}>Exclusive deals specifically for {resort.charAt(0).toUpperCase() + resort.slice(1)}</p>
                 </div>
 
                 {loading ? (
                     <div style={{ textAlign: 'center', padding: '40px' }}><div className="spinner" style={{ margin: '0 auto' }}></div></div>
                 ) : offers.length > 0 ? (
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '25px' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(320px, 1fr))', gap: isMobile ? '20px' : '25px' }}>
                         {offers.map((offer) => (
                             <div key={offer._id} style={{
                                 background: 'white', borderRadius: '15px', overflow: 'hidden',
@@ -917,7 +1010,7 @@ export function ResortOffers() {
                                 <div style={{
                                     backgroundImage: offer.image ? `url(${offer.image})` : 'none',
                                     backgroundColor: offer.image ? 'transparent' : '#f5f5f5',
-                                    height: '220px',
+                                    height: isMobile ? '180px' : '220px',
                                     backgroundSize: 'cover',
                                     backgroundPosition: 'center',
                                     position: 'relative',
@@ -974,11 +1067,19 @@ export function ResortOffers() {
 }
 
 export function ResortFeedback() {
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth <= 768);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     return (
-        <div style={{ animation: 'fadeIn 0.5s ease', padding: '80px 0', background: '#fcfcfc' }}>
+        <div style={{ animation: 'fadeIn 0.5s ease', padding: isMobile ? '60px 0' : '80px 0', background: '#fcfcfc' }}>
             <div className="container" style={{ maxWidth: '700px' }}>
-                <div style={{ background: 'white', padding: '40px', borderRadius: '15px', boxShadow: '0 10px 40px rgba(0,0,0,0.05)' }}>
-                    <h2 style={{ textAlign: 'center', marginBottom: '10px' }}>Guest Feedback</h2>
+                <div style={{ background: 'white', padding: isMobile ? '25px 20px' : '40px', borderRadius: '15px', boxShadow: '0 10px 40px rgba(0,0,0,0.05)' }}>
+                    <h2 style={{ textAlign: 'center', marginBottom: '10px', fontSize: isMobile ? '1.8rem' : '2.2rem' }}>Guest Feedback</h2>
                     <p style={{ textAlign: 'center', color: 'var(--text-light)', marginBottom: '30px' }}>Your experience matters to us. Please share your thoughts.</p>
                     <form>
                         <div style={{ marginBottom: '20px' }}>
@@ -1010,6 +1111,14 @@ export default function ResortDetail() {
     const { resort } = useParams();
     const location = useLocation();
     const navigate = useNavigate();
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth <= 768);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     const data = RESORT_DATA[resort];
     const [activeSection, setActiveSection] = useState('overview');
 
@@ -1071,7 +1180,7 @@ export default function ResortDetail() {
         const element = document.getElementById(sectionIdToScroll);
 
         if (element) {
-            const headerOffset = 180;
+            const headerOffset = isMobile ? 120 : 180;
             const elementPosition = element.getBoundingClientRect().top;
             const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
@@ -1112,13 +1221,13 @@ export default function ResortDetail() {
                 {/* ─── MAIN HEADER (Double Header Part 2) ─── */}
                 <header className="resort-header">
                     <div className="container">
-                        <div className="resort-branding-row">
-                            <img src="/images/Jumuia-Resorts.svg" alt="Logo" />
+                        <div className="resort-branding-row" style={{ padding: isMobile ? '0' : '0' }}>
+                            <img src="/images/Jumuia-Resorts.svg" alt="Logo" style={{ height: isMobile ? '35px' : '50px' }} />
                             <div className="resort-identity-centered">
-                                <h2>{data.name}</h2>
-                                <span className="location-tag">{data.location}</span>
+                                <h2 style={{ fontSize: isMobile ? '1rem' : '1.6rem', color: 'var(--primary-green)', fontWeight: '800', margin: 0 }}>{data.name}</h2>
+                                <span className="location-tag" style={{ fontSize: isMobile ? '0.65rem' : '0.85rem' }}>{data.location}</span>
                             </div>
-                            <Link to="/#quick-book" state={{ resort: resort, nationality: 'kenyan', autoScroll: true }} className="btn btn-primary" style={{ padding: '8px 15px', fontSize: '0.8rem' }}>
+                            <Link to="/#quick-book" state={{ resort: resort, nationality: 'kenyan', autoScroll: true }} className="btn btn-primary" style={{ padding: isMobile ? '6px 12px' : '8px 15px', fontSize: isMobile ? '0.7rem' : '0.8rem' }}>
                                 Book Now
                             </Link>
                         </div>
