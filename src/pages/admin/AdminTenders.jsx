@@ -171,7 +171,7 @@ export default function AdminTenders() {
             {/* Create Tender Modal */}
             {showModal && (
                 <div className="success-modal-overlay">
-                    <div className="admin-card anim-pop-in" style={{ maxWidth: '600px', width: '90%', padding: '40px' }}>
+                    <div className="admin-card anim-pop-in" style={{ maxWidth: '600px', width: '90%', maxHeight: '90vh', overflowY: 'auto', padding: '40px' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '25px' }}>
                             <h2 style={{ color: 'var(--primary-green)' }}>Create New Tender</h2>
                             <button onClick={() => setShowModal(false)} style={{ border: 'none', background: 'none', cursor: 'pointer', fontSize: '1.2rem' }}>&times;</button>
