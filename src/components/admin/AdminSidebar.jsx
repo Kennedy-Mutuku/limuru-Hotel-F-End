@@ -4,7 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import api from '../../services/api';
 import Logo from '../common/Logo';
 
-export default function AdminSidebar() {
+export default function AdminSidebar({ isOpen, onClose }) {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
     const [counts, setCounts] = useState({});
@@ -83,7 +83,10 @@ export default function AdminSidebar() {
     };
 
     return (
-        <aside className="admin-sidebar">
+        <aside className={`admin-sidebar ${isOpen ? 'open' : ''}`}>
+            <button className="sidebar-close" onClick={onClose}>
+                <i className="fas fa-times"></i>
+            </button>
             <div className="sidebar-header">
                 <Logo className="logo-img" />
                 <h2>Jumuia Resorts</h2>

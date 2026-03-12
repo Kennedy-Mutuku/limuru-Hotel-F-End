@@ -260,7 +260,7 @@ export default function AdminDashboard() {
                     </div>
 
                     {/* Performance Table + Revenue Donut */}
-                    <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '24px', marginBottom: '24px' }}>
+                    <div className="perf-grid-row">
                         <div className="admin-card">
                             <h3 style={{ marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
                                 <i className="fas fa-chart-line" style={{ color: 'var(--primary-green)' }}></i> Performance Comparison
@@ -308,7 +308,7 @@ export default function AdminDashboard() {
                     </div>
 
                     {/* Charts Row */}
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(460px, 1fr))', gap: '24px' }}>
+                    <div className="charts-grid-row">
 
                         {/* Revenue Trend */}
                         <div className="admin-card" style={{ padding: '24px' }}>
