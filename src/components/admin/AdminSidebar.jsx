@@ -43,9 +43,7 @@ export default function AdminSidebar() {
                 { to: '/admin/offers?tab=claims', icon: 'fas fa-hand-holding-usd', label: 'Offer Claims', count: counts.claims?.total, unread: counts.claims?.unread },
                 { to: '/admin/feedback', icon: 'fas fa-star', label: 'Feedback', count: counts.feedback?.total, unread: counts.feedback?.unread },
                 { to: '/admin/tenders', icon: 'fas fa-gavel', label: 'Tender Postings', count: counts.tenders },
-                { to: '/admin/tenders/bidders', icon: 'fas fa-users', label: 'Tender Bidders', count: counts.bids?.total, unread: counts.bids?.unread },
                 { to: '/admin/recruitments', icon: 'fas fa-briefcase', label: 'Recruitment', count: counts.recruitments },
-                { to: '/admin/recruitments/applications', icon: 'fas fa-id-card', label: 'Job Applications', count: counts.applications?.total, unread: counts.applications?.unread },
             ]
         },
         {
