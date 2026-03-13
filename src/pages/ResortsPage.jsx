@@ -15,7 +15,7 @@ export default function ResortsPage() {
             name: 'Jumuia Conference & Beach Resort',
             location: 'Kanamai Coast, Kenya',
             slug: 'kanamai',
-            image: '/images/resorts/kanamai/front kanamai.jpg',
+            image: '/images/gallery/kanamai home.jpeg',
             description: 'A breathtaking beachfront resort along the Kenyan coast. Enjoy modern conference facilities, swimming pools, and coastal adventure activities. Ideal for both corporate events and leisure vacations.',
             features: ['Beach Access', 'Swimming Pool', 'Conference Rooms', 'Water Sports', 'Restaurant', 'Cottages']
         },
@@ -31,7 +31,7 @@ export default function ResortsPage() {
 
     return (
         <>
-            <section className="page-hero" style={{ backgroundImage: "url('/images/resorts/kanamai/front kanamai.jpg')" }}>
+            <section className="page-hero" style={{ backgroundImage: "url('/images/gallery/kanamai home.jpeg')" }}>
                 <div className="container"><h1>Our Resorts</h1><p>Discover unique experiences across our three properties</p></div>
             </section>
 
@@ -39,7 +39,7 @@ export default function ResortsPage() {
                 {resorts.map((resort, i) => (
                     <div key={resort.slug} className={`resort-listing-item ${i % 2 !== 0 ? 'alternate' : ''}`}>
                         <div className="resort-image-wrapper">
-                            <img src={resort.image} alt={resort.name} />
+                            <img src={resort.image} alt={resort.name} loading="lazy" decoding="async" />
                         </div>
                         <div className="resort-text-wrapper">
                             <div className="resort-text-content">

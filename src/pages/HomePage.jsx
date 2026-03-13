@@ -93,7 +93,7 @@ export default function HomePage() {
                         name="Jumuia Conference & Beach Resort"
                         location="Kanamai Coast, Kenya"
                         description="Breathtaking beachfront location with conference facilities, swimming pools, and coastal adventure activities for the perfect getaway."
-                        image="/images/resorts/kanamai/front kanamai.jpg"
+                        image="/images/gallery/kanamai home.jpeg"
                         features={['Beachfront', 'Swimming Pool', 'Water Sports', 'Beach Events']}
                         link="/resorts/kanamai"
                         resort="kanamai"
@@ -168,7 +168,14 @@ function ResortCard({ name, location, description, image, features, link, resort
     return (
         <div className="resort-card">
             <div className="resort-img-wrapper">
-                <div className="resort-img" style={{ backgroundImage: `url('${image}')` }}></div>
+                <img 
+                    src={image} 
+                    alt={name} 
+                    className="resort-img" 
+                    loading="lazy" 
+                    decoding="async"
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                />
             </div>
             <div className="resort-content">
                 <h3>{name}</h3>

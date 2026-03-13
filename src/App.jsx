@@ -29,10 +29,12 @@ import AdminUsers from './pages/admin/AdminUsers';
 import { AdminSettings } from './pages/admin/AdminSettings';
 import AdminReports from './pages/admin/AdminReports';
 import AdminBranchManagers from './pages/admin/AdminBranchManagers';
+import VersionSentinel from './components/common/VersionSentinel';
 
 export default function App() {
   return (
     <AuthProvider>
+      <VersionSentinel />
       <BrowserRouter>
         <Routes>
           {/* Public Routes */}

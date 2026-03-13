@@ -23,7 +23,7 @@ export default function OffersPage() {
 
     return (
         <>
-            <section className="page-hero" style={{ backgroundImage: "url('/images/resorts/kanamai/front kanamai.jpg')" }}>
+            <section className="page-hero" style={{ backgroundImage: "url('/images/gallery/kanamai home.jpeg')" }}>
                 <div className="container" style={{ textAlign: 'center' }}>
                     <h1 style={{ fontSize: '3.5rem', marginBottom: '20px' }}>Special Offers</h1>
                     <p style={{ fontSize: '1.2rem', opacity: 0.9 }}>Value-packed deals for your next spiritual or leisure retreat</p>

@@ -263,13 +263,22 @@
 }
 
 /* ===== Responsive Viewports ===== */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
     .page-hero h1 {
         font-size: 2.2rem;
     }
 
     .contact-grid {
         grid-template-columns: 1fr;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+    }
+
+    .feedback-form-card {
+        padding: 25px 15px;
     }
 
     .resort-nav {
@@ -282,6 +291,7 @@
         scrollbar-width: none;
         /* Firefox */
     }
+}
 
     .resort-nav::-webkit-scrollbar {
         display: none;

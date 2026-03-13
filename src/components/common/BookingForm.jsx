@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getRoomTypes, getFilteredRoomTypes, getExcursions, calculateDetailedRate, saveBooking } from '../../services/booking';
+import './BookingReceipt.css';
 
 export default function BookingForm({ initialResort: propResort }) {
     const location = useLocation();
@@ -128,6 +129,7 @@ export default function BookingForm({ initialResort: propResort }) {
     }, [formData.childrenCount]);
 
     // Calculate detailed rate
+    // Calculate detailed rate
     useEffect(() => {
         if (formData.resort && formData.roomType && formData.checkIn && formData.checkOut) {
             const nights = Math.max(0, Math.ceil((new Date(formData.checkOut) - new Date(formData.checkIn)) / (1000 * 60 * 60 * 24)));
@@ -140,6 +142,17 @@ export default function BookingForm({ initialResort: propResort }) {
             setBreakdown(null);
         }
     }, [formData.resort, formData.roomType, formData.packageType, formData.checkIn, formData.checkOut, formData.adults, formData.guestType, formData.excursionId, childrenDetails]);
+
+    // Auto-scroll to top when proceeding to summary
+    useEffect(() => {
+        if (showConfirmation) {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            const formContainer = document.getElementById('booking-view-top');
+            if (formContainer) {
+                formContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+    }, [showConfirmation]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -177,45 +190,55 @@ export default function BookingForm({ initialResort: propResort }) {
                 const element = document.getElementById(elementId);
                 if (element) {
                     element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    element.focus(); // Focus the element to bring it into interactive view
                     element.style.transition = 'all 0.3s ease';
-                    element.style.boxShadow = '0 0 0 3px rgba(231, 76, 60, 0.3)';
-                    setTimeout(() => { element.style.boxShadow = 'none'; }, 2000);
+                    element.style.boxShadow = '0 0 0 4px rgba(231, 76, 60, 0.4)';
+                    element.style.borderColor = '#e74c3c';
+                    setTimeout(() => { 
+                        element.style.boxShadow = 'none'; 
+                        element.style.borderColor = '#eee';
+                    }, 3000);
                 }
                 return false;
             }
             return true;
         };
 
-        if (!validateField(!formData.firstName, "Please enter your first name.", 'guest-info')) return;
-        if (!validateField(!formData.lastName, "Please enter your last name.", 'guest-info')) return;
-        if (!validateField(!formData.email, "Please enter your email address.", 'guest-info')) return;
-        if (!validateField(!formData.phone, "Please enter your phone number.", 'guest-info')) return;
-        if (!validateField(!formData.guestType, "Please select a Guest Type.", 'guest-type')) return;
-        if (!validateField(!formData.resort, "Please select a Resort Location.", 'stay-details')) return;
-        if (!validateField(!formData.roomType, "Please select a Room Type.", 'stay-details')) return;
-        if (!validateField(!formData.adults && !isFlatRate, "Please select number of adults/guests.", 'stay-details')) return;
-        if (!validateField(!formData.checkIn, "Please select a Check-in date.", 'stay-details')) return;
-        if (!validateField(!formData.checkOut, "Please select a Check-out date.", 'stay-details')) return;
-        if (!validateField(!formData.packageType, "Please select a Meal Plan.", 'stay-details')) return;
-        if (!validateField(!formData.excursionId, "Please select an Additional Service.", 'stay-details')) return;
+        if (!validateField(!formData.firstName, "Please enter your first name.", 'field-firstName')) return;
+        if (!validateField(!formData.lastName, "Please enter your last name.", 'field-lastName')) return;
+        if (!validateField(!formData.email, "Please enter your email address.", 'field-email')) return;
+        if (!validateField(!formData.phone, "Please enter your phone number.", 'field-phone')) return;
+        if (!validateField(!formData.guestType, "Please select a Guest Type.", 'field-guestType')) return;
+        if (!validateField(!formData.resort, "Please select a Resort Location.", 'field-resort')) return;
+        if (!validateField(!formData.roomType, "Please select a Room Type.", 'field-roomType')) return;
+        if (!validateField(!formData.adults && !isFlatRate, "Please select number of adults/guests.", 'field-adults')) return;
+        if (!validateField(!formData.checkIn, "Please select a Check-in date.", 'field-checkIn')) return;
+        if (!validateField(!formData.checkOut, "Please select a Check-out date.", 'field-checkOut')) return;
+        if (!validateField(!formData.packageType, "Please select a Meal Plan.", 'field-packageType')) return;
+        if (!validateField(!formData.excursionId, "Please select an Additional Service.", 'field-excursionId')) return;
 
         // Child Details Validation
         if (!isConference && !isHostel && parseInt(formData.childrenCount) > 0) {
             for (let i = 0; i < childrenDetails.length; i++) {
                 if (!childrenDetails[i].age) {
                     setError(`Please enter the age for Child ${i + 1}.`);
-                    const childElement = document.getElementById(`child-detail-${i}`);
+                    const childElement = document.getElementById(`input-child-age-${i}`);
                     if (childElement) {
                         childElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        childElement.style.boxShadow = '0 0 0 3px rgba(231, 76, 60, 0.3)';
-                        setTimeout(() => { childElement.style.boxShadow = 'none'; }, 2000);
+                        childElement.focus();
+                        childElement.style.boxShadow = '0 0 0 4px rgba(231, 76, 60, 0.4)';
+                        childElement.style.borderColor = '#e74c3c';
+                        setTimeout(() => { 
+                            childElement.style.boxShadow = 'none'; 
+                            childElement.style.borderColor = '#e8ece5';
+                        }, 3000);
                     }
                     return;
                 }
             }
         }
 
-        if (!validateField(!formData.paymentMethod, "Please select a Payment Method.", 'payment-method')) return;
+        if (!validateField(!formData.paymentMethod, "Please select a Payment Method.", 'field-paymentMethod')) return;
 
         setShowConfirmation(true);
     };
@@ -415,23 +438,30 @@ export default function BookingForm({ initialResort: propResort }) {
     const resortLabels = { limuru: 'Jumuia Limuru Country Home', kanamai: 'Jumuia Kanamai Beach Resort', kisumu: 'Jumuia Hotel Kisumu' };
 
     return (
-        <div style={{ maxWidth: '900px', margin: '0 auto', position: 'relative' }}>
+        <div id="booking-view-top" style={{ maxWidth: '900px', margin: '0 auto', position: 'relative' }}>
             <div style={{ padding: isMobile ? '20px' : '45px' }}>
 
                 {/* ─── SUCCESS MODAL OVERLAY ─── */}
                 {showSuccessModal && (
-                    <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(255,255,255,0.7)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', animation: 'fadeIn 0.3s ease' }}>
-                        <div style={{ background: 'white', padding: '50px 30px', borderRadius: '24px', boxShadow: '0 20px 50px rgba(0,0,0,0.1)', maxWidth: '500px', width: '90%', textAlign: 'center', animation: 'slideUp 0.4s ease' }}>
-                            <div style={{ width: '90px', height: '90px', background: 'var(--light-green)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px', color: 'var(--primary-green)', boxShadow: '0 10px 20px rgba(39, 110, 54, 0.1)' }}>
-                                <i className="fas fa-check-circle" style={{ fontSize: '3.5rem' }}></i>
+                    <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(5px)', WebkitBackdropFilter: 'blur(5px)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <div className="success-modal-card">
+                            <div className="success-icon-wrap">
+                                <i className="fas fa-check-circle" style={{ fontSize: '3rem' }}></i>
                             </div>
-                            <h2 style={{ fontSize: '2.5rem', color: 'var(--primary-green)', marginBottom: '16px', fontWeight: '800' }}>Reservation Sent!</h2>
-                            <p style={{ color: 'var(--text-light)', fontSize: '1.15rem', marginBottom: '35px', lineHeight: '1.8' }}>
-                                Hi <strong style={{ color: 'var(--text-dark)' }}>{formData.firstName}</strong>! We've received your booking at <strong style={{ color: 'var(--text-dark)' }}>{submittedResortName}</strong>. We are so excited and eagerly waiting to see you soon!
+                            <h2 className="success-title">Booking Reserved!</h2>
+                            <p className="success-message">
+                                Hi <strong>{formData.firstName}</strong>! We've successfully received your reservation for <strong>{submittedResortName}</strong>.
+                                <br/><span style={{ fontSize: '0.9rem', opacity: 0.8 }}>We'll contact you shortly with the final confirmation.</span>
                             </p>
-                            <button className="btn btn-primary" style={{ padding: '16px 45px', fontSize: '1.15rem', borderRadius: '30px', fontWeight: '700', letterSpacing: '0.5px', boxShadow: '0 8px 25px rgba(39, 110, 54, 0.2)' }} onClick={handleCloseSuccessModal}>
-                                Return to Homepage
-                            </button>
+                            
+                            <div className="modal-actions">
+                                <button className="btn-download-receipt" onClick={generateReceiptPDF}>
+                                    <i className="fas fa-cloud-download-alt"></i> Download Your Receipt (PDF)
+                                </button>
+                                <button className="btn-return-home" onClick={handleCloseSuccessModal}>
+                                    Return to Homepage
+                                </button>
+                            </div>
                         </div>
                     </div>
                 )}
@@ -439,132 +469,130 @@ export default function BookingForm({ initialResort: propResort }) {
                 {showConfirmation ? (
                     /* ─── CONFIRMATION VIEW ─── */
                     <div style={{ animation: 'fadeIn 0.5s ease' }}>
-                        <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-                            <h2 style={{ color: 'var(--primary-green)', fontSize: isMobile ? '1.8rem' : '2.5rem', fontWeight: '800', marginBottom: '10px' }}>Double Check Your Stay</h2>
-                            <p style={{ color: 'var(--text-light)', fontSize: '1.1rem' }}>Review all details before we finalize your reservation request.</p>
+                        <div style={{ textAlign: 'center', marginBottom: isMobile ? '15px' : '40px' }}>
+                            <h2 style={{ color: 'var(--primary-green)', fontSize: isMobile ? '1.4rem' : '2.5rem', fontWeight: '800', marginBottom: '5px' }}>Confirm Your Stay</h2>
+                            {!isMobile && <p style={{ color: 'var(--text-light)', fontSize: '1.1rem' }}>Review all details before we finalize your reservation request.</p>}
                         </div>
 
-                        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1.5fr 1fr', gap: '30px', marginBottom: '40px' }}>
-                            {/* Detailed Info */}
-                            <div style={{ background: '#f9f9f9', padding: '30px', borderRadius: '15px', border: '1px solid #eee' }}>
-                                <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '20px' }}>
-                                    <div>
-                                        <label style={{ fontSize: '0.85rem', color: 'var(--primary-orange)', fontWeight: '700', textTransform: 'uppercase' }}>Resort Selection</label>
-                                        <div style={{ fontSize: '1.2rem', fontWeight: '600' }}>{resortLabels[formData.resort]}</div>
-                                    </div>
-                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
-                                        <div>
-                                            <label style={{ fontSize: '0.85rem', color: '#888' }}>Guest Type</label>
-                                            <div style={{ fontWeight: '600' }}>{formData.guestType === 'non-residential' ? '🌍 Non-Residential (USD)' : '🏠 Residential (KES)'}</div>
-                                        </div>
-                                        <div>
-                                            <label style={{ fontSize: '0.85rem', color: '#888' }}>Meal Plan</label>
-                                            <div style={{ fontWeight: '600' }}>{breakdown?.boardLabel}</div>
-                                        </div>
-                                    </div>
-                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
-                                        <div>
-                                            <label style={{ fontSize: '0.85rem', color: '#888' }}>Check-in</label>
-                                            <div style={{ fontWeight: '600' }}>{formData.checkIn}</div>
-                                        </div>
-                                        <div>
-                                            <label style={{ fontSize: '0.85rem', color: '#888' }}>Check-out</label>
-                                            <div style={{ fontWeight: '600' }}>{formData.checkOut}</div>
-                                        </div>
-                                    </div>
-                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
-                                        <div style={{ gridColumn: breakdown?.excursionItem ? 'span 1' : 'span 2' }}>
-                                            <label style={{ fontSize: '0.85rem', color: '#888' }}>Room Type</label>
-                                            <div style={{ fontWeight: '600' }}>{breakdown?.roomLabel}</div>
-                                        </div>
-                                        {breakdown?.excursionItem && (
-                                            <div>
-                                                <label style={{ fontSize: '0.85rem', color: '#888' }}>Add-on</label>
-                                                <div style={{ fontWeight: '600' }}>{breakdown.excursionItem.label}</div>
-                                            </div>
-                                        )}
-                                    </div>
-                                    <div>
-                                        <label style={{ fontSize: '0.85rem', color: '#888' }}>Guests</label>
-                                        <div style={{ fontWeight: '600' }}>{formData.adults} Adult{parseInt(formData.adults) > 1 ? 's' : ''}, {formData.childrenCount} Child{parseInt(formData.childrenCount) !== 1 ? 'ren' : ''}</div>
-                                    </div>
-                                    <div style={{ borderTop: '1px solid #ddd', paddingTop: '15px' }}>
-                                        <label style={{ fontSize: '0.85rem', color: '#888' }}>Main Guest</label>
-                                        <div style={{ fontWeight: '600' }}>{formData.firstName} {formData.lastName}</div>
-                                        <div style={{ fontSize: '0.9rem', color: '#666' }}>{formData.email} | {formData.phone}</div>
-                                    </div>
+                        {/* ─── PROFESSIONAL RECEIPT SUMMARY ─── */}
+                        <div className="booking-receipt-container" style={{ marginBottom: isMobile ? '20px' : '40px' }}>
+                            <div className="verified-badge">
+                                <i className="fas fa-certificate"></i>
+                            </div>
+                            <div className="receipt-header">
+                                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
+                                    <i className="fas fa-hotel" style={{ fontSize: '1.8rem', color: 'var(--primary-green)' }}></i>
+                                    <button 
+                                        onClick={generateReceiptPDF} 
+                                        className="pdf-trigger-btn"
+                                        style={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)' }}
+                                        title="Download PDF Receipt"
+                                    >
+                                        <i className="fas fa-file-pdf"></i> {isMobile ? 'PDF' : 'PDF Receipt'}
+                                    </button>
+                                </div>
+                                <h3 style={{ margin: '10px 0 0', fontFamily: "'Playfair Display', serif", fontSize: isMobile ? '1.2rem' : '1.5rem' }}>Booking Summary</h3>
+                                <p style={{ fontSize: '0.75rem', color: '#888', margin: '3px 0 0' }}>Jumuia Resorts Luxury Collection</p>
+                            </div>
+
+                            <div className="receipt-section">
+                                <span className="receipt-label">Resort Location</span>
+                                <div className="receipt-value">{resortLabels[formData.resort]}</div>
+                            </div>
+
+                            <div className="receipt-divider"></div>
+
+                            <div className="receipt-row">
+                                <div>
+                                    <span className="receipt-label">Check-in</span>
+                                    <div className="receipt-value">{formData.checkIn}</div>
+                                </div>
+                                <div>
+                                    <span className="receipt-label">Check-out</span>
+                                    <div className="receipt-value">{formData.checkOut}</div>
                                 </div>
                             </div>
 
-                            {/* Price Breakdown + Total */}
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                                {/* Itemized Breakdown */}
-                                <div style={{ background: 'white', border: '1px solid #eee', borderRadius: '15px', overflow: 'hidden' }}>
-                                    <div style={{ background: 'var(--primary-green)', color: 'white', padding: '12px 20px', fontWeight: '700', fontSize: '0.9rem' }}>
-                                        <i className="fas fa-receipt" style={{ marginRight: '8px' }}></i>Price Breakdown
-                                    </div>
-                                    <div style={{ padding: '15px 20px' }}>
-                                        {/* Adult line */}
-                                        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #f0f0f0' }}>
-                                            <div>
-                                                <div style={{ fontWeight: '600', fontSize: '0.85rem' }}>Room ({formData.adults} Adult{parseInt(formData.adults) > 1 ? 's' : ''})</div>
-                                                <div style={{ fontSize: '0.72rem', color: '#999' }}>{breakdown?.roomLabel} · {breakdown?.boardLabel} · {nightsNum} night{nightsNum > 1 ? 's' : ''}</div>
-                                            </div>
-                                            <div style={{ fontWeight: '700', fontSize: '0.9rem' }}>{currency} {breakdown?.adultTotal?.toLocaleString()}</div>
-                                        </div>
-                                        {/* Child lines */}
-                                        {breakdown?.childItems?.map((child, idx) => (
-                                            <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #f0f0f0' }}>
-                                                <div>
-                                                    <div style={{ fontWeight: '600', fontSize: '0.85rem' }}>{child.label}</div>
-                                                    <div style={{ fontSize: '0.72rem', color: '#999' }}>{child.policy}</div>
-                                                </div>
-                                                <div style={{ fontWeight: '700', fontSize: '0.9rem', color: child.total === 0 ? 'var(--primary-green)' : 'var(--text-dark)' }}>
-                                                    {child.total === 0 ? 'FREE' : `${currency} ${child.total.toLocaleString()}`}
-                                                </div>
-                                            </div>
-                                        ))}
-                                        {/* Excursion line */}
-                                        {breakdown?.excursionItem && (
-                                            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #f0f0f0' }}>
-                                                <div>
-                                                    <div style={{ fontWeight: '600', fontSize: '0.85rem' }}>Excursion: {breakdown.excursionItem.label}</div>
-                                                    <div style={{ fontSize: '0.72rem', color: '#999' }}>{currency} {breakdown.excursionItem.price.toLocaleString()} per person</div>
-                                                </div>
-                                                <div style={{ fontWeight: '700', fontSize: '0.9rem' }}>{currency} {breakdown.excursionTotal.toLocaleString()}</div>
-                                            </div>
-                                        )}
-                                    </div>
+                            <div className="receipt-row">
+                                <div>
+                                    <span className="receipt-label">Room Type</span>
+                                    <div className="receipt-value">{breakdown?.roomLabel}</div>
                                 </div>
+                                <div>
+                                    <span className="receipt-label">Meal Plan</span>
+                                    <div className="receipt-value">{breakdown?.boardLabel}</div>
+                                </div>
+                            </div>
 
-                                {/* Grand Total */}
-                                <div style={{ background: 'var(--primary-green)', color: 'white', padding: '25px', borderRadius: '15px', textAlign: 'center', boxShadow: '0 10px 30px rgba(39, 110, 54, 0.25)' }}>
-                                    <div style={{ fontSize: '0.85rem', opacity: 0.8, textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '8px' }}>Estimated Total</div>
-                                    <div style={{ fontSize: '2.5rem', fontWeight: '800' }}>{currency} {totalAmount.toLocaleString()}</div>
-                                    <div style={{ fontSize: '0.85rem', marginTop: '8px', opacity: 0.9 }}>{nightsNum} Night{nightsNum > 1 ? 's' : ''} · {formData.guestType === 'non-residential' ? 'Non-Residential' : 'Residential'}</div>
-                                </div>
+                            <div className="receipt-divider"></div>
 
-                                {/* Download Receipt */}
-                                <div style={{ background: 'white', padding: '20px', borderRadius: '15px', border: '2px dashed #ddd', textAlign: 'center' }}>
-                                    <p style={{ fontSize: '0.9rem', color: '#666', marginBottom: '15px' }}>Want a copy for your records?</p>
-                                    <button onClick={generateReceiptPDF} style={{ width: '100%', background: '#34495e', color: 'white', border: 'none', padding: '12px', borderRadius: '10px', fontWeight: '600', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
-                                        <i className="fas fa-file-pdf"></i> Download PDF Receipt
-                                    </button>
+                            <div className="receipt-section">
+                                <span className="receipt-label">Guest Details</span>
+                                <div className="receipt-value">{formData.firstName} {formData.lastName}</div>
+                                <div style={{ fontSize: '0.85rem', color: '#666', marginTop: '4px' }}>
+                                    <i className="fas fa-envelope" style={{ marginRight: '6px', opacity: 0.6 }}></i>{formData.email}<br/>
+                                    <i className="fas fa-phone" style={{ marginRight: '6px', opacity: 0.6 }}></i>{formData.phone}
                                 </div>
+                            </div>
+
+                            <div className="receipt-section">
+                                <span className="receipt-label">Occupancy</span>
+                                <div className="receipt-value">
+                                    {formData.adults} Adult{parseInt(formData.adults) > 1 ? 's' : ''}
+                                    {parseInt(formData.childrenCount) > 0 && `, ${formData.childrenCount} Child${parseInt(formData.childrenCount) !== 1 ? 'ren' : ''}`}
+                                </div>
+                            </div>
+
+                            <div className="receipt-divider"></div>
+
+                            <div className="receipt-section">
+                                <span className="receipt-label">Payment Breakdown</span>
+                                <div className="price-item">
+                                    <span className="item-label">Stay Total ({nightsNum} night{nightsNum > 1 ? 's' : ''})</span>
+                                    <span className="item-price">{currency} {breakdown?.adultTotal?.toLocaleString()}</span>
+                                </div>
+                                
+                                {breakdown?.childItems?.map((child, idx) => (
+                                    <div key={idx} className="price-item">
+                                        <span className="item-label">{child.label} ({child.policy})</span>
+                                        <span className="item-price" style={{ color: child.total === 0 ? 'var(--primary-green)' : 'inherit' }}>
+                                            {child.total === 0 ? 'FREE' : `${currency} ${child.total.toLocaleString()}`}
+                                        </span>
+                                    </div>
+                                ))}
+
+                                {breakdown?.excursionItem && (
+                                    <div className="price-item">
+                                        <span className="item-label">Add-on: {breakdown.excursionItem.label}</span>
+                                        <span className="item-price">{currency} {breakdown.excursionTotal.toLocaleString()}</span>
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className="grand-total-section">
+                                <div className="total-label">Estimated Grand Total</div>
+                                <div className="total-amount">{currency} {totalAmount.toLocaleString()}</div>
+                                <div style={{ fontSize: '0.75rem', marginTop: '5px', opacity: 0.8 }}>
+                                    Incl. of all taxes & service charges
+                                </div>
+                            </div>
+                            <div className="receipt-footer-note">
+                                <i className="fas fa-leaf" style={{ marginRight: '5px', color: 'var(--primary-green)' }}></i>
+                                Hospitality with a Christian touch
                             </div>
                         </div>
 
                         {error && <div className="alert alert-error" style={{ marginBottom: '20px' }}>{error}</div>}
 
-                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
-                            <button type="button" className="btn btn-secondary" style={{ flex: 1, padding: '18px', fontSize: '1.1rem', borderRadius: '12px' }} onClick={() => setShowConfirmation(false)} disabled={loading}>
-                                <i className="fas fa-edit" style={{ marginRight: '10px' }}></i>Make Changes
+                        <div style={{ display: 'flex', flexWrap: isMobile ? 'nowrap' : 'wrap', gap: isMobile ? '10px' : '20px' }}>
+                            <button type="button" className="btn btn-secondary" style={{ flex: 1, padding: isMobile ? '14px' : '18px', fontSize: isMobile ? '0.9rem' : '1.1rem', borderRadius: '12px' }} onClick={() => setShowConfirmation(false)} disabled={loading}>
+                                <i className="fas fa-edit" style={{ marginRight: isMobile ? '5px' : '10px' }}></i>Edit
                             </button>
-                            <button type="button" className="btn btn-primary" style={{ flex: 2, padding: '18px', fontSize: '1.2rem', borderRadius: '12px', background: 'var(--primary-orange)', border: 'none', boxShadow: '0 10px 20px rgba(243, 156, 18, 0.2)' }} onClick={handleConfirm} disabled={loading}>
+                            <button type="button" className="btn btn-primary" style={{ flex: 2, padding: isMobile ? '14px' : '18px', fontSize: isMobile ? '0.95rem' : '1.2rem', borderRadius: '12px', background: 'var(--primary-orange)', border: 'none', boxShadow: '0 10px 20px rgba(243, 156, 18, 0.2)' }} onClick={handleConfirm} disabled={loading}>
                                 {loading ? (
-                                    <><i className="fas fa-spinner fa-spin" style={{ marginRight: '10px' }}></i>Sending Request...</>
+                                    <><i className="fas fa-spinner fa-spin" style={{ marginRight: '10px' }}></i>Sending...</>
                                 ) : (
-                                    <><i className="fas fa-check-circle" style={{ marginRight: '10px' }}></i>Confirm & Submit Booking</>
+                                    <><i className="fas fa-check-circle" style={{ marginRight: isMobile ? '5px' : '10px' }}></i>Confirm Booking</>
                                 )}
                             </button>
                         </div>
@@ -593,20 +621,20 @@ export default function BookingForm({ initialResort: propResort }) {
                                     <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
                                         <div>
                                             <label style={{ fontSize: '0.72rem', color: '#888', fontWeight: '600', display: 'block', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>First Name <span style={{ color: '#e74c3c' }}>*</span></label>
-                                            <input type="text" name="firstName" className="form-control" placeholder="Kennedy" value={formData.firstName} onChange={handleChange} required style={{ padding: '10px 14px', borderRadius: '10px' }} />
+                                            <input type="text" id="field-firstName" name="firstName" className="form-control" placeholder="Kennedy" value={formData.firstName} onChange={handleChange} required style={{ padding: '10px 14px', borderRadius: '10px' }} />
                                         </div>
                                         <div>
                                             <label style={{ fontSize: '0.72rem', color: '#888', fontWeight: '600', display: 'block', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Last Name <span style={{ color: '#e74c3c' }}>*</span></label>
-                                            <input type="text" name="lastName" className="form-control" placeholder="Mutuku" value={formData.lastName} onChange={handleChange} required style={{ padding: '10px 14px', borderRadius: '10px' }} />
+                                            <input type="text" id="field-lastName" name="lastName" className="form-control" placeholder="Mutuku" value={formData.lastName} onChange={handleChange} required style={{ padding: '10px 14px', borderRadius: '10px' }} />
                                         </div>
                                     </div>
                                     <div style={{ marginBottom: '12px' }}>
                                         <label style={{ fontSize: '0.72rem', color: '#888', fontWeight: '600', display: 'block', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Email Address <span style={{ color: '#e74c3c' }}>*</span></label>
-                                        <input type="email" name="email" className="form-control" placeholder="e.g. john@example.com" value={formData.email} onChange={handleChange} required style={{ padding: '10px 14px', borderRadius: '10px' }} />
+                                        <input type="email" id="field-email" name="email" className="form-control" placeholder="e.g. john@example.com" value={formData.email} onChange={handleChange} required style={{ padding: '10px 14px', borderRadius: '10px' }} />
                                     </div>
                                     <div>
                                         <label style={{ fontSize: '0.72rem', color: '#888', fontWeight: '600', display: 'block', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Phone Number <span style={{ color: '#e74c3c' }}>*</span></label>
-                                        <input type="tel" name="phone" className="form-control" placeholder="e.g. +254 7XX XXX XXX" value={formData.phone} onChange={handleChange} required style={{ padding: '10px 14px', borderRadius: '10px' }} />
+                                        <input type="tel" id="field-phone" name="phone" className="form-control" placeholder="e.g. +254 7XX XXX XXX" value={formData.phone} onChange={handleChange} required style={{ padding: '10px 14px', borderRadius: '10px' }} />
                                     </div>
                                 </div>
                             </div>
@@ -621,7 +649,7 @@ export default function BookingForm({ initialResort: propResort }) {
                                     </h4>
                                     <div style={{ marginBottom: '12px' }}>
                                         <label style={{ fontSize: '0.72rem', color: '#888', fontWeight: '600', display: 'block', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Resort Location <span style={{ color: '#e74c3c' }}>*</span></label>
-                                        <select name="resort" className="form-control" value={formData.resort} onChange={handleChange} required style={{ padding: '10px 14px', borderRadius: '10px' }}>
+                                        <select id="field-resort" name="resort" className="form-control" value={formData.resort} onChange={handleChange} required style={{ padding: '10px 14px', borderRadius: '10px' }}>
                                             <option value="" disabled>Choose Resort</option>
                                             <option value="kanamai">Jumuia Kanamai Beach Resort</option>
                                             <option value="kisumu">Jumuia Hotel Kisumu</option>
@@ -630,7 +658,7 @@ export default function BookingForm({ initialResort: propResort }) {
                                     </div>
                                     <div style={{ marginBottom: '12px' }}>
                                         <label style={{ fontSize: '0.72rem', color: '#888', fontWeight: '600', display: 'block', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Room Type <span style={{ color: '#e74c3c' }}>*</span></label>
-                                        <select name="roomType" className="form-control" value={formData.roomType} onChange={handleChange} required style={{ padding: '10px 14px', borderRadius: '10px' }}>
+                                        <select id="field-roomType" name="roomType" className="form-control" value={formData.roomType} onChange={handleChange} required style={{ padding: '10px 14px', borderRadius: '10px' }}>
                                             <option value="" disabled>Choose Room Type</option>
                                             {roomTypes.map((item, idx) => (
                                                 item.group ? (
@@ -662,7 +690,7 @@ export default function BookingForm({ initialResort: propResort }) {
                                                 <label style={{ fontSize: '0.72rem', color: '#888', fontWeight: '600', display: 'block', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                                                     {isConference ? 'Delegates' : (isHostel ? 'Guests' : 'Adults')} <span style={{ color: '#e74c3c' }}>*</span>
                                                 </label>
-                                                <select name="adults" className="form-control" value={formData.adults} onChange={handleChange} required style={{ padding: '10px 14px', borderRadius: '10px' }}>
+                                                <select id="field-adults" name="adults" className="form-control" value={formData.adults} onChange={handleChange} required style={{ padding: '10px 14px', borderRadius: '10px' }}>
                                                     <option value="" disabled>Choose {isConference ? 'Delegates' : (isHostel ? 'Guests' : 'Adults')}</option>
                                                     {[...Array(200).keys()].map(i => (
                                                         <option key={i + 1} value={i + 1}>{i + 1} {isConference ? 'Delegate' : (isHostel ? 'Guest' : 'Adult')}{i !== 0 ? 's' : ''}</option>
@@ -688,11 +716,11 @@ export default function BookingForm({ initialResort: propResort }) {
                                     <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: '10px', marginBottom: '12px' }}>
                                         <div>
                                             <label style={{ fontSize: '0.72rem', color: '#888', fontWeight: '600', display: 'block', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Check-in <span style={{ color: '#e74c3c' }}>*</span></label>
-                                            <input type="date" name="checkIn" className="form-control" min={today} value={formData.checkIn} onChange={handleChange} required style={{ padding: '10px 14px', borderRadius: '10px' }} />
+                                            <input type="date" id="field-checkIn" name="checkIn" className="form-control" min={today} value={formData.checkIn} onChange={handleChange} required style={{ padding: '10px 14px', borderRadius: '10px' }} />
                                         </div>
                                         <div>
                                             <label style={{ fontSize: '0.72rem', color: '#888', fontWeight: '600', display: 'block', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Check-out <span style={{ color: '#e74c3c' }}>*</span></label>
-                                            <input type="date" name="checkOut" className="form-control" min={formData.checkIn || today} value={formData.checkOut} onChange={handleChange} required style={{ padding: '10px 14px', borderRadius: '10px' }} />
+                                            <input type="date" id="field-checkOut" name="checkOut" className="form-control" min={formData.checkIn || today} value={formData.checkOut} onChange={handleChange} required style={{ padding: '10px 14px', borderRadius: '10px' }} />
                                         </div>
                                     </div>
 
@@ -700,7 +728,7 @@ export default function BookingForm({ initialResort: propResort }) {
                                     <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: '10px', marginBottom: '12px' }}>
                                         <div>
                                             <label style={{ fontSize: '0.72rem', color: '#888', fontWeight: '600', display: 'block', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Meal Plan <span style={{ color: '#e74c3c' }}>*</span></label>
-                                            <select name="packageType" className="form-control" value={formData.packageType} onChange={handleChange} required style={{ padding: '10px 14px', borderRadius: '10px' }}>
+                                            <select id="field-packageType" name="packageType" className="form-control" value={formData.packageType} onChange={handleChange} required style={{ padding: '10px 14px', borderRadius: '10px' }}>
                                                 {isConference ? (
                                                     <option value="conference">Conference Package Included</option>
                                                 ) : isHostel ? (
@@ -717,7 +745,7 @@ export default function BookingForm({ initialResort: propResort }) {
                                         </div>
                                         <div>
                                             <label style={{ fontSize: '0.72rem', color: '#888', fontWeight: '600', display: 'block', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Additional Services <span style={{ color: '#e74c3c' }}>*</span></label>
-                                            <select name="excursionId" className="form-control" value={formData.excursionId} onChange={handleChange} required style={{ padding: '10px 14px', borderRadius: '10px' }}>
+                                            <select id="field-excursionId" name="excursionId" className="form-control" value={formData.excursionId} onChange={handleChange} required style={{ padding: '10px 14px', borderRadius: '10px' }}>
                                                 <option value="" disabled>Choose Service</option>
                                                 <option value="none">None (Room Only)</option>
                                                 {excursions.map(ex => (
@@ -731,7 +759,7 @@ export default function BookingForm({ initialResort: propResort }) {
                                     <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: '10px', marginBottom: '12px' }}>
                                         <div>
                                             <label style={{ fontSize: '0.72rem', color: '#888', fontWeight: '600', display: 'block', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Guest Type <span style={{ color: '#e74c3c' }}>*</span></label>
-                                            <select name="guestType" className="form-control" value={formData.guestType} onChange={handleChange} required style={{ padding: '10px 14px', borderRadius: '10px' }}>
+                                            <select id="field-guestType" name="guestType" className="form-control" value={formData.guestType} onChange={handleChange} required style={{ padding: '10px 14px', borderRadius: '10px' }}>
                                                 <option value="" disabled>Choose Guest Type</option>
                                                 <option value="residential">Residential (Kenyan / EA)</option>
                                                 {formData.resort !== 'kanamai' && <option value="non-residential">Non-Residential (International)</option>}
@@ -739,7 +767,7 @@ export default function BookingForm({ initialResort: propResort }) {
                                         </div>
                                         <div>
                                             <label style={{ fontSize: '0.72rem', color: '#888', fontWeight: '600', display: 'block', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Payment Method <span style={{ color: '#e74c3c' }}>*</span></label>
-                                            <select name="paymentMethod" className="form-control" value={formData.paymentMethod} onChange={handleChange} required style={{ padding: '10px 14px', borderRadius: '10px' }}>
+                                            <select id="field-paymentMethod" name="paymentMethod" className="form-control" value={formData.paymentMethod} onChange={handleChange} required style={{ padding: '10px 14px', borderRadius: '10px' }}>
                                                 <option value="" disabled>Choose Payment</option>
                                                 <option value="mpesa">M-Pesa (Mobile Money)</option>
                                                 <option value="bank">Bank Transfer (Direct)</option>
@@ -772,9 +800,9 @@ export default function BookingForm({ initialResort: propResort }) {
                                                     Child {idx + 1}
                                                 </div>
                                                 <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: '10px' }}>
-                                                    <div>
+                                            <div id={`field-child-age-${idx}`}>
                                                         <label style={{ fontSize: '0.7rem', color: '#888', fontWeight: '600', display: 'block', marginBottom: '3px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Age <span style={{ color: '#e74c3c' }}>*</span></label>
-                                                        <input type="number" min="0" max="17" placeholder="e.g. 5" className="form-control" value={child.age}
+                                                        <input type="number" id={`input-child-age-${idx}`} min="0" max="17" placeholder="e.g. 5" className="form-control" value={child.age}
                                                             onChange={(e) => handleChildChange(idx, 'age', e.target.value)} required
                                                             style={{ padding: '9px 12px', borderRadius: '10px' }} />
                                                     </div>

@@ -44,7 +44,7 @@ export default function FeedbackContact() {
         setFeedbackLoading(true);
         try {
             await api.post('/feedback', feedbackData);
-            setFeedbackStatus({ type: 'success', text: 'Thank you! Your feedback has been submitted successfully.' });
+            setShowSuccessModal(true);
             setFeedbackData({ name: '', email: '', resort: '', rating: 0, comment: '' });
             setHoverRating(0);
         } catch (err) {
@@ -85,7 +85,7 @@ export default function FeedbackContact() {
             </section>
 
             {/* Part 1: Feedback Section */}
-            <section id="feedback" className="container" style={{ padding: '80px 0 40px' }}>
+            <section id="feedback" className="container" style={{ padding: '60px 0 20px' }}>
                 <div className="section-header">
                     <h2>Share Your Experience</h2>
                     <p>Your feedback helps us maintain the highest standards of Christian hospitality.</p>
@@ -93,7 +93,7 @@ export default function FeedbackContact() {
 
                 <div className="feedback-form-card" style={{ maxWidth: '800px', margin: '0 auto' }}>
                     <form onSubmit={handleFeedbackSubmit}>
-                        <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
+                        <div className="form-grid">
                             <div className="form-field-wrapper" style={{ marginBottom: 0 }}>
                                 <input
                                     className="form-control"
@@ -164,8 +164,8 @@ export default function FeedbackContact() {
                             ></textarea>
                         </div>
 
-                        {feedbackStatus && (
-                            <div className={`alert alert-${feedbackStatus.type}`} style={{ marginBottom: '20px' }}>
+                        {feedbackStatus && feedbackStatus.type === 'error' && (
+                            <div className={`alert alert-error`} style={{ marginBottom: '20px' }}>
                                 {feedbackStatus.text}
                             </div>
                         )}
@@ -177,10 +177,10 @@ export default function FeedbackContact() {
                 </div>
             </section>
 
-            <hr className="container" style={{ opacity: 0.1 }} />
+            <hr className="container" style={{ opacity: 0.2, border: 'none', borderTop: '1px solid var(--primary-green)', margin: '0 auto' }} />
 
             {/* Part 2: Contact Section */}
-            <section id="contact" className="contact-page-wrapper" style={{ paddingTop: '60px' }}>
+            <section id="contact" className="contact-page-wrapper" style={{ paddingTop: '20px' }}>
                 <div className="container" style={{ marginBottom: '40px' }}>
                     <div className="section-header">
                         <h2>Direct Inquiries</h2>
@@ -280,9 +280,9 @@ export default function FeedbackContact() {
                 <div className="success-modal-overlay">
                     <div className="success-modal-content anim-pop-in">
                         <div className="success-icon-wrapper"><i className="fas fa-check"></i></div>
-                        <h2>Message Sent!</h2>
-                        <p>Our team will get back to you shortly.</p>
-                        <button className="success-confirm-btn" onClick={() => setShowSuccessModal(false)}>Okay</button>
+                        <h2>Submission Successful!</h2>
+                        <p>Thank you for reaching out. Our team will review your submission and get back to you shortly if necessary.</p>
+                        <button className="success-confirm-btn" onClick={() => setShowSuccessModal(false)}>Okay, Great</button>
                     </div>
                 </div>
             )}

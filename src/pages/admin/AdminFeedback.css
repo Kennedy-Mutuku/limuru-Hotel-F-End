@@ -1,0 +1,209 @@
+/* AdminFeedback.css - Responsive enhancements for Guest Communications */
+
+.admin-feedback-container {
+    animation: fadeIn 0.5s ease;
+}
+
+/* --- Section Headers --- */
+.section-header-admin {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.section-header-admin h2 {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--primary-green);
+}
+
+/* --- Table Refinements --- */
+@media (max-width: 768px) {
+    .admin-table-wrapper {
+        border-radius: 12px;
+        box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+        background: #fbfbfb;
+    }
+
+    /* Make rating look better on mobile */
+    .rating-stars {
+        display: block;
+        font-size: 0.8rem;
+    }
+}
+
+/* --- Message List & Detail Grid --- */
+.messages-grid-context {
+    display: grid;
+    gap: 24px;
+    align-items: start;
+    transition: all 0.3s ease;
+}
+
+/* Default state: Desktop (2 cols if selected, else 1) */
+.messages-grid-context.with-selection {
+    grid-template-columns: 1.1fr 0.9fr;
+}
+
+/* Mobile Breakpoint: Stack everything */
+@media (max-width: 1024px) {
+    .messages-grid-context.with-selection {
+        grid-template-columns: 1fr;
+    }
+    
+    /* When a message is selected on mobile, we might want to hide the list or show detail above */
+    .admin-card.sticky-detail {
+        position: relative !important;
+        top: 0 !important;
+        margin-top: 20px;
+    }
+}
+
+/* --- Message Card Styling --- */
+.admin-message-item {
+    padding: 22px 30px;
+    border-bottom: 1px solid #f1f5f9;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+}
+
+@media (max-width: 600px) {
+    .admin-message-item {
+        padding: 18px 20px;
+    }
+    
+    .message-item-header {
+        flex-direction: column-reverse;
+        align-items: flex-start !important;
+        gap: 10px;
+    }
+    
+    .message-item-header h4 {
+        font-size: 1rem !important;
+    }
+
+    .admin-badge-sm {
+        margin-bottom: 5px;
+    }
+    
+    .message-item-footer {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 15px;
+    }
+    
+    .message-item-footer p {
+        max-width: 100% !important;
+        white-space: normal !important;
+    }
+    
+    .view-detail-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* --- Detail View Modal-like Card --- */
+.detail-view-card {
+    padding: 35px;
+    border: 1px solid var(--gray-border);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    background: white;
+}
+
+/* Modal Overlay for Feedback View */
+.admin-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.feedback-detail-modal {
+    background: white;
+    width: 100%;
+    max-width: 600px;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    animation: modalSlideUp 0.3s ease-out;
+}
+
+@keyframes modalSlideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.delete-action-btn {
+    background: #fff1f0;
+    color: #ff4d4f;
+    border: 1px solid #ffa39e;
+    padding: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.delete-action-btn:hover {
+    background: #ff4d4f;
+    color: white;
+}
+
+@media (max-width: 600px) {
+    .detail-view-card {
+        padding: 20px;
+    }
+    
+    .detail-view-header h2 {
+        font-size: 1.4rem !important;
+    }
+    
+    .detail-info-grid {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+    }
+    
+    .detail-message-body {
+        padding: 20px !important;
+    }
+    
+    .detail-actions {
+        flex-direction: column;
+    }
+    
+    .detail-actions button {
+        width: 100%;
+    }
+}
+
+/* --- Utilities --- */
+.text-truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.anim-fade-in {
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

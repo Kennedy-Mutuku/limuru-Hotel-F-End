@@ -327,21 +327,30 @@ export default function AdminDashboard() {
                                 colors={['#16a34a', '#f97316']} labels={['Revenue (KES)', 'Bookings']} height={240} />
                         </div>
 
-                        {/* Ecosystem Activity */}
+                        {/* Guest Interactions */}
                         <div className="admin-card" style={{ padding: '24px' }}>
                             <div style={{ marginBottom: '14px' }}>
-                                <h3 style={{ margin: 0, marginBottom: '3px' }}>🌐 Ecosystem Activity</h3>
-                                <p style={{ margin: 0, fontSize: '0.8rem', color: '#888' }}>Job applications, supplier bids &amp; offer claims — by month</p>
+                                <h3 style={{ margin: 0, marginBottom: '3px', color: 'var(--primary-green)' }}>💬 Guest Interactions</h3>
+                                <p style={{ margin: 0, fontSize: '0.8rem', color: '#888' }}>Live tracking of inquiries, feedback, and offer claims</p>
                             </div>
                             <div style={{ display: 'flex', gap: '16px', marginBottom: '12px', flexWrap: 'wrap' }}>
-                                {[{ c: '#4338ca', lbl: 'Job Applications' }, { c: '#9c27b0', lbl: 'Supplier Bids' }, { c: '#0ea5e9', lbl: 'Offer Claims' }].map(l => (
+                                {[
+                                    { c: '#4338ca', lbl: 'Direct Inquiries' }, 
+                                    { c: '#f59e0b', lbl: 'Guest Feedback' }, 
+                                    { c: '#0ea5e9', lbl: 'Offer Claims' }
+                                ].map(l => (
                                     <div key={l.lbl} style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.72rem', fontWeight: '700', color: '#555' }}>
                                         <div style={{ width: '14px', height: '3px', background: l.c, borderRadius: '2px' }}></div>{l.lbl}
                                     </div>
                                 ))}
                             </div>
-                            <AreaChartSVG data={months} keys={['applications', 'bids', 'claims']}
-                                colors={['#4338ca', '#9c27b0', '#0ea5e9']} labels={['Job Applications', 'Supplier Bids', 'Offer Claims']} height={240} />
+                            <AreaChartSVG 
+                                data={months} 
+                                keys={['inquiries', 'feedback', 'claims']}
+                                colors={['#4338ca', '#f59e0b', '#0ea5e9']} 
+                                labels={['Direct Inquiries', 'Guest Feedback', 'Offer Claims']} 
+                                height={240} 
+                            />
                         </div>
 
                     </div>

@@ -23,7 +23,7 @@ const RESORT_DATA = {
     kanamai: {
         name: 'Jumuia Conference & Beach Resort',
         location: 'Kanamai Coast, Kenya',
-        heroImage: '/images/resorts/kanamai/front kanamai.jpg',
+        heroImage: '/images/gallery/kanamai home.jpeg',
         tagline: 'Experience Coastal Serenity & Warm Hospitality',
         description: 'Set along the pristine shores of Kanamai, our beach resort offers a perfect blend of relaxation and productivity. With direct ocean access, two swimming pools, and state-of-the-art conference facilities, we cater to both holidaymakers and business delegates seeking a tranquil coastal retreat.',
         highlights: [
@@ -208,9 +208,9 @@ export function ResortOverview() {
                         <div style={{ position: 'relative' }}>
                             <div style={{ position: 'absolute', top: '-15px', right: '-15px', width: '100%', height: '100%', background: 'var(--primary-orange)', borderRadius: '20px', zIndex: -1 }}></div>
                             <div style={{ borderRadius: '20px', overflow: 'hidden', boxShadow: '0 30px 60px rgba(0,0,0,0.2)' }}>
-                                {resort === 'limuru' && <img src="/images/resorts/limuru/limuru-front.jpeg" alt="Resort Front" style={{ width: '100%', height: 'auto', display: 'block' }} />}
-                                {resort === 'kanamai' && <img src="/images/resorts/kanamai/kanamai-overview.jpg" alt="Kanamai Beach" style={{ width: '100%', height: 'auto', display: 'block' }} />}
-                                {resort === 'kisumu' && <img src="/images/resorts/kisumu/kisumu night view.jpeg" alt="Kisumu Night View" style={{ width: '100%', height: 'auto', display: 'block' }} />}
+                                {resort === 'limuru' && <img src="/images/resorts/limuru/limuru-front.jpeg" alt="Resort Front" loading="lazy" decoding="async" style={{ width: '100%', height: 'auto', display: 'block' }} />}
+                                {resort === 'kanamai' && <img src="/images/gallery/kanamai home.jpeg" alt="Kanamai Beach" loading="lazy" decoding="async" style={{ width: '100%', height: 'auto', display: 'block' }} />}
+                                {resort === 'kisumu' && <img src="/images/resorts/kisumu/kisumu night view.jpeg" alt="Kisumu Night View" loading="lazy" decoding="async" style={{ width: '100%', height: 'auto', display: 'block' }} />}
                             </div>
                         </div>
                     </div>

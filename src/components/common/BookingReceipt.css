@@ -1,0 +1,312 @@
+/* Professional Booking Receipt Styling */
+.booking-receipt-container {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 0; /* Professional sharp corners */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    padding: 25px;
+    position: relative;
+    overflow: hidden;
+    animation: slideUpFade 0.5s ease-out;
+}
+
+@keyframes slideUpFade {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.receipt-header {
+    text-align: center;
+    border-bottom: 2px dashed #eee;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+}
+
+.receipt-logo {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 10px;
+}
+
+.receipt-section {
+    margin-bottom: 20px;
+}
+
+.receipt-label {
+    font-size: 0.75rem;
+    color: var(--primary-orange);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.receipt-value {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.receipt-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.receipt-row > div {
+    flex: 1;
+}
+
+.receipt-divider {
+    height: 1px;
+    background: #f0f0f0;
+    margin: 15px 0;
+}
+
+.price-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    font-size: 0.9rem;
+}
+
+.price-item .item-label {
+    color: #666;
+}
+
+.price-item .item-price {
+    font-weight: 700;
+}
+
+.grand-total-section {
+    background: var(--primary-green);
+    color: white;
+    padding: 15px 20px;
+    margin: 15px -30px 0 -30px; /* Bleed to edges, but no bottom bleed */
+    text-align: center;
+}
+
+.total-label {
+    font-size: 0.8rem;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.total-amount {
+    font-size: 2.2rem;
+    font-weight: 800;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.verified-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    opacity: 0.1;
+    font-size: 4rem;
+    transform: rotate(15deg);
+    pointer-events: none;
+    color: var(--primary-green);
+}
+
+.receipt-footer-note {
+    font-style: italic;
+    font-size: 0.7rem;
+    color: #999;
+    margin-top: 10px;
+    padding-bottom: 5px;
+    text-align: center;
+}
+
+.pdf-trigger-btn {
+    background: #fdfdfd;
+    border: 1.5px solid #e0e0e0;
+    color: var(--text-dark);
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.pdf-trigger-btn:hover {
+    border-color: #e74c3c;
+    background: #fffafa;
+}
+
+.pdf-trigger-btn i {
+    color: #e74c3c;
+}
+
+/* Mobile Specific Optimizations */
+@media (max-width: 600px) {
+    .booking-receipt-container {
+        padding: 15px;
+        margin: 0 -5px;
+    }
+    
+    .receipt-header {
+        padding-bottom: 12px;
+        margin-bottom: 15px;
+    }
+
+    .receipt-section {
+        margin-bottom: 12px;
+    }
+
+    .receipt-divider {
+        margin: 10px 0;
+    }
+
+    .receipt-logo {
+        width: 45px;
+        height: 45px;
+        margin-bottom: 5px;
+    }
+    
+    .grand-total-section {
+        padding: 12px 15px;
+        margin: 12px -15px 0 -15px;
+    }
+    
+    .total-amount {
+        font-size: 1.5rem;
+    }
+    
+    .receipt-value {
+        font-size: 0.95rem;
+    }
+
+    .receipt-label {
+        font-size: 0.65rem;
+        margin-bottom: 2px;
+    }
+
+    .price-item {
+        padding: 3px 0;
+        font-size: 0.85rem;
+    }
+
+    .verified-badge {
+        font-size: 2.5rem;
+        top: 10px;
+        right: 10px;
+    }
+
+    .receipt-footer-note {
+        margin-top: 8px;
+        font-size: 0.6rem;
+    }
+}
+
+/* Success Modal Refinements */
+.success-modal-card {
+    background: white;
+    padding: 40px;
+    border-radius: 0; /* Align with sharp corners theme */
+    box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+    max-width: 500px;
+    width: 95%;
+    text-align: center;
+    position: relative;
+    border-top: 5px solid var(--primary-green);
+    animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes modalPop {
+    from { opacity: 0; transform: scale(0.9) translateY(20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.success-icon-wrap {
+    width: 80px;
+    height: 80px;
+    background: #f0f7f2;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 25px;
+    color: var(--primary-green);
+    box-shadow: 0 10px 20px rgba(39, 110, 54, 0.1);
+}
+
+.success-title {
+    font-size: 2.2rem;
+    color: var(--primary-green);
+    margin-bottom: 12px;
+    font-weight: 800;
+    font-family: 'Playfair Display', serif;
+}
+
+.success-message {
+    color: #666;
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.modal-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.btn-download-receipt {
+    background: #e74c3c;
+    color: white;
+    padding: 16px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s;
+    box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+}
+
+.btn-download-receipt:hover {
+    background: #c0392b;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(231, 76, 60, 0.4);
+}
+
+.btn-return-home {
+    background: white;
+    color: #444;
+    padding: 14px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-return-home:hover {
+    background: #f9f9f9;
+    border-color: #bbb;
+}
+
+@media (max-width: 600px) {
+    .success-modal-card {
+        padding: 30px 20px;
+    }
+    .success-title {
+        font-size: 1.8rem;
+    }
+    .success-message {
+        font-size: 1rem;
+    }
+}

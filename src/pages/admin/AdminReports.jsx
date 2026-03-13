@@ -246,8 +246,8 @@ export default function AdminReports() {
                         <div className="stat-info"><p>Total Bookings</p><h3>{totalBookings}</h3></div>
                     </div>
                     <div className="stat-card">
-                        <div className="stat-icon blue"><i className="fas fa-gavel"></i></div>
-                        <div className="stat-info"><p>Tender Postings</p><h3>{report?.tenders?.total || 0}</h3></div>
+                        <div className="stat-icon blue"><i className="fas fa-envelope-open-text"></i></div>
+                        <div className="stat-info"><p>Guest Inquiries</p><h3>{report?.communications?.total || 0}</h3></div>
                     </div>
                     <div className="stat-card">
                         <div className="stat-icon" style={{ background: '#9c27b0' }}><i className="fas fa-star"></i></div>
@@ -297,59 +297,67 @@ export default function AdminReports() {
                     </div>
                 </div>
 
-                {/* ── SECTION 2: Ecosystem Activity ── */}
+                {/* ── SECTION 2: Guest Communications ── */}
                 <div style={{ marginBottom: '8px', paddingBottom: '4px', borderBottom: '2px solid #4338ca', display: 'flex', alignItems: 'center', gap: '10px', marginTop: '8px' }}>
-                    <i className="fas fa-globe" style={{ color: '#4338ca' }}></i>
-                    <h3 style={{ margin: 0 }}>Ecosystem Activity</h3>
+                    <i className="fas fa-comments" style={{ color: '#4338ca' }}></i>
+                    <h3 style={{ margin: 0 }}>Guest Communication Trends</h3>
                 </div>
 
                 <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '20px', marginBottom: '24px', marginTop: '16px' }}>
                     <div className="admin-card" style={{ padding: '22px' }}>
                         <div style={{ marginBottom: '12px' }}>
-                            <h4 style={{ margin: 0, marginBottom: '3px' }}>🌐 Applications, Bids &amp; Claims by Month</h4>
-                            <p style={{ margin: 0, fontSize: '0.78rem', color: '#888' }}>Activity across recruitment, tenders and offers</p>
+                            <h4 style={{ margin: 0, marginBottom: '3px' }}>💬 Inquiries, Feedback &amp; Claims by Month</h4>
+                            <p style={{ margin: 0, fontSize: '0.78rem', color: '#888' }}>Live tracking of guest engagement and responsiveness</p>
                         </div>
                         <div style={{ display: 'flex', gap: '14px', marginBottom: '10px' }}>
-                            {[{ c: '#4338ca', lbl: 'Job Applications' }, { c: '#9c27b0', lbl: 'Supplier Bids' }, { c: '#0ea5e9', lbl: 'Offer Claims' }].map(l => (
+                            {[
+                                { c: '#4338ca', lbl: 'Guest Inquiries' }, 
+                                { c: '#f59e0b', lbl: 'Guest Feedback' }, 
+                                { c: '#0ea5e9', lbl: 'Offer Claims' }
+                            ].map(l => (
                                 <div key={l.lbl} style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '0.7rem', fontWeight: '700', color: '#555' }}>
                                     <div style={{ width: '14px', height: '3px', background: l.c, borderRadius: '2px' }}></div>{l.lbl}
                                 </div>
                             ))}
                         </div>
-                        <AreaChartSVG data={months} keys={['applications', 'bids', 'claims']} colors={['#4338ca', '#9c27b0', '#0ea5e9']} labels={['Job Applications', 'Supplier Bids', 'Offer Claims']} height={220} />
+                        <AreaChartSVG 
+                            data={months} 
+                            keys={['inquiries', 'feedback', 'claims']} 
+                            colors={['#4338ca', '#f59e0b', '#0ea5e9']} 
+                            labels={['Guest Inquiries', 'Guest Feedback', 'Offer Claims']} 
+                            height={220} 
+                        />
                     </div>
 
                     <div className="admin-card" style={{ padding: '22px', display: 'flex', flexDirection: 'column' }}>
-                        <h4 style={{ margin: 0, marginBottom: '4px' }}>⚖️ Procurement Summary</h4>
-                        <p style={{ margin: '0 0 14px', fontSize: '0.78rem', color: '#888' }}>Tender &amp; bid status overview</p>
+                        <h4 style={{ margin: 0, marginBottom: '4px' }}>📊 Engagement &amp; Analytics</h4>
+                        <p style={{ margin: '0 0 14px', fontSize: '0.78rem', color: '#888' }}>Inquiry status and offer conversions</p>
                         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.82rem' }}>
                             <tbody>
                                 <tr style={{ borderBottom: '1px solid #f1f5f9' }}>
-                                    <td style={{ padding: '9px 4px', color: '#555' }}>Total Tenders Posted</td>
-                                    <td style={{ padding: '9px 4px', fontWeight: '800', textAlign: 'right' }}>{report?.tenders?.total || 0}</td>
+                                    <td style={{ padding: '9px 4px', color: '#555' }}>Total Inquiries Received</td>
+                                    <td style={{ padding: '9px 4px', fontWeight: '800', textAlign: 'right' }}>{report?.communications?.total || 0}</td>
                                 </tr>
-                                <tr style={{ borderBottom: '1px solid #f1f5f9' }}>
-                                    <td style={{ padding: '9px 4px', color: '#555' }}>Total Bids Received</td>
-                                    <td style={{ padding: '9px 4px', fontWeight: '800', textAlign: 'right' }}>
-                                        {report?.tenders?.bids?.reduce((a, b) => a + b.count, 0) || 0}
-                                    </td>
+                                {(report?.communications?.status || []).map(s => (
+                                    <tr key={s._id} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                                        <td style={{ padding: '9px 4px', color: '#555', textTransform: 'capitalize' }}>Inquiries — {s._id}</td>
+                                        <td style={{ padding: '9px 4px', fontWeight: '700', textAlign: 'right' }}>{s.count}</td>
+                                    </tr>
+                                ))}
+                                <tr style={{ borderBottom: '1px solid #f1f5f9', marginTop: '10px' }}>
+                                    <td style={{ padding: '9px 4px', color: '#555' }}>Total Feedbacks</td>
+                                    <td style={{ padding: '9px 4px', fontWeight: '800', textAlign: 'right' }}>{report?.feedback?.distribution?.reduce((a, b) => a + b.count, 0) || 0}</td>
                                 </tr>
                                 <tr style={{ borderBottom: '1px solid #f1f5f9' }}>
                                     <td style={{ padding: '9px 4px', color: '#555' }}>Active Offers</td>
                                     <td style={{ padding: '9px 4px', fontWeight: '800', textAlign: 'right' }}>{report?.offers?.total || 0}</td>
                                 </tr>
                                 <tr style={{ borderBottom: '1px solid #f1f5f9' }}>
-                                    <td style={{ padding: '9px 4px', color: '#555' }}>Offer Claims</td>
+                                    <td style={{ padding: '9px 4px', color: '#555' }}>Offer Claims Confirmed</td>
                                     <td style={{ padding: '9px 4px', fontWeight: '800', textAlign: 'right' }}>
-                                        {report?.offers?.claims?.reduce((a, b) => a + b.count, 0) || 0}
+                                        {report?.offers?.claims?.find(c => c._id === 'confirmed')?.count || 0}
                                     </td>
                                 </tr>
-                                {(report?.tenders?.bids || []).map(b => (
-                                    <tr key={b._id} style={{ borderBottom: '1px solid #f1f5f9' }}>
-                                        <td style={{ padding: '9px 4px', color: '#555', textTransform: 'capitalize' }}>Bids — {b._id}</td>
-                                        <td style={{ padding: '9px 4px', fontWeight: '700', textAlign: 'right' }}>{b.count}</td>
-                                    </tr>
-                                ))}
                             </tbody>
                         </table>
                     </div>
@@ -492,8 +500,8 @@ export default function AdminReports() {
                                 {[
                                     { label: 'Total Revenue', val: `KES ${totalRevenue.toLocaleString()}`, color: '#16a34a' },
                                     { label: 'Total Bookings', val: totalBookings, color: '#f97316' },
-                                    { label: 'Total Tenders', val: report?.tenders?.total || 0, color: '#4338ca' },
-                                    { label: 'Total Bids', val: report?.tenders?.bids?.reduce((a, b) => a + b.count, 0) || 0, color: '#9c27b0' },
+                                    { label: 'Guest Inquiries', val: report?.communications?.total || 0, color: '#4338ca' },
+                                    { label: 'Inquiry Status', val: `${report?.communications?.status?.find(s => s._id === 'responded')?.count || 0} Responded`, color: '#9c27b0' },
                                     { label: 'Active Offers', val: report?.offers?.total || 0, color: '#0ea5e9' },
                                     { label: 'Offer Claims', val: report?.offers?.claims?.reduce((a, b) => a + b.count, 0) || 0, color: '#22c55e' },
                                     { label: 'Avg. Rating', val: `${(report?.feedback?.average || 0).toFixed(2)} / 5`, color: '#f59e0b' },
