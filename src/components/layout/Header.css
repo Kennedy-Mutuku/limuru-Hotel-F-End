@@ -126,25 +126,15 @@
 }
 
 .logo-text p {
-    font-family: 'Great Vibes', cursive;
-    font-size: 1.05rem;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 0.82rem;
+    font-weight: 600;
     color: var(--primary-green);
-    font-weight: 400;
+    letter-spacing: 0.2px;
     white-space: nowrap;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: -2px;
-    letter-spacing: 0.3px;
-}
-
-.logo-text p::before,
-.logo-text p::after {
-    content: '';
-    display: inline-block;
-    width: 22px;
-    height: 1px;
-    background: linear-gradient(90deg, transparent 0%, var(--primary-green) 50%, transparent 100%);
+    margin-top: 1px;
+    opacity: 0.92;
 }
 
 .main-nav {
@@ -476,21 +466,17 @@
     }
 
     .logo-text p {
-        font-family: 'Great Vibes', cursive;
-        font-size: 0.92rem;
+        font-family: 'Playfair Display', serif;
+        font-style: italic;
+        font-size: 0.70rem;
+        font-weight: 600;
         color: var(--primary-green);
-        font-weight: 400;
-        white-space: nowrap;
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        line-height: 1.1;
+        letter-spacing: 0.1px;
+        white-space: normal;
+        line-height: 1.2;
         max-width: 100%;
-    }
-
-    .logo-text p::before,
-    .logo-text p::after {
-        width: 14px;
+        margin-top: 1px;
+        opacity: 0.92;
     }
 
     .mobile-overlay {
