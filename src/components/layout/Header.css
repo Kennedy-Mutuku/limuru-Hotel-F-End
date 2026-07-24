@@ -168,11 +168,21 @@
     color: var(--primary-orange);
 }
 
-.main-nav a.active::after,
+.main-nav a.active::after {
+    content: '';
+    position: absolute;
+    bottom: -3px; /* Positioned 3px below normal link text */
+    left: 0;
+    width: 100%;
+    height: 3.5px; /* Thick, high-visibility indicator line */
+    background-color: var(--primary-orange);
+    border-radius: 2px;
+}
+
 .nav-dropdown.active > .dropdown-trigger::after {
     content: '';
     position: absolute;
-    bottom: -3px; /* Positioned just below the word, almost touching it */
+    bottom: 22px; /* Accounts for 25px padding-bottom: sits tightly 3px under dropdown text */
     left: 0;
     width: 100%;
     height: 3.5px; /* Thick, high-visibility indicator line */
