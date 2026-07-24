@@ -132,61 +132,23 @@ export default function HomePage() {
                             </div>
                         </div>
 
-                        {/* Core Values */}
-                        <div className="clean-values-header" style={{ marginTop: '24px' }}>
-                            <h2>Our <span className="text-highlight">Core Values</span></h2>
-                            <p>These foundational principles guide every decision we make, ensuring our services align with your mission and our shared vision for excellence.</p>
-                        </div>
-
-                        <div className="clean-bullet-list">
-                            <div className="clean-bullet-item">
-                                <span className="clean-bullet-dot"></span>
-                                <div className="clean-bullet-content">
-                                    <h3>Stewardship</h3>
-                                    <p>We practice responsible management and care for all resources entrusted to us.</p>
-                                </div>
+                        {/* Core Values Container */}
+                        <div className="core-values-card" style={{ marginTop: '24px' }}>
+                            <h3>Our Core Values & Motto</h3>
+                            <div className="values-tags">
+                                <span className="value-tag">Stewardship</span>
+                                <span className="value-tag">Integrity</span>
+                                <span className="value-tag">Professionalism</span>
+                                <span className="value-tag">Partnership</span>
+                                <span className="value-tag">Servanthood</span>
                             </div>
-
-                            <div className="clean-bullet-item">
-                                <span className="clean-bullet-dot"></span>
-                                <div className="clean-bullet-content">
-                                    <h3>Integrity</h3>
-                                    <p>We adhere to high moral standards, honesty, and transparency in all our hospitality services.</p>
-                                </div>
+                            <div className="motto-banner">
+                                <p>
+                                    <i className="fas fa-quote-left" style={{ marginRight: '8px', color: 'var(--primary-orange)' }}></i>
+                                    Hospitality with a Christian touch
+                                    <i className="fas fa-quote-right" style={{ marginLeft: '8px', color: 'var(--primary-orange)' }}></i>
+                                </p>
                             </div>
-
-                            <div className="clean-bullet-item">
-                                <span className="clean-bullet-dot"></span>
-                                <div className="clean-bullet-content">
-                                    <h3>Professionalism</h3>
-                                    <p>We maintain superior standards of quality, courtesy, and efficiency across every facility.</p>
-                                </div>
-                            </div>
-
-                            <div className="clean-bullet-item">
-                                <span className="clean-bullet-dot"></span>
-                                <div className="clean-bullet-content">
-                                    <h3>Partnership</h3>
-                                    <p>We collaborate closely with churches, organizations, delegates, and guests to ensure every event succeeds.</p>
-                                </div>
-                            </div>
-
-                            <div className="clean-bullet-item">
-                                <span className="clean-bullet-dot"></span>
-                                <div className="clean-bullet-content">
-                                    <h3>Servanthood</h3>
-                                    <p>We serve with humility and Christian dedication to ensure every guest feels valued and welcomed.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Motto Banner */}
-                        <div className="motto-banner" style={{ marginTop: '22px', padding: '12px 18px', textAlign: 'center' }}>
-                            <p style={{ fontSize: '1.05rem' }}>
-                                <i className="fas fa-quote-left" style={{ marginRight: '8px', color: 'var(--primary-orange)' }}></i>
-                                Hospitality with a Christian touch
-                                <i className="fas fa-quote-right" style={{ marginLeft: '8px', color: 'var(--primary-orange)' }}></i>
-                            </p>
                         </div>
                     </div>
                 </div>
