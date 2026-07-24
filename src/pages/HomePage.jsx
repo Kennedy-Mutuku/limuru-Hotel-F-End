@@ -111,16 +111,39 @@ export default function HomePage() {
                             <h2>Our Vision & Mission</h2>
                             <p>Guided by Christian principles, we are committed to excellence in hospitality</p>
                         </div>
-                        <div className="vm-grid">
-                            <div className="vision-card">
-                                <i className="fas fa-eye vm-icon"></i>
-                                <h3>Our Vision</h3>
-                                <p>To be a preferred Christian conferencing and youth centres in the region and beyond.</p>
+                        <div className="vm-bullets-wrapper">
+                            <div className="vm-bullet-column">
+                                <div className="vm-bullet-header">
+                                    <i className="fas fa-eye vm-bullet-icon"></i>
+                                    <h3>Our Vision</h3>
+                                </div>
+                                <ul className="vm-bullets-list">
+                                    <li>
+                                        <i className="fas fa-check-circle vm-check-icon"></i>
+                                        <span>To be a preferred Christian conferencing and youth centres in the region and beyond.</span>
+                                    </li>
+                                    <li>
+                                        <i className="fas fa-check-circle vm-check-icon"></i>
+                                        <span>Fostering spiritual growth, serene retreats, and community enrichment.</span>
+                                    </li>
+                                </ul>
                             </div>
-                            <div className="mission-card">
-                                <i className="fas fa-bullseye vm-icon"></i>
-                                <h3>Our Mission</h3>
-                                <p>To provide quality hospitality services for enhanced comfort and convenience.</p>
+
+                            <div className="vm-bullet-column">
+                                <div className="vm-bullet-header">
+                                    <i className="fas fa-bullseye vm-bullet-icon mission"></i>
+                                    <h3>Our Mission</h3>
+                                </div>
+                                <ul className="vm-bullets-list">
+                                    <li>
+                                        <i className="fas fa-check-circle vm-check-icon mission"></i>
+                                        <span>To provide quality hospitality services for enhanced comfort and convenience.</span>
+                                    </li>
+                                    <li>
+                                        <i className="fas fa-check-circle vm-check-icon mission"></i>
+                                        <span>Delivering warm, Christian-centered care for delegates, families, and groups.</span>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
 

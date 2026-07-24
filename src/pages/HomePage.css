@@ -117,55 +117,74 @@
     /* Dense padding */
 }
 
-.vm-grid {
+/* ── Containerless Bulleted Vision & Mission ── */
+.vm-bullets-wrapper {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-    /* Denser gap */
-    margin-bottom: 30px;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 40px;
+    margin-bottom: 40px;
+    text-align: left;
 }
 
-.vision-card,
-.mission-card {
-    background: var(--primary-white);
-    padding: 35px;
-    border: 1px solid var(--gray-border);
-    /* Subtle border instead of heavy shadow */
-    border-radius: 0;
-    /* SHARP CORNERS */
-    transition: border-color 0.3s;
+.vm-bullet-column {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
 }
 
-.vision-card:hover,
-.mission-card:hover {
-    border-color: var(--primary-green);
-    /* No translate lift */
+.vm-bullet-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid rgba(34, 68, 15, 0.1);
 }
 
-.vm-icon {
-    font-size: 2.5rem;
+.vm-bullet-icon {
+    font-size: 1.8rem;
     color: var(--primary-green);
-    margin-bottom: 20px;
-    /* Removed the circular background */
 }
 
-.mission-card .vm-icon {
+.vm-bullet-icon.mission {
     color: var(--primary-orange);
 }
 
-.vision-card h3,
-.mission-card h3 {
+.vm-bullet-header h3 {
     font-size: 1.5rem;
     font-family: 'Playfair Display', serif;
-    margin-bottom: 12px;
+    margin: 0;
     color: var(--primary-green);
 }
 
-.vision-card p,
-.mission-card p {
-    color: var(--text-light);
-    line-height: 1.7;
+.vm-bullets-list {
+    list-style: none;
+    padding: 0;
     margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.vm-bullets-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 1.02rem;
+    color: var(--text-dark);
+    line-height: 1.6;
+}
+
+.vm-check-icon {
+    color: var(--primary-green);
+    font-size: 1.1rem;
+    margin-top: 4px;
+    flex-shrink: 0;
+}
+
+.vm-check-icon.mission {
+    color: var(--primary-orange);
 }
 
 /* Core Values inside VM */
