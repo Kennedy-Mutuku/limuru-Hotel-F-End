@@ -6,7 +6,8 @@
     color: var(--primary-white);
     text-align: center;
     overflow: hidden;
-    background: #0a1a01; /* Fallback while images load */
+    background: #0a1a01;
+    /* Fallback while images load */
 }
 
 /* ── Crossfade image stack ── */
@@ -36,8 +37,13 @@
 }
 
 @keyframes kenBurns {
-    from { transform: scale(1.04); }
-    to   { transform: scale(1.00); }
+    from {
+        transform: scale(1.04);
+    }
+
+    to {
+        transform: scale(1.00);
+    }
 }
 
 /* ── Dark overlay for text contrast ── */
@@ -45,12 +51,10 @@
     position: absolute;
     inset: 0;
     z-index: 1;
-    background: linear-gradient(
-        to bottom,
-        rgba(5, 15, 1, 0.55) 0%,
-        rgba(5, 15, 1, 0.70) 60%,
-        rgba(5, 15, 1, 0.85) 100%
-    );
+    background: linear-gradient(to bottom,
+            rgba(5, 15, 1, 0.55) 0%,
+            rgba(5, 15, 1, 0.70) 60%,
+            rgba(5, 15, 1, 0.85) 100%);
 }
 
 /* ── Hero body (text + button above overlay) ── */
@@ -69,19 +73,22 @@
 .hero-shimmer {
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-        90deg,
-        #0a1a01 0%,
-        #153800 40%,
-        #0a1a01 80%
-    );
+    background: linear-gradient(90deg,
+            #0a1a01 0%,
+            #153800 40%,
+            #0a1a01 80%);
     background-size: 200% 100%;
     animation: shimmerMove 1.6s infinite linear;
 }
 
 @keyframes shimmerMove {
-    0%   { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
 }
 
 .hero h1 {
@@ -299,12 +306,10 @@
 .img-skeleton {
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-        90deg,
-        #e8ede6 0%,
-        #d4e0cf 40%,
-        #e8ede6 80%
-    );
+    background: linear-gradient(90deg,
+            #e8ede6 0%,
+            #d4e0cf 40%,
+            #e8ede6 80%);
     background-size: 200% 100%;
     animation: shimmerMove 1.4s infinite linear;
     z-index: 1;
@@ -441,18 +446,17 @@
     }
 
     .hero {
-        height: 100svh; /* Use small viewport height on mobile */
+        height: 100svh;
+        /* Use small viewport height on mobile */
         min-height: 560px;
     }
 
     /* Slightly darker overlay on mobile for better text contrast */
     .hero-overlay {
-        background: linear-gradient(
-            to bottom,
-            rgba(5, 15, 1, 0.60) 0%,
-            rgba(5, 15, 1, 0.78) 60%,
-            rgba(5, 15, 1, 0.90) 100%
-        );
+        background: linear-gradient(to bottom,
+                rgba(5, 15, 1, 0.60) 0%,
+                rgba(5, 15, 1, 0.78) 60%,
+                rgba(5, 15, 1, 0.90) 100%);
     }
 
     .hero-body {
@@ -462,26 +466,28 @@
     }
 
     .hero-content {
-        position: relative; 
-        isolation: isolate; 
-        overflow: hidden; 
+        position: relative;
+        isolation: isolate;
+        overflow: hidden;
         width: 92%;
         max-width: 420px;
         height: auto;
-        min-height: unset; 
+        min-height: unset;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        padding: 35px 20px; 
+        padding: 35px 20px;
         border-radius: 28px;
         /* Glassmorphism Effect */
-        background: rgba(10, 26, 1, 0.4); /* Subtle green tint */
-        backdrop-filter: blur(12px); /* Blurred motion underneath */
+        background: rgba(10, 26, 1, 0.4);
+        /* Subtle green tint */
+        backdrop-filter: blur(12px);
+        /* Blurred motion underneath */
         -webkit-backdrop-filter: blur(12px);
         border: 1px solid rgba(255, 255, 255, 0.15);
         box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-        margin: 0; 
+        margin: 0;
     }
 
     /* Constrained pseudo-elements removed in favor of full hero background */
@@ -492,20 +498,23 @@
 
     .hero h1 {
         font-size: 2.1rem;
-        margin-bottom: 8px; /* Reduced from 15px */
+        margin-bottom: 8px;
+        /* Reduced from 15px */
         line-height: 1.2;
     }
 
     .hero p.tagline {
         font-size: 1.15rem;
-        margin-bottom: 10px; /* Reduced from 15px */
+        margin-bottom: 10px;
+        /* Reduced from 15px */
     }
 
     .hero p.description {
-        display: block; 
+        display: block;
         font-size: 0.92rem;
         line-height: 1.45;
-        margin-bottom: 18px; /* Reduced from 25px */
+        margin-bottom: 18px;
+        /* Reduced from 25px */
         color: rgba(255, 255, 255, 0.9);
     }
 
@@ -517,7 +526,8 @@
     }
 
     .section-header {
-        margin-bottom: 25px !important; /* Half of desktop margin */
+        margin-bottom: 25px !important;
+        /* Half of desktop margin */
     }
 
     .section-header h2 {
@@ -533,11 +543,13 @@
     .resorts-section-pad,
     .services-section,
     .booking-section {
-        padding: 25px 0 !important; /* Even more compact */
+        padding: 25px 0 !important;
+        /* Even more compact */
     }
 
     .vision-mission {
-        padding: 5px 0 20px !important; /* Almost zero gap from hero */
+        padding: 5px 0 20px !important;
+        /* Almost zero gap from hero */
     }
 
     .vision-card,
@@ -546,12 +558,14 @@
     .resort-card,
     .service-card {
         border-radius: 18px;
-        padding: 20px 15px !important; /* Much tighter padding */
-        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        padding: 20px 15px !important;
+        /* Much tighter padding */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         border: 1px solid var(--gray-border);
     }
 
-    .vm-icon, .service-icon {
+    .vm-icon,
+    .service-icon {
         font-size: 1.8rem !important;
         margin-bottom: 12px !important;
     }
@@ -560,11 +574,13 @@
     .services-grid,
     .resorts-grid {
         grid-template-columns: 1fr;
-        gap: 12px !important; /* Tighter gap between rows */
+        gap: 12px !important;
+        /* Tighter gap between rows */
     }
 
     .resort-img {
-        height: 180px !important; /* Shorter images for dense look */
+        height: 180px !important;
+        /* Shorter images for dense look */
         border-top-left-radius: 18px;
         border-top-right-radius: 18px;
     }

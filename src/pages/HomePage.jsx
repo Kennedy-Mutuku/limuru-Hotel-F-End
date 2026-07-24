@@ -133,7 +133,7 @@ export default function HomePage() {
                         </div>
 
                         {/* Core Values */}
-                        <div className="clean-values-header" style={{ marginTop: '50px' }}>
+                        <div className="clean-values-header" style={{ marginTop: '24px' }}>
                             <h2>Our <span className="text-highlight">Core Values</span></h2>
                             <p>These foundational principles guide every decision we make, ensuring our services align with your mission and our shared vision for excellence.</p>
                         </div>
@@ -181,11 +181,11 @@ export default function HomePage() {
                         </div>
 
                         {/* Motto Banner */}
-                        <div className="motto-banner" style={{ marginTop: '45px', textAlign: 'center' }}>
-                            <p>
-                                <i className="fas fa-quote-left" style={{ marginRight: '10px', color: 'var(--primary-orange)' }}></i>
+                        <div className="motto-banner" style={{ marginTop: '22px', padding: '12px 18px', textAlign: 'center' }}>
+                            <p style={{ fontSize: '1.05rem' }}>
+                                <i className="fas fa-quote-left" style={{ marginRight: '8px', color: 'var(--primary-orange)' }}></i>
                                 Hospitality with a Christian touch
-                                <i className="fas fa-quote-right" style={{ marginLeft: '10px', color: 'var(--primary-orange)' }}></i>
+                                <i className="fas fa-quote-right" style={{ marginLeft: '8px', color: 'var(--primary-orange)' }}></i>
                             </p>
                         </div>
                     </div>
