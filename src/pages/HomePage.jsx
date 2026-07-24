@@ -179,6 +179,15 @@ export default function HomePage() {
                                 </div>
                             </div>
                         </div>
+
+                        {/* Motto Banner */}
+                        <div className="motto-banner" style={{ marginTop: '45px', textAlign: 'center' }}>
+                            <p>
+                                <i className="fas fa-quote-left" style={{ marginRight: '10px', color: 'var(--primary-orange)' }}></i>
+                                Hospitality with a Christian touch
+                                <i className="fas fa-quote-right" style={{ marginLeft: '10px', color: 'var(--primary-orange)' }}></i>
+                            </p>
+                        </div>
                     </div>
                 </div>
             </section>
