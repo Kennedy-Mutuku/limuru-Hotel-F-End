@@ -119,7 +119,7 @@
 /* ===== Clean Bulleted Values & Vision Section ===== */
 .clean-values-section {
     background-color: #f8faf7;
-    padding: 24px 0 35px;
+    padding: 24px 0 20px;
     border-top: 1px solid rgba(34, 68, 15, 0.06);
     border-bottom: 1px solid rgba(34, 68, 15, 0.06);
 }
@@ -246,8 +246,8 @@
 
 /* ===== Resorts Grid ===== */
 .resorts-section-pad {
-    padding: 60px 0;
-    /* Cut down from 100px */
+    padding: 24px 0 50px;
+    /* Reduced top padding from 60px to 24px for tight transition */
 }
 
 .resorts-grid {
