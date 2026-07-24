@@ -15,13 +15,13 @@
     --transition: all 0.3s ease;
 
     /* Header height — single source of truth used by Layout, resort sticky, mobile overlays */
-    --header-h: 125px; /* desktop: green bar (~33px) + logo/nav bar (~92px) */
+    --header-h: 110px; /* desktop: green bar (~31px) + logo/nav bar (~79px) */
 }
 
-/* Mobile: header is taller now that green bar is always visible */
+/* Mobile: compact header height */
 @media (max-width: 600px) {
     :root {
-        --header-h: 140px; /* green bar (~31px) + logo/nav bar (~109px) */
+        --header-h: 96px; /* mobile: green bar (~26px) + logo/nav bar (~70px) */
     }
 }
 
