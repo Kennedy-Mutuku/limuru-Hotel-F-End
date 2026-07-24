@@ -51,57 +51,76 @@ export default function AboutPage() {
                         and servanthood.
                     </p>
 
-                    {/* Mission & Values */}
-                    <div className="about-section-header" id="mission-values" style={{ marginTop: '50px' }}>
-                        <h2>Our Mission & Values</h2>
-                        <p>Guided by Christian principles, we are committed to excellence in hospitality</p>
-                    </div>
-
-                    <div className="vm-bullets-wrapper">
-                        <div className="vm-bullet-column">
-                            <div className="vm-bullet-header">
-                                <i className="fas fa-eye vm-bullet-icon"></i>
-                                <h3>Our Vision</h3>
-                            </div>
-                            <ul className="vm-bullets-list">
-                                <li>
-                                    <i className="fas fa-check-circle vm-check-icon"></i>
-                                    <span>To be a preferred Christian conferencing and youth centres in the region and beyond.</span>
-                                </li>
-                                <li>
-                                    <i className="fas fa-check-circle vm-check-icon"></i>
-                                    <span>Fostering spiritual growth, serene retreats, and community enrichment.</span>
-                                </li>
-                            </ul>
+                    {/* Mission, Vision & Values */}
+                    <div className="clean-values-container" id="mission-values" style={{ marginTop: '50px' }}>
+                        <div className="clean-values-header">
+                            <h2>Our <span className="text-highlight">Vision & Mission</span></h2>
+                            <p>Guided by Christian principles, we are committed to excellence in hospitality</p>
                         </div>
 
-                        <div className="vm-bullet-column">
-                            <div className="vm-bullet-header">
-                                <i className="fas fa-bullseye vm-bullet-icon mission"></i>
-                                <h3>Our Mission</h3>
+                        <div className="clean-bullet-list" style={{ marginBottom: '40px' }}>
+                            <div className="clean-bullet-item">
+                                <span className="clean-bullet-dot"></span>
+                                <div className="clean-bullet-content">
+                                    <h3>Our Vision</h3>
+                                    <p>To be a preferred Christian conferencing and youth centres in the region and beyond.</p>
+                                </div>
                             </div>
-                            <ul className="vm-bullets-list">
-                                <li>
-                                    <i className="fas fa-check-circle vm-check-icon mission"></i>
-                                    <span>To provide quality hospitality services for enhanced comfort and convenience.</span>
-                                </li>
-                                <li>
-                                    <i className="fas fa-check-circle vm-check-icon mission"></i>
-                                    <span>Delivering warm, Christian-centered care for delegates, families, and groups.</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
 
-                    {/* Core Values */}
-                    <div className="core-values-section">
-                        <h3>Our Core Values & Motto</h3>
-                        <div className="values-flex">
-                            {['Stewardship', 'Integrity', 'Professionalism', 'Partnership', 'Servanthood'].map((val, idx) => (
-                                <span key={idx} className="value-tag">
-                                    {val}
-                                </span>
-                            ))}
+                            <div className="clean-bullet-item">
+                                <span className="clean-bullet-dot"></span>
+                                <div className="clean-bullet-content">
+                                    <h3>Our Mission</h3>
+                                    <p>To provide quality hospitality services for enhanced comfort and convenience.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="clean-values-header">
+                            <h2>Our <span className="text-highlight">Core Values</span></h2>
+                            <p>These foundational principles guide every decision we make, ensuring our services align with your mission and our shared vision for excellence.</p>
+                        </div>
+
+                        <div className="clean-bullet-list">
+                            <div className="clean-bullet-item">
+                                <span className="clean-bullet-dot"></span>
+                                <div className="clean-bullet-content">
+                                    <h3>Stewardship</h3>
+                                    <p>We practice responsible management and care for all resources entrusted to us.</p>
+                                </div>
+                            </div>
+
+                            <div className="clean-bullet-item">
+                                <span className="clean-bullet-dot"></span>
+                                <div className="clean-bullet-content">
+                                    <h3>Integrity</h3>
+                                    <p>We adhere to high moral standards, honesty, and transparency in all our hospitality services.</p>
+                                </div>
+                            </div>
+
+                            <div className="clean-bullet-item">
+                                <span className="clean-bullet-dot"></span>
+                                <div className="clean-bullet-content">
+                                    <h3>Professionalism</h3>
+                                    <p>We maintain superior standards of quality, courtesy, and efficiency across every facility.</p>
+                                </div>
+                            </div>
+
+                            <div className="clean-bullet-item">
+                                <span className="clean-bullet-dot"></span>
+                                <div className="clean-bullet-content">
+                                    <h3>Partnership</h3>
+                                    <p>We collaborate closely with churches, organizations, delegates, and guests to ensure every event succeeds.</p>
+                                </div>
+                            </div>
+
+                            <div className="clean-bullet-item">
+                                <span className="clean-bullet-dot"></span>
+                                <div className="clean-bullet-content">
+                                    <h3>Servanthood</h3>
+                                    <p>We serve with humility and Christian dedication to ensure every guest feels valued and welcomed.</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
 

@@ -103,66 +103,80 @@ export default function HomePage() {
                 </div>
             </section>
 
-            {/* Vision & Mission Section */}
-            <section className="vision-mission">
+            {/* Vision, Mission & Core Values Section */}
+            <section className="clean-values-section">
                 <div className="container">
-                    <div style={{ maxWidth: '900px', margin: '0 auto', textAlign: 'center' }}>
-                        <div className="section-header">
-                            <h2>Our Vision & Mission</h2>
+                    <div className="clean-values-container">
+                        {/* Heading */}
+                        <div className="clean-values-header">
+                            <h2>Our <span className="text-highlight">Vision & Mission</span></h2>
                             <p>Guided by Christian principles, we are committed to excellence in hospitality</p>
                         </div>
-                        <div className="vm-bullets-wrapper">
-                            <div className="vm-bullet-column">
-                                <div className="vm-bullet-header">
-                                    <i className="fas fa-eye vm-bullet-icon"></i>
+
+                        {/* Vision & Mission List */}
+                        <div className="clean-bullet-list">
+                            <div className="clean-bullet-item">
+                                <span className="clean-bullet-dot"></span>
+                                <div className="clean-bullet-content">
                                     <h3>Our Vision</h3>
+                                    <p>To be a preferred Christian conferencing and youth centres in the region and beyond.</p>
                                 </div>
-                                <ul className="vm-bullets-list">
-                                    <li>
-                                        <i className="fas fa-check-circle vm-check-icon"></i>
-                                        <span>To be a preferred Christian conferencing and youth centres in the region and beyond.</span>
-                                    </li>
-                                    <li>
-                                        <i className="fas fa-check-circle vm-check-icon"></i>
-                                        <span>Fostering spiritual growth, serene retreats, and community enrichment.</span>
-                                    </li>
-                                </ul>
                             </div>
 
-                            <div className="vm-bullet-column">
-                                <div className="vm-bullet-header">
-                                    <i className="fas fa-bullseye vm-bullet-icon mission"></i>
+                            <div className="clean-bullet-item">
+                                <span className="clean-bullet-dot"></span>
+                                <div className="clean-bullet-content">
                                     <h3>Our Mission</h3>
+                                    <p>To provide quality hospitality services for enhanced comfort and convenience.</p>
                                 </div>
-                                <ul className="vm-bullets-list">
-                                    <li>
-                                        <i className="fas fa-check-circle vm-check-icon mission"></i>
-                                        <span>To provide quality hospitality services for enhanced comfort and convenience.</span>
-                                    </li>
-                                    <li>
-                                        <i className="fas fa-check-circle vm-check-icon mission"></i>
-                                        <span>Delivering warm, Christian-centered care for delegates, families, and groups.</span>
-                                    </li>
-                                </ul>
                             </div>
                         </div>
 
                         {/* Core Values */}
-                        <div className="core-values-card">
-                            <h3>Our Core Values & Motto</h3>
-                            <div className="values-tags">
-                                <span className="value-tag">Stewardship</span>
-                                <span className="value-tag">Integrity</span>
-                                <span className="value-tag">Professionalism</span>
-                                <span className="value-tag">Partnership</span>
-                                <span className="value-tag">Servanthood</span>
+                        <div className="clean-values-header" style={{ marginTop: '50px' }}>
+                            <h2>Our <span className="text-highlight">Core Values</span></h2>
+                            <p>These foundational principles guide every decision we make, ensuring our services align with your mission and our shared vision for excellence.</p>
+                        </div>
+
+                        <div className="clean-bullet-list">
+                            <div className="clean-bullet-item">
+                                <span className="clean-bullet-dot"></span>
+                                <div className="clean-bullet-content">
+                                    <h3>Stewardship</h3>
+                                    <p>We practice responsible management and care for all resources entrusted to us.</p>
+                                </div>
                             </div>
-                            <div className="motto-banner">
-                                <p>
-                                    <i className="fas fa-quote-left" style={{ marginRight: '10px', color: 'var(--primary-orange)' }}></i>
-                                    Hospitality with a Christian touch
-                                    <i className="fas fa-quote-right" style={{ marginLeft: '10px', color: 'var(--primary-orange)' }}></i>
-                                </p>
+
+                            <div className="clean-bullet-item">
+                                <span className="clean-bullet-dot"></span>
+                                <div className="clean-bullet-content">
+                                    <h3>Integrity</h3>
+                                    <p>We adhere to high moral standards, honesty, and transparency in all our hospitality services.</p>
+                                </div>
+                            </div>
+
+                            <div className="clean-bullet-item">
+                                <span className="clean-bullet-dot"></span>
+                                <div className="clean-bullet-content">
+                                    <h3>Professionalism</h3>
+                                    <p>We maintain superior standards of quality, courtesy, and efficiency across every facility.</p>
+                                </div>
+                            </div>
+
+                            <div className="clean-bullet-item">
+                                <span className="clean-bullet-dot"></span>
+                                <div className="clean-bullet-content">
+                                    <h3>Partnership</h3>
+                                    <p>We collaborate closely with churches, organizations, delegates, and guests to ensure every event succeeds.</p>
+                                </div>
+                            </div>
+
+                            <div className="clean-bullet-item">
+                                <span className="clean-bullet-dot"></span>
+                                <div className="clean-bullet-content">
+                                    <h3>Servanthood</h3>
+                                    <p>We serve with humility and Christian dedication to ensure every guest feels valued and welcomed.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
