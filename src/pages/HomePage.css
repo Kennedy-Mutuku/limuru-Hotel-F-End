@@ -378,8 +378,8 @@
 
 /* ===== Services Section ===== */
 .services-section {
-    padding: 60px 0;
-    /* Denser */
+    padding: 24px 0 50px;
+    /* Reduced top padding from 60px to 24px */
     background-color: var(--primary-white);
     border-top: 1px solid var(--gray-border);
 }
