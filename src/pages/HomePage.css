@@ -1,8 +1,9 @@
 /* ===== Hero Section ===== */
 .hero {
     position: relative;
-    height: 100vh;
-    min-height: 600px;
+    height: 55vh;
+    max-height: 480px;
+    min-height: 380px;
     color: var(--primary-white);
     text-align: center;
     overflow: hidden;
@@ -65,8 +66,8 @@
     align-items: center;
     justify-content: center;
     height: 100%;
-    padding-top: 120px;
-    padding-bottom: 60px;
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
 
 /* ── Shimmer shown before first image loads ── */
@@ -92,29 +93,27 @@
 }
 
 .hero h1 {
-    font-size: 4rem;
-    /* Larger, more striking */
+    font-size: 2.8rem;
     font-family: 'Playfair Display', serif;
-    /* Professional serif */
-    margin-bottom: 20px;
+    margin-bottom: 8px;
     color: var(--primary-white);
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
+    line-height: 1.25;
 }
 
 .hero p.tagline {
-    font-size: 1.4rem;
-    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
     color: var(--primary-orange);
-    margin-bottom: 25px;
+    margin-bottom: 12px;
     font-style: italic;
 }
 
 .hero p.description {
-    font-size: 1.15rem;
-    max-width: 800px;
-    margin: 0 auto 40px;
-    opacity: 0.9;
-    line-height: 1.6;
+    font-size: 0.95rem;
+    max-width: 680px;
+    margin: 0 auto 20px;
+    opacity: 0.92;
+    line-height: 1.5;
 }
 
 /* ===== Clean Bulleted Values & Vision Section ===== */
@@ -602,16 +601,25 @@
 
 @media (max-width: 576px) {
     .hero {
-        min-height: unset;
+        height: 48vh;
+        max-height: 380px;
+        min-height: 300px;
     }
 
     .hero h1 {
-        font-size: 1.95rem;
+        font-size: 1.55rem;
+        margin-bottom: 6px;
     }
 
     .hero p.tagline {
-        font-size: 1.05rem;
-        margin-bottom: 15px;
+        font-size: 0.95rem;
+        margin-bottom: 8px;
+    }
+
+    .hero p.description {
+        font-size: 0.82rem;
+        margin-bottom: 14px;
+        line-height: 1.38;
     }
 
     .section-title h2 {
