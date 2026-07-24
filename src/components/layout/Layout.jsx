@@ -6,7 +6,7 @@ export default function Layout() {
     return (
         <>
             <Header />
-            <main style={{ marginTop: '125px' }}>
+            <main style={{ marginTop: 'var(--header-h, 125px)' }}>
                 <Outlet />
             </main>
             <Footer />

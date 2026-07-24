@@ -159,12 +159,151 @@
 /* ===== Resort Sub-Website Navigation (Stacked) ===== */
 .resort-sticky-container {
     position: sticky;
-    top: 125px;
-    /* Exactly below global header height from Layout.jsx */
-    z-index: 999;
+    top: var(--header-h); /* Tracks exact header height at every breakpoint */
+    z-index: 100; /* Always below site-header (99999) */
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     background-color: white;
 }
+
+
+/* ── Resort top bar (dark green, all 3 contacts) ── */
+.resort-top-bar {
+    background: rgba(21, 56, 0, 0.97);
+    color: white;
+    padding: 7px 0;
+    font-size: 0.82rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.resort-top-bar-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.resort-back-link {
+    color: rgba(255, 255, 255, 0.85);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    font-size: 0.82rem;
+    transition: color 0.2s;
+    flex-shrink: 0;
+}
+
+.resort-back-link:hover { color: #ffffff; }
+
+/* Three phones centered */
+.resort-top-contacts {
+    display: flex;
+    align-items: center;
+    gap: 0;
+}
+
+.rtb-contact {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: white;
+    text-decoration: none;
+    padding: 0 14px;
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 0.8rem;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+}
+
+.rtb-contact:first-child { padding-left: 0; }
+.rtb-contact:last-child  { border-right: none; padding-right: 0; }
+.rtb-contact:hover { opacity: 0.8; }
+
+.rtb-label {
+    color: var(--primary-orange);
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.rtb-email {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+    transition: color 0.2s;
+}
+
+.rtb-email:hover { color: #fff; }
+
+/* ── Individual branch contact in hotel header row ── */
+.resort-branch-contact {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid var(--gray-border);
+    border-radius: 8px;
+    padding: 6px 14px;
+    background: #fafafa;
+}
+
+.rbc-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-dark);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.rbc-item:hover { color: var(--primary-green); }
+
+.rbc-icon {
+    width: 28px;
+    height: 28px;
+    background: var(--primary-green);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    flex-shrink: 0;
+}
+
+.rbc-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.rbc-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--text-light);
+    font-weight: 600;
+    line-height: 1;
+}
+
+.rbc-value {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--primary-green);
+    line-height: 1.3;
+    white-space: nowrap;
+}
+
+.rbc-divider {
+    width: 1px;
+    height: 32px;
+    background: var(--gray-border);
+    margin: 0 8px;
+}
+
 
 .resort-header {
     background: white;
@@ -332,6 +471,52 @@
     }
 
     .compact-hide {
+        display: none !important;
+    }
+
+    /* ── Resort top bar: always keep phones visible, scale down ── */
+    .resort-top-bar {
+        padding: 6px 0;
+    }
+
+    .resort-top-bar-inner {
+        gap: 4px;
+    }
+
+    /* Show back arrow only, hide text */
+    .resort-back-link span {
+        display: none;
+    }
+
+    /* Always show all 3 phones — override compact-hide for phones */
+    .resort-top-contacts {
+        display: flex !important;
+        flex: 1;
+        justify-content: center;
+    }
+
+    .rtb-contact {
+        font-size: 0.6rem;
+        padding: 0 6px;
+        gap: 3px;
+    }
+
+    .rtb-contact .fa-phone-alt {
+        display: none;
+    }
+
+    .rtb-label {
+        font-size: 0.57rem;
+        letter-spacing: 0;
+    }
+
+    /* Hide email on mobile (too long) */
+    .rtb-email {
+        display: none !important;
+    }
+
+    /* Branch contact card in hotel name row stays hidden on mobile */
+    .resort-branch-contact {
         display: none !important;
     }
 

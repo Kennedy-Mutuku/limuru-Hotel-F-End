@@ -3,10 +3,15 @@
     position: fixed;
     width: 100%;
     top: 0;
-    z-index: 9999;
+    left: 0;
+    z-index: 99999; /* Always above everything — hero, resort headers, overlays */
     background-color: var(--primary-white);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    isolation: isolate;           /* Own stacking context */
+    transform: translateZ(0);     /* GPU layer — never gets buried by page content */
+    will-change: transform;
 }
+
 
 .header-top {
     background-color: var(--primary-green);
@@ -43,6 +48,56 @@
 .header-top-link:hover {
     opacity: 0.8;
 }
+
+/* ── All-branches phone strip ── */
+.branch-phones-all {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    overflow: hidden; /* Prevent any wrapping overflow */
+}
+
+.branch-phone-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 14px;
+    border-right: 1px solid rgba(255, 255, 255, 0.25);
+    font-size: 0.82rem;
+    white-space: nowrap; /* Never wrap phone numbers */
+    flex-shrink: 0;
+}
+
+.branch-phone-item:last-child {
+    border-right: none;
+    padding-right: 0;
+}
+
+.branch-phone-item:first-child {
+    padding-left: 0;
+}
+
+/* Branch label (e.g. "Limuru:") */
+.branch-phone-label {
+    color: var(--primary-orange);
+    font-weight: 700;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+/* Single branch phone on resort pages */
+.branch-phone-single {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.85rem;
+}
+
+.branch-phone-single .branch-phone-label {
+    font-size: 0.8rem;
+}
+
 
 .header-container {
     display: flex;
@@ -284,18 +339,65 @@
 }
 
 @media (max-width: 600px) {
-    .header-top-actions {
-        display: none; /* Hide contacts to give slogan full space */
+    /* ── Top bar: always visible, font scaled down ── */
+    .header-top {
+        padding: 5px 0;
     }
 
-    .header-top-content {
-        justify-content: center; /* Center the slogan */
-        text-align: center;
+    .header-top .header-top-content {
+        justify-content: center;
+        gap: 0;
+        padding: 0 4px !important; /* Reduce container side padding to give max width */
         width: 100%;
     }
 
+    /* Hide slogan on small screens — phones take priority */
     .slogan {
-        font-size: 0.82rem;
+        display: none;
+    }
+
+    /* Always show contacts */
+    .header-top-actions {
+        display: flex;
+        align-items: center;
+        gap: 0;
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* Scale phone strip items right down — fit all 3 completely */
+    .branch-phones-all {
+        gap: 0;
+        width: 100%;
+        justify-content: space-around;
+    }
+
+    .branch-phone-item {
+        font-size: clamp(0.5rem, 2.7vw, 0.65rem);
+        padding: 0 3px;
+        gap: 2px;
+        white-space: nowrap;
+        flex-shrink: 0;
+        border-right-width: 1px;
+    }
+
+    .branch-phone-item:first-child { padding-left: 0; }
+    .branch-phone-item:last-child { padding-right: 0; border-right: none; }
+
+    .branch-phone-label {
+        font-size: clamp(0.48rem, 2.5vw, 0.6rem);
+        letter-spacing: 0;
+        white-space: nowrap;
+    }
+
+    /* Hide fa icon on very small screens to save space */
+    .branch-phone-item .fa-phone-alt {
+        display: none;
+    }
+
+    /* Hide email — too long for mobile, phones are sufficient */
+    .header-top-link:not(.branch-phone-item) {
+        display: none;
     }
 
     .mobile-menu-btn {
@@ -369,10 +471,10 @@
 
     .mobile-overlay {
         position: fixed;
-        top: 129px; /* Positioned exactly below the header */
+        top: var(--header-h); /* Positioned exactly below the header */
         left: 0;
         width: 100%;
-        height: calc(100svh - 129px); /* Fill remaining viewport height */
+        height: calc(100svh - var(--header-h)); /* Fill remaining viewport height */
         background: rgba(0, 0, 0, 0.5);
         backdrop-filter: blur(4px);
         -webkit-backdrop-filter: blur(4px);
@@ -389,12 +491,12 @@
 
     .main-nav {
         position: fixed;
-        top: 129px; /* Positioned exactly below the header */
+        top: var(--header-h); /* Positioned exactly below the header */
         left: -280px;
         width: 240px;
         max-width: 80vw;
         height: max-content;
-        max-height: calc(100svh - 129px); /* Strictly fits the content below the header */
+        max-height: calc(100svh - var(--header-h)); /* Strictly fits the content below the header */
         border-bottom-right-radius: 20px;
         background: linear-gradient(180deg, var(--dark-green) 0%, var(--primary-green) 100%);
         flex-direction: column;
@@ -503,10 +605,6 @@
     @keyframes slideDownMobile {
         from { opacity: 0; transform: translateY(-5px); }
         to { opacity: 1; transform: translateY(0); }
-    }
-
-    .header-top-actions {
-        display: none;
     }
 
     .header-actions {

@@ -1,7 +1,69 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import BookingForm from '../components/common/BookingForm';
 import './HomePage.css';
+
+/* ── Hero slides ── */
+const HERO_SLIDES = [
+    { src: '/images/resorts/limuru/limuru-front.jpeg',  alt: 'Jumuia Conference & Country Home – Limuru' },
+    { src: '/images/gallery/kanamai home.jpeg',          alt: 'Jumuia Conference & Beach Resort – Kanamai' },
+    { src: '/images/resorts/kisumu/resort1.jpg',         alt: 'Jumuia Hotel – Kisumu' },
+];
+
+/* ── Crossfade hero: proper <img> tags, no CSS background-image tricks ── */
+function HeroCrossfade() {
+    const [current, setCurrent] = useState(0);
+    const [firstLoaded, setFirstLoaded] = useState(false);
+    const timerRef = useRef(null);
+
+    // Start slideshow only once the first image has painted
+    useEffect(() => {
+        if (!firstLoaded) return;
+        timerRef.current = setInterval(() => {
+            setCurrent(prev => (prev + 1) % HERO_SLIDES.length);
+        }, 6000);
+        return () => clearInterval(timerRef.current);
+    }, [firstLoaded]);
+
+    return (
+        <div className="hero-crossfade" aria-hidden="true">
+            {HERO_SLIDES.map((slide, i) => (
+                <img
+                    key={slide.src}
+                    src={slide.src}
+                    alt={slide.alt}
+                    className={`hero-slide${i === current ? ' active' : ''}`}
+                    /* First image: load at highest browser priority for fast LCP */
+                    loading={i === 0 ? 'eager' : 'lazy'}
+                    fetchpriority={i === 0 ? 'high' : 'low'}
+                    decoding={i === 0 ? 'sync' : 'async'}
+                    onLoad={() => { if (i === 0) setFirstLoaded(true); }}
+                />
+            ))}
+            {/* Shimmer placeholder shown until first image is ready */}
+            {!firstLoaded && <div className="hero-shimmer" />}
+        </div>
+    );
+}
+
+/* ── SmartImage: skeleton shimmer → blur-up reveal ── */
+function SmartImage({ src, alt, className, style }) {
+    const [phase, setPhase] = useState('loading');
+    return (
+        <div className="smart-img-wrap">
+            {phase === 'loading' && <div className="img-skeleton" />}
+            <img
+                src={src}
+                alt={alt}
+                className={`${className} smart-img${phase === 'loaded' ? ' revealed' : ''}`}
+                style={style}
+                loading="lazy"
+                decoding="async"
+                onLoad={() => setPhase('loaded')}
+            />
+        </div>
+    );
+}
 
 export default function HomePage() {
     const location = useLocation();
@@ -22,7 +84,9 @@ export default function HomePage() {
         <>
             {/* Hero Section */}
             <section className="hero" id="home">
-                <div className="container">
+                <HeroCrossfade />
+                <div className="hero-overlay" />
+                <div className="container hero-body">
                     <div className="hero-content">
                         <h1>Hospitality With A Christian Touch</h1>
                         <p className="tagline">Christian Values with Great Zeal to Customer Satisfaction</p>
@@ -148,8 +212,6 @@ export default function HomePage() {
                 </div>
             </section>
 
-
-
             {/* Booking Section */}
             <section className="booking-section" id="quick-book">
                 <div className="container">
@@ -168,12 +230,10 @@ function ResortCard({ name, location, description, image, features, link, resort
     return (
         <div className="resort-card">
             <div className="resort-img-wrapper">
-                <img 
-                    src={image} 
-                    alt={name} 
-                    className="resort-img" 
-                    loading="lazy" 
-                    decoding="async"
+                <SmartImage
+                    src={image}
+                    alt={name}
+                    className="resort-img"
                     style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                 />
             </div>

@@ -4,6 +4,28 @@ import { useAuth } from '../../context/AuthContext';
 import Logo from '../common/Logo';
 import './Header.css';
 
+/* ── Branch contact data (single source of truth) ── */
+const BRANCH_CONTACTS = {
+    limuru:  { label: 'Limuru',  phone: '0741 574 828', tel: '+254741574828' },
+    kisumu:  { label: 'Kisumu',  phone: '0115 994 486', tel: '+254115994486' },
+    kanamai: { label: 'Kanamai', phone: '0710 288 043', tel: '+254710288043' },
+};
+
+/* ── Always show all 3 branch phones in the main site top bar ── */
+function PhoneStrip() {
+    return (
+        <div className="branch-phones-all">
+            {Object.entries(BRANCH_CONTACTS).map(([key, { label, phone, tel }]) => (
+                <a key={key} href={`tel:${tel}`} className="header-top-link branch-phone-item">
+                    <i className="fas fa-phone-alt"></i>
+                    <span className="branch-phone-label">{label}:</span>
+                    <span>{phone}</span>
+                </a>
+            ))}
+        </div>
+    );
+}
+
 export default function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
     const [mobileMenus, setMobileMenus] = useState({ about: false, feedback: false });
@@ -39,13 +61,10 @@ export default function Header() {
                 <div className="container header-top-content">
                     <div className="slogan">Hospitality With A Christian Touch</div>
                     <div className="header-top-actions">
-                        <a href="tel:+254759423589" className="header-top-link">
-                            <i className="fas fa-phone"></i>
-                            <span>+254 759 423589</span>
-                        </a>
-                        <a href="mailto:info@resortjumuia.com" className="header-top-link">
+                        <PhoneStrip />
+                        <a href="mailto:reservations@resortjumuia.com" className="header-top-link">
                             <i className="fas fa-envelope"></i>
-                            <span>info@resortjumuia.com</span>
+                            <span>reservations@resortjumuia.com</span>
                         </a>
                     </div>
                 </div>
@@ -56,7 +75,7 @@ export default function Header() {
                     <Logo className="logo-img" />
                     <div className="logo-text">
                         <h1>Jumuia Resorts</h1>
-                        <p>Christian Hospitality & Conference Centres</p>
+                        <p>Christian Hospitality &amp; Conference Centres</p>
                     </div>
                 </Link>
 
@@ -74,7 +93,7 @@ export default function Header() {
                         </NavLink>
                         <div className="dropdown-menu">
                             <Link to="/about#who-we-are" onClick={() => setMenuOpen(false)}>Who We Are</Link>
-                            <Link to="/about#mission-values" onClick={() => setMenuOpen(false)}>Mission & Values</Link>
+                            <Link to="/about#mission-values" onClick={() => setMenuOpen(false)}>Mission &amp; Values</Link>
                             <Link to="/about#why-choose-us" onClick={() => setMenuOpen(false)}>Why Choose Us</Link>
                         </div>
                     </div>
@@ -115,8 +134,6 @@ export default function Header() {
                             <Link to="/tenders#recruitments" onClick={() => setMenuOpen(false)}>Recruitments</Link>
                         </div>
                     </div>
-
-
 
                     <NavLink to="/admin/login" className="btn btn-secondary login-btn" onClick={() => setMenuOpen(false)}>Log In</NavLink>
                     <Link to="/#quick-book" className="btn btn-primary nav-book-btn" onClick={() => setMenuOpen(false)}>Book Now</Link>

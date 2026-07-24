@@ -52,6 +52,13 @@ const RESORT_DATA = {
     }
 };
 
+/* ── Branch contact details (single source of truth) ── */
+const BRANCH_CONTACTS = {
+    limuru:  { phone: '0741 574 828', tel: '+254741574828', email: 'reservations.limuru@resortjumuia.com' },
+    kanamai: { phone: '0710 288 043', tel: '+254710288043', email: 'reservations.kanamai@resortjumuia.com' },
+    kisumu:  { phone: '0115 994 486', tel: '+254115994486', email: 'reservations.kisumu@resortjumuia.com' },
+};
+
 // ... component logic ...
 
 export function ResortOverview() {
@@ -1198,35 +1205,35 @@ export default function ResortDetail() {
         <div style={{ minHeight: '100vh', background: '#fff' }}>
             {/* ─── STICKY RESORT HEADER CONTAINER ─── */}
             <div className="resort-sticky-container">
-                {/* ─── TOP BAR (Double Header Part 1) ─── */}
-                <div style={{
-                    background: 'rgba(34, 68, 15, 0.98)',
-                    color: 'white',
-                    padding: '8px 0',
-                    fontSize: '0.85rem',
-                    borderBottom: '1px solid rgba(255,255,255,0.1)'
-                }}>
-                    <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <Link to="/" style={{ color: 'white', display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}>
-                            <i className="fas fa-arrow-left"></i>
-                            <span>Back <span className="compact-hide">to Jumuia Resorts Home</span></span>
-                        </Link>
-                        <div style={{ display: 'flex', gap: '20px' }} className="compact-hide">
-                            <span style={{ opacity: 0.9 }}><i className="fas fa-phone-alt" style={{ marginRight: '5px' }}></i> 0741 574 828</span>
-                            <span style={{ opacity: 0.9 }}><i className="fas fa-envelope" style={{ marginRight: '5px' }}></i> reservations@jumuiaresorts.org</span>
-                        </div>
-                    </div>
-                </div>
-
-                {/* ─── MAIN HEADER (Double Header Part 2) ─── */}
+                {/* ─── MAIN HEADER (hotel name + individual contact) ─── */}
                 <header className="resort-header">
                     <div className="container">
-                        <div className="resort-branding-row" style={{ padding: isMobile ? '0' : '0' }}>
+                        <div className="resort-branding-row">
                             <img src="/images/Jumuia-Resorts.svg" alt="Logo" style={{ height: isMobile ? '35px' : '50px' }} />
                             <div className="resort-identity-centered">
                                 <h2 style={{ fontSize: isMobile ? '1rem' : '1.6rem', color: 'var(--primary-green)', fontWeight: '800', margin: 0 }}>{data.name}</h2>
                                 <span className="location-tag" style={{ fontSize: isMobile ? '0.65rem' : '0.85rem' }}>{data.location}</span>
                             </div>
+                            {/* Individual branch contact — phone + email */}
+                            {BRANCH_CONTACTS[resort] && (
+                                <div className="resort-branch-contact compact-hide">
+                                    <a href={`tel:${BRANCH_CONTACTS[resort].tel}`} className="rbc-item">
+                                        <span className="rbc-icon"><i className="fas fa-phone-alt"></i></span>
+                                        <div className="rbc-text">
+                                            <span className="rbc-label">Direct Line</span>
+                                            <span className="rbc-value">{BRANCH_CONTACTS[resort].phone}</span>
+                                        </div>
+                                    </a>
+                                    <div className="rbc-divider"></div>
+                                    <a href={`mailto:${BRANCH_CONTACTS[resort].email}`} className="rbc-item">
+                                        <span className="rbc-icon"><i className="fas fa-envelope"></i></span>
+                                        <div className="rbc-text">
+                                            <span className="rbc-label">Email Us</span>
+                                            <span className="rbc-value">{BRANCH_CONTACTS[resort].email}</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            )}
                             <Link to="/#quick-book" state={{ resort: resort, nationality: 'kenyan', autoScroll: true }} className="btn btn-primary" style={{ padding: isMobile ? '6px 12px' : '8px 15px', fontSize: isMobile ? '0.7rem' : '0.8rem' }}>
                                 Book Now
                             </Link>

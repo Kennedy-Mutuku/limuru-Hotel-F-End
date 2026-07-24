@@ -2,45 +2,86 @@
 .hero {
     position: relative;
     height: 100vh;
+    min-height: 600px;
     color: var(--primary-white);
-    padding: 160px 0 80px;
-    /* Denser padding */
     text-align: center;
     overflow: hidden;
-    background: linear-gradient(rgba(10, 26, 1, 0.75), rgba(12, 31, 1, 0.75));
-    /* Darkened for more professional text contrast */
+    background: #0a1a01; /* Fallback while images load */
 }
 
-.hero::before {
-    content: "";
+/* ── Crossfade image stack ── */
+.hero-crossfade {
     position: absolute;
-    top: 0;
-    left: 0;
+    inset: 0;
+    z-index: 0;
+}
+
+.hero-slide {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
-    background-size: cover;
-    background-position: center;
-    z-index: -1;
-    animation: slideShow 18s infinite;
-    filter: brightness(0.6);
+    object-fit: cover;
+    object-position: center;
+    opacity: 0;
+    transition: opacity 0.9s ease-in-out;
+    /* Subtle Ken Burns zoom on the active slide */
+    transform: scale(1.04);
+    will-change: opacity, transform;
 }
 
-@keyframes slideShow {
-    0% {
-        background-image: url('/images/resorts/limuru/limuru-front.jpeg');
-    }
+.hero-slide.active {
+    opacity: 1;
+    animation: kenBurns 6.9s ease-out forwards;
+}
 
-    33% {
-        background-image: url('/images/gallery/kanamai home.jpeg');
-    }
+@keyframes kenBurns {
+    from { transform: scale(1.04); }
+    to   { transform: scale(1.00); }
+}
 
-    66% {
-        background-image: url('/images/resorts/kisumu/resort1.jpg');
-    }
+/* ── Dark overlay for text contrast ── */
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+        to bottom,
+        rgba(5, 15, 1, 0.55) 0%,
+        rgba(5, 15, 1, 0.70) 60%,
+        rgba(5, 15, 1, 0.85) 100%
+    );
+}
 
-    100% {
-        background-image: url('/images/resorts/limuru/limuru-front.jpeg');
-    }
+/* ── Hero body (text + button above overlay) ── */
+.hero-body {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding-top: 120px;
+    padding-bottom: 60px;
+}
+
+/* ── Shimmer shown before first image loads ── */
+.hero-shimmer {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        90deg,
+        #0a1a01 0%,
+        #153800 40%,
+        #0a1a01 80%
+    );
+    background-size: 200% 100%;
+    animation: shimmerMove 1.6s infinite linear;
+}
+
+@keyframes shimmerMove {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
 }
 
 .hero h1 {
@@ -224,7 +265,46 @@
 
 .resort-img-wrapper {
     overflow: hidden;
-    /* Contains the zoom */
+    position: relative;
+    height: 250px;
+}
+
+/* ── SmartImage blur-up progressive reveal ── */
+.smart-img-wrap {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Skeleton shimmer for resort card images */
+.img-skeleton {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        90deg,
+        #e8ede6 0%,
+        #d4e0cf 40%,
+        #e8ede6 80%
+    );
+    background-size: 200% 100%;
+    animation: shimmerMove 1.4s infinite linear;
+    z-index: 1;
+}
+
+/* Image starts blurred + invisible, then reveals smoothly */
+.smart-img {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    filter: blur(8px);
+    transition: opacity 0.5s ease, filter 0.5s ease;
+    z-index: 2;
+}
+
+.smart-img.revealed {
+    opacity: 1;
+    filter: blur(0);
 }
 
 .resort-content {
@@ -342,21 +422,25 @@
         font-size: 2rem;
     }
 
-    .hero::before {
-        display: block !important; /* Re-enable for professional backdrop */
-        animation: slideShow 18s infinite !important;
-        filter: brightness(0.5); /* Slightly darker for mobile readability */
+    .hero {
+        height: 100svh; /* Use small viewport height on mobile */
+        min-height: 560px;
     }
 
-    .hero {
-        height: auto; /* Shrink to content */
-        padding: 100px 0 60px; /* Shifted card upwards: reduced top gap for better visual balance */
-        display: flex; /* Flexbox for horizontal centering */
-        flex-direction: column;
-        align-items: center; 
-        justify-content: center;
-        background: transparent !important; /* Reveal the animated ::before */
-        min-height: unset !important; /* Force override any lower queries */
+    /* Slightly darker overlay on mobile for better text contrast */
+    .hero-overlay {
+        background: linear-gradient(
+            to bottom,
+            rgba(5, 15, 1, 0.60) 0%,
+            rgba(5, 15, 1, 0.78) 60%,
+            rgba(5, 15, 1, 0.90) 100%
+        );
+    }
+
+    .hero-body {
+        padding-top: 80px;
+        padding-bottom: 40px;
+        align-items: center;
     }
 
     .hero-content {
