@@ -398,7 +398,9 @@
 
 .resort-nav-link.active::after {
     transform: scaleX(1);
-    height: 4px;
+    height: 3.5px;
+    bottom: -3px;
+    border-radius: 2px;
 }
 
 /* ===== Responsive Viewports ===== */
